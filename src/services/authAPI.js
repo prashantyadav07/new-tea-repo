@@ -1,13 +1,8 @@
 import axios from 'axios';
 
-// Backend URLs
-const LOCAL_URL = 'http://localhost:5000/api/auth';
-const PRODUCTION_URL = 'https://mern-tea-backend.vercel.app/api/auth';
-
-// 1. Try VITE_API_URL from .env
-// 2. If not set, check if we are in Production mode (deployed) -> Use Production URL
-// 3. Fallback to Local URL
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? PRODUCTION_URL : LOCAL_URL);
+// Backend URL from environment variables
+const BASE_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${BASE_URL}/auth`;
 
 const api = axios.create({
     baseURL: API_URL,

@@ -1,29 +1,7 @@
 import axios from 'axios';
 
-// Backend URLs
-const LOCAL_URL = 'http://localhost:5000/api';
-const PRODUCTION_URL = 'https://mern-tea-backend.vercel.app/api';
-
-// 1. Get raw URL from env or fallbacks
-let rawBaseUrl = import.meta.env.VITE_API_URL;
-if (!rawBaseUrl) {
-    rawBaseUrl = import.meta.env.PROD
-        ? 'https://mern-tea-backend.vercel.app/api'
-        : 'http://localhost:5000/api';
-}
-
-// 2. Explicitly strip '/auth' if present
-let finalBaseUrl = rawBaseUrl;
-if (finalBaseUrl.endsWith('/auth')) {
-    finalBaseUrl = finalBaseUrl.slice(0, -5);
-} else if (finalBaseUrl.endsWith('/auth/')) {
-    finalBaseUrl = finalBaseUrl.slice(0, -6);
-}
-
-console.log("[AdminAPI] Raw URL:", rawBaseUrl);
-console.log("[AdminAPI] Final Base URL:", finalBaseUrl);
-
-const API_URL = finalBaseUrl;
+// Backend URL from environment variables
+const API_URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
     baseURL: API_URL,
