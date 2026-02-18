@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sparkling Hibiscus - Premium Tea Collection</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF7D54", // Extracted coral/orange color from screenshot
+                        secondary: "#1A1A1A",
+                        "background-light": "#FDFBF7", // Warm off-white
+                        "background-dark": "#121212",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E1E1E",
+                        "text-light": "#333333",
+                        "text-dark": "#E5E5E5",
+                        "muted-light": "#888888",
+                        "muted-dark": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        display: ["'Playfair Display'", "serif"],
+                        body: ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': '1.5rem',
+                        '2xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -10px rgba(0, 0, 0, 0.05)',
+                        'float': '0 30px 60px -15px rgba(255, 125, 84, 0.15)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+        .fade-enter {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body antialiased transition-colors duration-300 min-h-screen">
+<nav class="fixed w-full z-50 px-6 py-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-icons-round text-primary text-3xl">emoji_nature</span>
+<span class="font-display font-bold text-2xl tracking-tight">LUMIÈRE</span>
+</div>
+<div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-light dark:text-muted-dark">
+<a class="hover:text-primary transition-colors" href="#">Shop</a>
+<a class="hover:text-primary transition-colors" href="#">Origins</a>
+<a class="hover:text-primary transition-colors" href="#">Journal</a>
+<a class="text-primary" href="#">Sale</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons-round text-xl">dark_mode</span>
+</button>
+<button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">
+<span class="material-icons-round text-xl">shopping_bag</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-12 px-6 lg:px-12 max-w-7xl mx-auto min-h-screen flex items-center">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 w-full">
+<div class="relative group fade-enter" style="animation-delay: 0.1s;">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl -z-10"></div>
+<div class="relative bg-surface-light dark:bg-surface-dark rounded-3xl shadow-soft overflow-hidden aspect-[4/5] lg:aspect-square flex items-center justify-center p-8 border border-gray-100 dark:border-gray-800">
+<img alt="Sparkling Hibiscus Tea leaves and brew" class="w-full h-full object-cover rounded-2xl transform transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEP61u42MPQhcK_EPPy06ZHv3yAUsZFY0Xezb0hVBqRVPUeVfbW6WBppVMZj2RT4Wmv8tbsi37Fw_r48uROCFY-eEEE2iauUFzPbxjv9xCn6GDK2ixjuKoDVu0GxfIA3rqrK1NqQHDGyCc6FFResWTJIOZVQPnToC6tz42_VjkwtEl41h6kfnOx770Z1aRVz6jKrvThN7tJX2bLQxIWLWZ3tIJQqIoEJdXMkc-ZMA4MYztJHzoFMchZDlLwHkYF2AyT94BljeLNA"/>
+<div class="absolute bottom-8 left-8 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs font-semibold tracking-wide uppercase">Organic Harvest 2023</span>
+</div>
+</div>
+<div class="flex gap-4 mt-6 justify-center lg:justify-start">
+<button class="w-20 h-20 rounded-xl border-2 border-primary overflow-hidden p-1 bg-surface-light dark:bg-surface-dark">
+<img class="w-full h-full object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_4zjRC8g265VadsQh2Z9yHuQtrmaiImwq-VFQnRFxVEYloqHhuxIe3TArlAYFIhXhlFgrBoJp78Wjv1vJ4L1kPXM59YDZtTwD1id9clalZ4DwPuiwf5OtKSRPeQHSEqxdMcI5INSSENmnnOalBd9jgdEwFz0PEXW7plwMcwD9_FaCcKjpWtsMrDOI4ac00BkLN7i7AXU4p20YSMGe1-5MyRut-CMlK151h3-f_MbHH1ZTzb0O9BFI2ZBEKZ2VwjmXniSTWJiO2g"/>
+</button>
+<button class="w-20 h-20 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden p-1 bg-surface-light dark:bg-surface-dark opacity-60 hover:opacity-100 transition-opacity">
+<img class="w-full h-full object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyt4HyYV4K-4-I_zkq55n0btFxGwu-VTPY4wC9qIHZCNu9o1xtkhx8dq_4ygZ9BL101Jx2gUs1Mc_q6KFDSJ7swqGOFVJnaqxI7xXX9IIJRTcY-9ghh8uGg0NgMgHSaNF9mw-6asR1CAJ2vzRZLyTcZ2Y-AErO7Ug_eAfmG0v5qkoPVolB62g9ap7c3UQlR2oJ9nujJ_H2PGiigKPIwj6bciCR-C2OCx5rhHHBg_Q4XWO7RmsnqNn2pJAKn_Noh1xjuDp2l5zGKw"/>
+</button>
+<button class="w-20 h-20 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden p-1 bg-surface-light dark:bg-surface-dark opacity-60 hover:opacity-100 transition-opacity">
+<img class="w-full h-full object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAm4_rhgs9ahaIpoQlgBohE2t2owN8oDt3iRg_RFyvwZVYIcsDPO1dihBv2SdWKiNHxBDzCCzZ_O2ZoCnDLMfKWeS91_YOmd3zhSnpMrH6s-RA_dtA6TUce_TBaMFHQBAAzxzbxVgOdlS0muyChUHDSQz9LmZmfCdSm9mVFc63HXCHAqE1X9oAKuWvx801D2f-frvXFIBzCrWqV6gronJL2-EmCIT-aSc270juUcyepRDsYRDUHLEtRhUJncGJeoWFfA6YzbTvN7Q"/>
+</button>
+</div>
+</div>
+<div class="flex flex-col justify-center space-y-8 fade-enter" style="animation-delay: 0.3s;">
+<div>
+<div class="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest mb-3">
+<span class="w-8 h-[1px] bg-primary"></span>
+                        Premium Collection
+                    </div>
+<h1 class="font-display text-5xl md:text-6xl text-text-light dark:text-white mb-4 leading-tight">
+                        Sparkling <br/><span class="italic text-primary">Hibiscus</span>
+</h1>
+<div class="flex items-end gap-4 mb-6">
+<span class="text-3xl font-bold text-text-light dark:text-white">$28.00</span>
+<div class="flex items-center gap-1 mb-1">
+<span class="material-icons-round text-yellow-400 text-sm">star</span>
+<span class="material-icons-round text-yellow-400 text-sm">star</span>
+<span class="material-icons-round text-yellow-400 text-sm">star</span>
+<span class="material-icons-round text-yellow-400 text-sm">star</span>
+<span class="material-icons-round text-gray-300 dark:text-gray-600 text-sm">star</span>
+<span class="text-xs text-muted-light dark:text-muted-dark ml-1">(128 reviews)</span>
+</div>
+</div>
+<p class="text-muted-light dark:text-muted-dark text-lg leading-relaxed font-light">
+                        A vibrant, crimson infusion with tart cranberry notes and a sweet finish. Sourced from the Nile Delta, these hand-picked hibiscus flowers offer a refreshing antioxidant boost, perfect for iced summer days or warm cozy evenings.
+                    </p>
+</div>
+<div class="space-y-4">
+<label class="text-sm font-semibold text-text-light dark:text-white uppercase tracking-wider">Select Size</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-3 rounded-full border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary text-text-light dark:text-text-dark font-medium transition-all hover:shadow-lg focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark">
+                            50g Sample
+                        </button>
+<button class="px-6 py-3 rounded-full bg-primary text-white shadow-float font-medium transition-all transform hover:-translate-y-1">
+                            100g Standard
+                        </button>
+<button class="px-6 py-3 rounded-full border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary text-text-light dark:text-text-dark font-medium transition-all hover:shadow-lg focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark">
+                            250g Value
+                        </button>
+</div>
+</div>
+<div class="pt-4 flex gap-4">
+<button class="flex-1 bg-primary hover:bg-opacity-90 text-white font-bold py-4 px-8 rounded-2xl shadow-float transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3">
+<span class="material-icons-round">shopping_bag</span>
+                        Add to Cart
+                    </button>
+<button class="p-4 border border-gray-200 dark:border-gray-700 rounded-2xl text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons-round">favorite_border</span>
+</button>
+</div>
+<div class="h-px bg-gray-200 dark:bg-gray-800 w-full my-4"></div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h3 class="font-display text-lg font-semibold text-text-light dark:text-white">Brewing Ritual</h3>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-primary">
+<span class="material-icons-round text-xl">thermostat</span>
+</div>
+<div>
+<p class="text-xs text-muted-light dark:text-muted-dark uppercase tracking-wider">Temp</p>
+<p class="font-medium text-text-light dark:text-text-dark">95°C / 203°F</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-primary">
+<span class="material-icons-round text-xl">schedule</span>
+</div>
+<div>
+<p class="text-xs text-muted-light dark:text-muted-dark uppercase tracking-wider">Time</p>
+<p class="font-medium text-text-light dark:text-text-dark">3-5 Minutes</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-primary">
+<span class="material-icons-round text-xl">local_cafe</span>
+</div>
+<div>
+<p class="text-xs text-muted-light dark:text-muted-dark uppercase tracking-wider">Amount</p>
+<p class="font-medium text-text-light dark:text-text-dark">1 Tsp / Cup</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative">
+<h3 class="font-display text-lg font-semibold text-text-light dark:text-white mb-2 text-center">Flavor Profile</h3>
+<div class="relative h-40 w-full flex items-center justify-center">
+<canvas id="flavorChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 py-12">
+<div class="max-w-7xl mx-auto px-6 text-center">
+<div class="flex items-center justify-center gap-2 mb-4">
+<span class="material-icons-round text-primary text-2xl">emoji_nature</span>
+<span class="font-display font-bold text-xl tracking-tight text-text-light dark:text-white">LUMIÈRE</span>
+</div>
+<p class="text-muted-light dark:text-muted-dark text-sm">Crafting moments of serenity, one cup at a time.</p>
+</div>
+</footer>
+<script>
+        // Setup Radar Chart for Flavor Profile
+        const ctx = document.getElementById('flavorChart').getContext('2d');
+        const isDark = document.documentElement.classList.contains('dark');
+        // Colors
+        const primaryColor = '#FF7D54';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+        const pointLabelColor = isDark ? '#A0A0A0' : '#888888';
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Floral', 'Fruity', 'Sweet', 'Spicy', 'Earthy'],
+                datasets: [{
+                    label: 'Notes',
+                    data: [90, 85, 60, 20, 30],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 125, 84, 0.2)',
+                    borderColor: primaryColor,
+                    pointBackgroundColor: primaryColor,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: primaryColor
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: gridColor
+                        },
+                        grid: {
+                            color: gridColor
+                        },
+                        pointLabels: {
+                            color: pointLabelColor,
+                            font: {
+                                size: 10,
+                                family: "'Plus Jakarta Sans', sans-serif"
+                            }
+                        },
+                        ticks: {
+                            display: false,
+                            backdropColor: 'transparent'
+                        }
+                    }
+                }
+            }
+        });
+        // Simple theme toggle listener for chart update
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === "attributes") {
+                    // Ideally re-render chart with new colors here, 
+                    // but for static display simplicity we keep initial render.
+                    // Reloading page switches chart theme correctly.
+                }
+            });
+        });
+        observer.observe(document.documentElement, {
+            attributes: true //configure it to listen to attribute changes
+        });
+    </script>
+
+</body></html>

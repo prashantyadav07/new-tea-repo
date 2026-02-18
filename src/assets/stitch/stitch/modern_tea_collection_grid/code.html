@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modern Tea Collection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF7E55", // Coral orange from the reference
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#18181B",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#27272A",
+                        "tea-matcha": "#E8F5E9",
+                        "tea-matcha-dark": "#1B2E1E",
+                        "tea-ginger": "#FFF3E0",
+                        "tea-ginger-dark": "#3E2723",
+                        "tea-earl": "#E3F2FD",
+                        "tea-earl-dark": "#0D47A1",
+                        "tea-berry": "#FCE4EC",
+                        "tea-berry-dark": "#311B92",
+                    },
+                    fontFamily: {
+                        display: ["'Plus Jakarta Sans'", "sans-serif"],
+                        sans: ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': '1.5rem',
+                        '2xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'hover': '0 20px 50px -10px rgba(0,0,0,0.12)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        .product-card:hover .add-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .product-image {
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05) translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans text-gray-800 dark:text-gray-100 transition-colors duration-300">
+<nav class="fixed top-0 w-full z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<div class="flex-shrink-0 flex items-center gap-2">
+<span class="material-icons-round text-primary text-3xl">emoji_food_beverage</span>
+<span class="font-display font-bold text-2xl tracking-tight text-gray-900 dark:text-white">ZenLeaf</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition-colors" href="#">Shop</a>
+<a class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition-colors" href="#">Subscription</a>
+<a class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition-colors" href="#">Our Story</a>
+<a class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition-colors" href="#">Blog</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 border-none focus:ring-2 focus:ring-primary text-sm w-48 transition-all focus:w-64" placeholder="Search tea..." type="text"/>
+<span class="material-icons-round absolute left-3 top-2 text-gray-400 text-sm">search</span>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">
+<span class="material-icons-round text-gray-600 dark:text-gray-300">shopping_bag</span>
+<span class="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons-round text-gray-600 dark:text-gray-300">person_outline</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h1 class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
+                    Discover Premium <span class="text-primary">Blends</span>
+</h1>
+<p class="text-gray-500 dark:text-gray-400 max-w-lg text-lg">
+                    Hand-picked tea leaves from the finest gardens around the world, delivered fresh to your doorstep.
+                </p>
+</div>
+<div class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
+<button class="px-6 py-2.5 rounded-full bg-primary text-white font-medium shadow-lg shadow-primary/30 whitespace-nowrap transition-transform hover:scale-105 active:scale-95">
+                    All Teas
+                </button>
+<button class="px-6 py-2.5 rounded-full bg-white dark:bg-card-dark text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 font-medium hover:border-primary hover:text-primary dark:hover:text-primary transition-all whitespace-nowrap shadow-sm hover:shadow-md">
+                    Green Tea
+                </button>
+<button class="px-6 py-2.5 rounded-full bg-white dark:bg-card-dark text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 font-medium hover:border-primary hover:text-primary dark:hover:text-primary transition-all whitespace-nowrap shadow-sm hover:shadow-md">
+                    Black Tea
+                </button>
+<button class="px-6 py-2.5 rounded-full bg-white dark:bg-card-dark text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 font-medium hover:border-primary hover:text-primary dark:hover:text-primary transition-all whitespace-nowrap shadow-sm hover:shadow-md">
+                    Herbal
+                </button>
+<button class="px-6 py-2.5 rounded-full bg-white dark:bg-card-dark text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 font-medium hover:border-primary hover:text-primary dark:hover:text-primary transition-all whitespace-nowrap shadow-sm hover:shadow-md">
+                    Oolong
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Premium Matcha Green Tea Powder" class="product-image h-48 w-auto object-contain drop-shadow-xl relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzO0jIP4SI8Nm1udLQbYK1nra3wnfDBXbN0uPyAy2n5KdySG96xygWdAqMU-GNw0HdvYGkAP7CRUBKjuI57qfkjMK7tGoLdWM3fNn9j9RsmvHu23yHh4OpUY_58tkfDnGRnpyuadCOjXIUKfaO3tEFdA8AgeduOz4Ncg8bgONkpSc-cVACODN5Omem43cn0yb9H29Mf_lpYj3pirID1TWTnFC5lMZKLEnE_0SJno0qeV2VNZCgmj20YPA3zpy20B-dWcXjWLr36g"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">Ceremonial Grade</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Uji Matcha</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.9</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Authentic Japanese matcha powder with a vibrant green color and rich umami flavor.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-xs text-gray-400 line-through">$32.00</span>
+<span class="text-lg font-bold text-gray-900 dark:text-white">$28.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-orange-50 to-amber-100 dark:from-orange-900/20 dark:to-amber-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Ginger Turmeric Tea Blend" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXKAoB7ezaB1DEIGHELgeFTb1JLX_7_2H6ef7lZpfFD1_2uEQUJ5LaYwL4xvVJxvMUegxnPq692iskzF7r6NdSZtzM3ka2mSmIj5JXmNlwIy9CdBAwa01DrNGxxEslrP12odQCCccr9Q0TLOWoX-zIjVDqNON97EKLKH0NltpZ2QaodBivTrVB6EPN67bVIzisf27kdPNWXtIrsJ2-8I08tCZrz_WZ1IYKk5NFNXRi-TtvWpP8ECajuG5RqPc65h2-O8gghHo8QQ"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-1">Herbal Blend</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Ginger Turmeric</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.8</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        A warming blend of spicy ginger and golden turmeric for immunity and comfort.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$18.50</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Classic Earl Grey Tea" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIcFGdspO-qsu0cTaulOzaWwibm6MnejGnwomxAata3ST0CLklVJBn7Q6Sp_Lu6pKmSoTsBx8fG2IrUASj-VBCRrzgwEcebeilj7vKdRlKptspvGi3YYC6BVn6o-Egleb8XWRz7PP3JyIcx6_8AQD3n_g2TmMXhnKugBBhMUs8A-lp7GpDA33P__66MvCFBmvzJNVA2deTCsj30rQy5cGAJ-pQeuFsBcUTz-g0gY2OO_iPIxiQ5UAbNH1NXXbOdoweXJz0e11VIw"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">Black Tea</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Royal Earl Grey</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">5.0</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Premium Ceylon black tea infused with pure bergamot oil for a citrusy aroma.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$22.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-pink-50 to-rose-100 dark:from-pink-900/20 dark:to-rose-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Wild Berry Fruit Tea" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMFYIgBqMw6gazPu7zIHv7cGeSgxfgwqKa3ICyHvLOBMcSgEsaBRLWLsSQcyRFJ7Unp_rNqpl6eOqhogT4oplx8wj097Adq0nJE2a-QSNTYihXmylbsibQPk5HlczOVJgWPkqv5tJ6rsJ_qdWKVTpEDeDoDhWVxMhprHhaFURrxxd3i_JkJW43fmeBxmXh0ctL6xGPnixAOBLK60GsNgjBN-tuJDKZi2KhVuPkhvv_qU_jJA09aFqZHhlzFUPzphd3QaE_-nI9bA"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider mb-1">Fruit Infusion</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Wild Berry Burst</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.7</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        A caffeine-free blend of hibiscus, elderberries, currants, and natural fruit essences.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$16.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-teal-50 to-emerald-100 dark:from-teal-900/20 dark:to-emerald-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Jasmine Pearl Tea" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfr1n6Fi1nPjKbWaxdLI7xhzty97Qeo9K-1E66453i5yZd2WpzH4PFp0vXYJDxM7lnD3HEvf1V-mpvzOBgSXLEeVUALMzcu6GUk2oYhmhayCNoh8KBwqN7fOuisHC5SxXvnm8fuzq45rRukmIxtJeJFrczYwhAGrVZEhJ4z-IeDiZl-g6Kkp9AxG4coyMvz4rVqHywhoDW_Ch8lLZcgiV8KC93mIJyZZingmX_ELDqHAXxnAqBYDBJNt-JWgXQvr2u5Xa7Lr6jOg"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider mb-1">Green Tea</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Jasmine Pearls</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.9</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Hand-rolled green tea leaves scented with fresh jasmine blossoms for a floral treat.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$35.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-900/20 dark:to-orange-800/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Masala Chai Tea" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAShafMSH0u6lPv5nfEbFq7-LuyEu9Jqfq9aNe7i8rG8LMmIH9kIKojnrp3pF9d94xFZBOwJJbNHA0Hpu71EmSLAiVXA0Bi3Q5NrxVZOaWO7q8ZjbF-txhf2W_-NRCofY-Nyo2Kqg1U5ohnShb3IngP0EKEF2TeaQfTZoJ6Hc3WV1O05RmL62BH-Xf_CZ3BkFD46awQIvEk_6You2S2bG9lBt2zRSM7Z8sKOebzkze2AaCft6QjUj9XfmBzHDDCIlaUMSTsb4J3Mg"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">Spiced Blend</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Bombay Chai</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.8</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Bold Assam tea blended with cinnamon, cardamom, cloves, and ginger.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$19.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-gray-50 to-slate-200 dark:from-gray-800/20 dark:to-slate-700/20 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="White Peony Tea" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjWxuWIF3HgMMJOWRbdkRUjLTVKda_Yy9Die0nJjZzM6l5qFVNtQh0p6GjxlcmV-1MrjSxVxwAf-RPHruYGSUe6N01HAAXjcGSp21mDcYpca1lvpQ3IsEo9JN-QZUPyxodaFlGcZI9brr8heERT5gwfyTyaSqnKWGp6EKkpZks1FPdxk-B79iL9ELwY7PDIquhEnXB1XIyabbeleIVdPoUN6VU1hdLIGZpcR8f5u4L0HPTyKFTJDGKK_lvyCo-kPqruRFTRX4M5w"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">White Tea</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">White Peony</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.6</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Delicate and sweet with notes of melon and cucumber. Minimal processing.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$26.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card group relative bg-white dark:bg-card-dark rounded-2xl p-4 shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
+<div class="relative h-64 w-full rounded-xl bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/10 flex items-center justify-center mb-4 overflow-hidden">
+<div class="absolute top-4 right-4 z-10">
+<button class="p-2 rounded-full bg-white/80 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-colors text-gray-400 hover:text-red-500">
+<span class="material-icons-round text-xl">favorite_border</span>
+</button>
+</div>
+<img alt="Chamomile Flowers" class="product-image h-48 w-auto object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWsSNfE_WoqU740UMib4tfhUTO16YY4oH_mdlU6AbjUyOKSX_fr-n4-eRdUHOJY57joiU3Qsn8Lb4noKXMY9seLal2btYGuDkiYGbxy0zCMRZz4z2lScunAYpNIx_pa5BbhN-xozWE2c91HGoC1XwotmziYsWLfpzHlLNgpcHyBHxMWG3XKC6yj5GW3d6bdd9CAdirGazh5a-MhD4n1FWjqvdsvNQywAdBUgJ-Sl2ToL5c_LCBYyUUM_hAP-pFVIgALeHXB9GH0Q"/>
+</div>
+<div class="px-2">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-yellow-500 dark:text-yellow-400 uppercase tracking-wider mb-1">Sleep &amp; Relax</p>
+<h3 class="font-display font-bold text-xl text-gray-900 dark:text-white leading-tight">Golden Chamomile</h3>
+</div>
+<div class="flex items-center gap-1 text-yellow-400">
+<span class="material-icons-round text-sm">star</span>
+<span class="text-sm font-semibold text-gray-600 dark:text-gray-400">4.9</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                        Whole chamomile flowers sourced from Egypt. Perfect for evening relaxation.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex flex-col">
+<span class="text-lg font-bold text-gray-900 dark:text-white">$15.00</span>
+</div>
+<button class="add-btn opacity-0 translate-y-2 transition-all duration-300 bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Add</span>
+<span class="material-icons-round text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-16">
+<button class="px-8 py-3 rounded-full bg-white dark:bg-card-dark text-gray-800 dark:text-white font-semibold border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                Load More Products
+            </button>
+</div>
+</main>
+<footer class="bg-white dark:bg-card-dark border-t border-gray-100 dark:border-gray-800 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-icons-round text-primary text-2xl">emoji_food_beverage</span>
+<span class="font-display font-bold text-xl text-gray-900 dark:text-white">ZenLeaf</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400">
+                        Bringing tranquility to your daily ritual, one cup at a time.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-4">Shop</h4>
+<ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Green Tea</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Black Tea</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Herbal</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Accessories</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Sustainability</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-4">Stay Connected</h4>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary hover:text-white transition-all" href="#">
+<span class="font-bold">Ig</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary hover:text-white transition-all" href="#">
+<span class="font-bold">Tw</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary hover:text-white transition-all" href="#">
+<span class="font-bold">Fb</span>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100 dark:border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+<p>© 2023 ZenLeaf Tea Co. All rights reserved.</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="hover:text-gray-600 dark:hover:text-gray-300" href="#">Privacy Policy</a>
+<a class="hover:text-gray-600 dark:hover:text-gray-300" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>

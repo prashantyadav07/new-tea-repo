@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Playfair Display", serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Custom Borsillah brand colors */
+  /* Custom Borsillah brand colors - Herbal Theme */
+  --color-tea-primary: #5E8C61;
+  --color-tea-dark: #1A1A1A;
+  --color-tea-warm: #F7FDF9;
+  --color-tea-cream: #E8F5EB;
+  --color-tea-gold: #C8A96E;
+  --color-tea-green: #4A7C59;
+  --color-tea-matcha: #A8C686;
+
+}
+
+@keyframes diamond-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #F7FDF9;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #5E8C61;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E8F5EB;
+  --secondary-foreground: #1A1A1A;
+  --muted: #E8F5EB;
+  --muted-foreground: #6B8E70;
+  --accent: #E8F5EB;
+  --accent-foreground: #1A1A1A;
+  --destructive: #EF4444;
+  --border: #D4E8D9;
+  --input: #D4E8D9;
+  --ring: #5E8C61;
+  --chart-1: #5E8C61;
+  --chart-2: #C8A96E;
+  --chart-3: #4A7C59;
+  --chart-4: #A8C686;
+  --chart-5: #E8F5EB;
+}
+
+.dark {
+  --background: #0A140C;
+  --foreground: #F7FDF9;
+  --card: #142118;
+  --card-foreground: #F7FDF9;
+  --popover: #142118;
+  --popover-foreground: #F7FDF9;
+  --primary: #5E8C61;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1F3324;
+  --secondary-foreground: #F7FDF9;
+  --muted: #1F3324;
+  --muted-foreground: #8FA895;
+  --accent: #1F3324;
+  --accent-foreground: #F7FDF9;
+  --destructive: #EF4444;
+  --border: #1F3324;
+  --input: #1F3324;
+  --ring: #5E8C61;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.4);
+  border-radius: 20px;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
