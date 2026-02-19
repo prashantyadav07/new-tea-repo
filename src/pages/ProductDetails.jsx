@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Star, ArrowLeft, Minus, Plus, ChevronDown, ChevronUp, Leaf, Check, X, Clock, Thermometer } from 'lucide-react';
+import { ShoppingBag, Star, ArrowLeft, Minus, Plus, ChevronDown, ChevronUp, Leaf, Check, X, Clock, Thermometer, Loader2 } from 'lucide-react';
 import { productAPI } from '@/services/productAPI';
+import { cartAPI } from '@/services/cartAPI';
+import { guestCartService } from '@/services/guestCartService';
 import { ScrollReveal } from '@/components/ScrollAnimations';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
 
 export default function ProductDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [adding, setAdding] = useState(false);
+    const [selectedVariant, setSelectedVariant] = useState(null);
     const [activeTab, setActiveTab] = useState('description');
 
     useEffect(() => {
@@ -18,20 +24,23 @@ export default function ProductDetails() {
             try {
                 const { data } = await productAPI.getById(id);
                 // Map backend data to UI structure
-                setProduct({
+                const mapped = {
                     ...data,
                     id: data._id,
                     price: data.variants?.[0]?.price || 0,
                     category: data.category?.name || 'Collection',
-                    // Defaults for fields not yet in backend
                     rating: 4.8,
-                    reviews: 128, // Mock count
-                    bgGradient: 'from-amber-50 to-orange-50', // Default light gradient
+                    reviews: 128,
+                    bgGradient: 'from-amber-50 to-orange-50',
                     badge: data.variants?.[0]?.stock < 5 ? 'Low Stock' : null,
                     brewTime: '3-5 mins',
                     brewTemp: '85-90°C',
                     origin: 'Assam, India'
-                });
+                };
+                setProduct(mapped);
+                if (data.variants?.length > 0) {
+                    setSelectedVariant(data.variants[0]);
+                }
                 window.scrollTo(0, 0);
             } catch (error) {
                 console.error("Failed to fetch product details", error);
@@ -46,24 +55,27 @@ export default function ProductDetails() {
 
     if (!product) return null;
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
+        if (!selectedVariant) {
+            toast.error('Please select a size');
+            return;
+        }
         setAdding(true);
-        setTimeout(() => {
-            const existingCart = localStorage.getItem('teaCart');
-            const cart = existingCart ? JSON.parse(existingCart) : [];
-            const existingItemIndex = cart.findIndex(item => item.id === product.id);
-
-            if (existingItemIndex > -1) {
-                cart[existingItemIndex].quantity += quantity;
+        try {
+            if (isAuthenticated) {
+                await cartAPI.addToCart(product.id, selectedVariant.size, quantity);
             } else {
-                cart.push({ ...product, quantity });
+                guestCartService.addToCart(product, selectedVariant.size, quantity);
             }
-
-            localStorage.setItem('teaCart', JSON.stringify(cart));
             window.dispatchEvent(new Event('cartUpdated'));
-            setAdding(false);
+            toast.success('Added to cart!');
             navigate('/cart');
-        }, 600);
+        } catch (error) {
+            console.error('Add to cart failed', error);
+            toast.error(error.response?.data?.message || error.message || 'Failed to add to cart');
+        } finally {
+            setAdding(false);
+        }
     };
 
     return (
@@ -123,13 +135,36 @@ export default function ProductDetails() {
                                     {product.name}
                                 </h1>
 
-                                <div className="flex items-baseline gap-3 mb-8">
-                                    <span className="text-4xl font-bold text-[#385040]">₹{product.price.toFixed(2)}</span>
+                                <div className="flex items-baseline gap-3 mb-4">
+                                    <span className="text-4xl font-bold text-[#385040]">₹{(selectedVariant?.price || product.price).toFixed(2)}</span>
                                     {product.originalPrice && (
                                         <span className="text-lg text-gray-400 line-through">₹{product.originalPrice}</span>
                                     )}
                                     <span className="text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2 py-1 rounded ml-2">In Stock</span>
                                 </div>
+
+                                {/* Variant Size Selector */}
+                                {product.variants && product.variants.length > 0 && (
+                                    <div className="mb-8">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 block">Select Size</label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {product.variants.map((variant) => (
+                                                <button
+                                                    key={variant.size}
+                                                    onClick={() => setSelectedVariant(variant)}
+                                                    className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all border ${selectedVariant?.size === variant.size
+                                                        ? 'bg-[#385040] text-white border-[#385040] shadow-lg shadow-[#385040]/20'
+                                                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#385040] hover:text-[#385040]'
+                                                        } ${variant.stock === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                                    disabled={variant.stock === 0}
+                                                >
+                                                    {variant.size}
+                                                    {variant.stock === 0 && <span className="ml-1 text-[10px]">(Out)</span>}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Compact Metadata Pills */}
                                 <div className="flex flex-wrap gap-3 mb-8">
@@ -274,7 +309,7 @@ export default function ProductDetails() {
                     {/* Price Block */}
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Total</span>
-                        <span className="text-xl font-bold text-white">₹{(product.price * quantity).toFixed(2)}</span>
+                        <span className="text-xl font-bold text-white">₹{((selectedVariant?.price || product.price) * quantity).toFixed(2)}</span>
                     </div>
 
                     {/* Actions Block */}
@@ -294,9 +329,9 @@ export default function ProductDetails() {
                         <button
                             onClick={handleAddToCart}
                             disabled={adding}
-                            className="h-12 px-8 bg-[#D4F57B] hover:bg-[#c2e860] text-[#1A1A1A] rounded-full font-bold uppercase tracking-widest text-sm transition-all active:scale-95 flex items-center gap-2"
+                            className="h-12 px-8 bg-[#D4F57B] hover:bg-[#c2e860] text-[#1A1A1A] rounded-full font-bold uppercase tracking-widest text-sm transition-all active:scale-95 flex items-center gap-2 disabled:opacity-70"
                         >
-                            {adding ? '...' : (
+                            {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : (
                                 <>Add <ShoppingBag className="w-4 h-4" /></>
                             )}
                         </button>

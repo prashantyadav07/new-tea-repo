@@ -17,6 +17,7 @@ export default function Footer() {
         { label: 'Sustainability', path: '/sustainability' },
         { label: 'Blog', path: '/blog' },
         { label: 'Contact', path: '/contact' },
+        { label: 'Submit Complaint', path: '/complaint' },
     ];
 
     return (

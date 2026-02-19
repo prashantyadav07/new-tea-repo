@@ -1,15 +1,19 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/authAPI';
 import axios from 'axios';
-import { toast } from 'sonner'; // We might need axios for parsing errors or setting default headers
+import { toast } from 'sonner';
+
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(() => {
+        const stored = localStorage.getItem('user');
+        return stored ? JSON.parse(stored) : null;
+    });
+    const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem('accessToken'));
+    const [loading, setLoading] = useState(false); // No blocking load
     const [error, setError] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     // Check for existing token on mount
     useEffect(() => {
@@ -148,6 +152,10 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // ... (other imports)
+
+    // ... inside AuthProvider
+
     const value = {
         user,
         loading,
@@ -159,9 +167,11 @@ export const AuthProvider = ({ children }) => {
         updateProfile
     };
 
+
+
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 };

@@ -7,6 +7,7 @@ import {
     ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OrderDetailsModal from './OrderDetailsModal';
 
 // Status Badge Component
 const StatusBadge = ({ status }) => {
@@ -36,6 +37,7 @@ export default function OrdersPage() {
         paymentStatus: ''
     });
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [viewOrder, setViewOrder] = useState(null); // For details view
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
     // Fetch Orders
@@ -73,6 +75,22 @@ export default function OrdersPage() {
         } catch (error) {
             console.error("Update failed", error);
             toast.error(error.response?.data?.message || "Failed to update status");
+        }
+    };
+
+    // Mark Payment as Received (COD)
+    const handlePaymentUpdate = async (orderId) => {
+        try {
+            const response = await adminAPI.updatePaymentStatus(orderId, 'paid');
+            if (response.success) {
+                toast.success('Payment marked as received');
+                setOrders(orders.map(o => o._id === orderId ? response.data : o));
+                setIsStatusModalOpen(false);
+                setSelectedOrder(null);
+            }
+        } catch (error) {
+            console.error("Payment update failed", error);
+            toast.error(error.response?.data?.message || "Failed to update payment");
         }
     };
 
@@ -175,10 +193,24 @@ export default function OrdersPage() {
                                             <StatusBadge status={order.orderStatus} />
                                         </td>
                                         <td className="px-6 py-4">
-                                            <StatusBadge status={order.paymentStatus} />
+                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full ${order.paymentStatus === 'paid'
+                                                ? 'bg-green-50 text-green-600 border border-green-200'
+                                                : order.paymentStatus === 'cod'
+                                                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                                                    : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
+                                                }`}>
+                                                {order.paymentStatus === 'cod' ? 'COD' : order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}
+                                            </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <div className="relative inline-block text-left">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    onClick={() => setViewOrder(order)}
+                                                    className="p-2 hover:bg-white hover:shadow-md rounded-lg transition-all text-gray-400 hover:text-[#385040]"
+                                                    title="View Details"
+                                                >
+                                                    <Eye className="w-5 h-5" />
+                                                </button>
                                                 <button
                                                     onClick={() => {
                                                         setSelectedOrder(order);
@@ -198,6 +230,17 @@ export default function OrdersPage() {
                     </table>
                 </div>
             </div>
+
+            {/* View Details Modal */}
+            <AnimatePresence>
+                {viewOrder && (
+                    <OrderDetailsModal
+                        isOpen={!!viewOrder}
+                        onClose={() => setViewOrder(null)}
+                        order={viewOrder}
+                    />
+                )}
+            </AnimatePresence>
 
             {/* Update Status Modal */}
             <AnimatePresence>
@@ -238,10 +281,24 @@ export default function OrdersPage() {
 
                             <button
                                 onClick={() => setIsStatusModalOpen(false)}
-                                className="mt-6 w-full py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition-colors"
+                                className="mt-4 w-full py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition-colors"
                             >
                                 Cancel
                             </button>
+
+                            {/* Mark Payment Received (for COD/pending orders) */}
+                            {selectedOrder.paymentStatus !== 'paid' && (
+                                <div className="mt-4 pt-4 border-t border-gray-100">
+                                    <p className="text-sm text-gray-500 mb-2">Payment: <span className="font-bold capitalize">{selectedOrder.paymentStatus}</span></p>
+                                    <button
+                                        onClick={() => handlePaymentUpdate(selectedOrder._id)}
+                                        className="w-full py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <CheckCircle className="w-4 h-4" />
+                                        Mark Payment Received
+                                    </button>
+                                </div>
+                            )}
                         </motion.div>
                     </>
                 )}

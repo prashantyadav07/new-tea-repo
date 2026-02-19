@@ -72,12 +72,14 @@ export const authAPI = {
     register: (userData) => api.post('/register', userData),
     login: (credentials) => api.post('/login', credentials),
     logout: () => api.post('/logout'),
-    getCurrentUser: () => api.get('/me'), // Assuming a /me endpoint exists or we decode token
+    getCurrentUser: () => api.get('/me'),
     updateProfile: (userData) => {
         return api.patch('/profile', userData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
     },
+    forgotPassword: (email) => api.post('/forgot-password', { email }),
+    resetPassword: ({ token, email, password }) => api.post('/reset-password', { token, email, password }),
 };
 
 export default api;

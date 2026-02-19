@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import bro from '../assets/bro.png';
 
@@ -11,6 +11,9 @@ export default function AdminSidebar() {
         { label: 'Products', path: '/admin/products', icon: ShoppingBag },
         { label: 'Categories', path: '/admin/categories', icon: FolderTree },
         { label: 'Orders', path: '/admin/orders', icon: FileText },
+        { label: 'Users', path: '/admin/users', icon: Users },
+        { label: 'Admins', path: '/admin/admins', icon: Settings },
+        { label: 'Complaints', path: '/admin/complaints', icon: FileText }, // using FileText as generic icon, ideally MessageSquare
     ];
 
     return (

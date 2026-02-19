@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, Send, ArrowRight } from 'lucide-react';
-import { ScrollReveal } from '@/components/ScrollAnimations';
+import { Mail, MapPin, Phone, Send, ArrowRight, Loader2 } from 'lucide-react'; // Added Loader2
+import { useState } from 'react'; // Added useState
+import { adminAPI } from '../services/adminAPI'; // Added adminAPI
+import { toast } from 'sonner'; // Added toast
 
 // Custom Animated Input Component
-const FloatingInput = ({ label, type = "text", placeholder, rows }) => {
+const FloatingInput = ({ label, type = "text", placeholder, rows, value, onChange, id }) => { // Added props
   return (
     <div className="relative group">
       {rows ? (
@@ -11,18 +13,24 @@ const FloatingInput = ({ label, type = "text", placeholder, rows }) => {
           rows={rows}
           className="w-full bg-transparent border-b-2 border-gray-300 py-3 pr-4 text-gray-800 placeholder-transparent focus:outline-none focus:border-[#385040] transition-colors peer resize-none font-serif"
           placeholder={placeholder}
-          id={label}
+          id={id || label}
+          value={value} // Added value
+          onChange={onChange} // Added onChange
+          required // Added required
         />
       ) : (
         <input
           type={type}
           className="w-full bg-transparent border-b-2 border-gray-300 py-3 pr-4 text-gray-800 placeholder-transparent focus:outline-none focus:border-[#385040] transition-colors peer font-serif"
           placeholder={placeholder}
-          id={label}
+          id={id || label}
+          value={value} // Added value
+          onChange={onChange} // Added onChange
+          required // Added required
         />
       )}
       <label
-        htmlFor={label}
+        htmlFor={id || label}
         className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-[#385040] peer-focus:text-xs font-semibold uppercase tracking-wider"
       >
         {label}
@@ -33,6 +41,40 @@ const FloatingInput = ({ label, type = "text", placeholder, rows }) => {
 };
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await adminAPI.submitComplaint({
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message
+      });
+      toast.success('Message sent successfully! We will get back to you soon.');
+      setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
       {/* Background Texture Overlay */}
@@ -132,25 +174,46 @@ export default function Contact() {
                 <p className="text-gray-500 font-serif">We usually respond within 24 hours.</p>
               </div>
 
-              <form className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <FloatingInput label="First Name" placeholder="John" />
-                  <FloatingInput label="Last Name" placeholder="Doe" />
+                  <FloatingInput
+                    label="First Name" id="firstName" placeholder="John"
+                    value={formData.firstName} onChange={handleChange}
+                  />
+                  <FloatingInput
+                    label="Last Name" id="lastName" placeholder="Doe"
+                    value={formData.lastName} onChange={handleChange}
+                  />
                 </div>
 
-                <FloatingInput label="Email Address" type="email" placeholder="john@example.com" />
+                <FloatingInput
+                  label="Email Address" id="email" type="email" placeholder="john@example.com"
+                  value={formData.email} onChange={handleChange}
+                />
 
-                <FloatingInput label="Subject" placeholder="Wholesale Inquiry" />
+                <FloatingInput
+                  label="Subject" id="subject" placeholder="Wholesale Inquiry"
+                  value={formData.subject} onChange={handleChange}
+                />
 
-                <FloatingInput label="Message" rows={4} placeholder="Tell us about yourself..." />
+                <FloatingInput
+                  label="Message" id="message" rows={4} placeholder="Tell us about yourself..."
+                  value={formData.message} onChange={handleChange}
+                />
 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#385040] text-white py-4 rounded-none uppercase tracking-widest font-bold text-sm hover:bg-[#2c3e32] transition-colors flex items-center justify-center gap-2 mt-8 group"
+                  disabled={loading}
+                  type="submit"
+                  className="w-full bg-[#385040] text-white py-4 rounded-none uppercase tracking-widest font-bold text-sm hover:bg-[#2c3e32] transition-colors flex items-center justify-center gap-2 mt-8 group disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Send Message
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+                    <>
+                      Send Message
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>

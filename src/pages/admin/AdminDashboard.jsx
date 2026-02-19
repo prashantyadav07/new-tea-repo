@@ -77,24 +77,25 @@ export default function AdminDashboard() {
             link: '/admin/products'
         },
         {
-            title: 'Total Categories',
-            value: stats.totalCategories,
-            icon: FolderTree,
-            color: 'bg-green-500',
-            link: '/admin/categories'
-        },
-        {
-            title: 'Total Users',
-            value: stats.totalUsers,
-            icon: Users,
-            color: 'bg-purple-500'
-        },
-        {
             title: 'Total Orders',
             value: stats.totalOrders,
             icon: LayoutDashboard,
             color: 'bg-orange-500',
             link: '/admin/orders'
+        },
+        {
+            title: 'Total Users',
+            value: stats.totalUsers,
+            icon: Users,
+            color: 'bg-purple-500',
+            link: '/admin/users'
+        },
+        {
+            title: 'Open Complaints',
+            value: stats.openComplaints,
+            icon: AlertCircle,
+            color: 'bg-red-500',
+            link: '/admin/complaints'
         },
     ];
 

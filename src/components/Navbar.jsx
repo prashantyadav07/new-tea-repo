@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingBag, ShoppingCart, Search, User, Leaf, Home, Store, ScrollText, Mail, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ShoppingBag, ShoppingCart, Search, User, Leaf, Home, Store, ScrollText, Mail, LogOut, Settings, LayoutDashboard, Package, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { cartAPI } from '../services/cartAPI';
+import { guestCartService } from '../services/guestCartService';
 import bro from '../assets/bro.png'
 
 export default function Navbar() {
@@ -36,33 +38,34 @@ export default function Navbar() {
     setShowProfileMenu(false);
   };
 
-  // Update cart count when cart changes
+  // Debounced cart count from API
+  const debounceRef = useRef(null);
+  const updateCartCount = useCallback(async () => {
+    if (isAuthenticated) {
+      try {
+        const { data } = await cartAPI.getCart();
+        const items = data.data?.items || [];
+        const total = items.reduce((sum, item) => sum + item.quantity, 0);
+        setCartCount(total);
+      } catch { setCartCount(0); }
+    } else {
+      setCartCount(guestCartService.getItemCount());
+    }
+  }, [isAuthenticated]);
+
+  const debouncedUpdate = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(updateCartCount, 300);
+  }, [updateCartCount]);
+
   useEffect(() => {
-    const updateCartCount = () => {
-      const cart = localStorage.getItem('teaCart');
-      if (cart) {
-        const items = JSON.parse(cart);
-        const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-        setCartCount(totalItems);
-      } else {
-        setCartCount(0);
-      }
-    };
-
-    // Initial count
     updateCartCount();
-
-    // Listen for storage changes
-    window.addEventListener('storage', updateCartCount);
-
-    // Custom event for same-window cart updates
-    window.addEventListener('cartUpdated', updateCartCount);
-
+    window.addEventListener('cartUpdated', debouncedUpdate);
     return () => {
-      window.removeEventListener('storage', updateCartCount);
-      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('cartUpdated', debouncedUpdate);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, []);
+  }, [updateCartCount, debouncedUpdate]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -219,8 +222,11 @@ export default function Navbar() {
                         <LayoutDashboard className="w-3 h-3" /> Admin Panel
                       </Link>
                     )}
-                    <Link to="/profile" className="w-full flex items-center gap-2 px-4 py-3 text-xs font-bold text-[#385040] hover:bg-gray-50 transition-colors uppercase tracking-wider">
+                    <Link to="/profile" onClick={() => setShowProfileMenu(false)} className="w-full flex items-center gap-2 px-4 py-3 text-xs font-bold text-[#385040] hover:bg-gray-50 transition-colors uppercase tracking-wider">
                       <User className="w-3 h-3" /> Profile
+                    </Link>
+                    <Link to="/orders" onClick={() => setShowProfileMenu(false)} className="w-full flex items-center gap-2 px-4 py-3 text-xs font-bold text-[#385040] hover:bg-gray-50 transition-colors uppercase tracking-wider">
+                      <Package className="w-3 h-3" /> My Orders
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -332,6 +338,13 @@ export default function Navbar() {
                           className="w-full flex items-center justify-center gap-2 py-4 bg-[#FAF9F6] text-[#385040] border border-gray-200 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-[#F0EEE6] transition-colors"
                         >
                           <User className="w-4 h-4" /> My Profile
+                        </Link>
+                        <Link
+                          to="/orders"
+                          onClick={() => setIsOpen(false)}
+                          className="w-full flex items-center justify-center gap-2 py-4 bg-[#FAF9F6] text-[#385040] border border-gray-200 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-[#F0EEE6] transition-colors"
+                        >
+                          <Package className="w-4 h-4" /> My Orders
                         </Link>
                         <button
                           onClick={handleLogout}
