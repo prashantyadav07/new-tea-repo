@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2, CreditCard, Banknote, ShieldCheck, Leaf, MapPin, AlertCircle, Phone, Mail, User } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -8,9 +8,11 @@ import { orderAPI } from '@/services/orderAPI';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 
+
+
 const PAYMENT_METHODS = [
     { id: 'cod', label: 'Cash on Delivery', icon: Banknote, desc: 'Pay when you receive' },
-    { id: 'online', label: 'Online Payment', icon: CreditCard, desc: 'Coming soon', disabled: true },
+    { id: 'online', label: 'Pay Online (Razorpay)', icon: CreditCard, desc: 'UPI, Cards, Net Banking' },
 ];
 
 const InputField = ({ label, name, type = 'text', placeholder, value, onChange, error, colSpan = '', autoComplete }) => (
@@ -28,6 +30,23 @@ const InputField = ({ label, name, type = 'text', placeholder, value, onChange, 
         {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
 );
+
+/**
+ * Dynamically load Razorpay SDK script
+ */
+const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+        if (window.Razorpay) {
+            resolve(true);
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+    });
+};
 
 export default function Checkout() {
     const navigate = useNavigate();
@@ -139,6 +158,115 @@ export default function Checkout() {
         return Object.keys(errs).length === 0;
     };
 
+    const buildShippingAddress = useCallback(() => ({
+        fullName: address.fullName,
+        phone: address.phone,
+        address: address.street,
+        city: address.city,
+        state: address.state,
+        pincode: address.zipCode
+    }), [address]);
+
+    /**
+     * Handle Razorpay Online Payment Flow
+     */
+    const handleRazorpayPayment = async (shippingAddress) => {
+        // 1. Load Razorpay SDK
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+            toast.error('Failed to load payment gateway. Please check your internet connection.');
+            return;
+        }
+
+        // 2. Create Razorpay order on backend
+        let orderData;
+        try {
+            const response = await orderAPI.createRazorpayOrder(shippingAddress);
+            orderData = response.data?.data || response.data;
+        } catch (err) {
+            console.error('Razorpay order creation failed', err);
+            toast.error(err.response?.data?.message || 'Failed to create payment order. Please try again.');
+            return;
+        }
+
+        const { orderId, orderNumber, razorpayOrderId, amount, currency } = orderData;
+
+        // 3. Open Razorpay Checkout
+        const options = {
+            key: import.meta.env.VITE_RAZORPAY_PUBLIC_ID, // Use Public ID to avoid deployment warnings
+            amount: amount * 100, // Amount in paise
+            currency: currency || 'INR',
+            name: 'Chai Darbar',
+            description: `Order #${orderNumber}`,
+            order_id: razorpayOrderId,
+            prefill: {
+                name: address.fullName,
+                contact: address.phone,
+                email: user?.email || '',
+            },
+            theme: {
+                color: '#385040',
+            },
+            handler: async (response) => {
+                // 4. Verify payment on backend
+                try {
+                    await orderAPI.verifyRazorpayPayment({
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                        orderId: orderId,
+                    });
+
+                    // Payment verified successfully
+                    window.dispatchEvent(new Event('cartUpdated'));
+                    navigate('/order-success', {
+                        state: {
+                            orderNumber,
+                            orderId,
+                            amount,
+                            paymentId: response.razorpay_payment_id,
+                        }
+                    });
+                } catch (verifyErr) {
+                    console.error('Payment verification failed', verifyErr);
+                    navigate('/order-failure', {
+                        state: {
+                            orderNumber,
+                            orderId,
+                            reason: verifyErr.response?.data?.message || 'Payment verification failed',
+                        }
+                    });
+                }
+            },
+            modal: {
+                ondismiss: () => {
+                    toast.error('Payment cancelled. Your order is pending.');
+                    // Navigate to failure page with cancellation info
+                    navigate('/order-failure', {
+                        state: {
+                            orderNumber,
+                            orderId,
+                            reason: 'Payment was cancelled by user',
+                        }
+                    });
+                },
+            },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', (response) => {
+            console.error('Razorpay payment failed', response.error);
+            navigate('/order-failure', {
+                state: {
+                    orderNumber,
+                    orderId,
+                    reason: response.error?.description || 'Payment failed',
+                }
+            });
+        });
+        rzp.open();
+    };
+
     const handlePlaceOrder = async () => {
         if (!validate()) {
             toast.error('Please fill all required fields');
@@ -146,23 +274,19 @@ export default function Checkout() {
         }
         setPlacing(true);
         try {
-            const shippingAddress = {
-                fullName: address.fullName,
-                phone: address.phone,
-                address: address.street,
-                city: address.city,
-                state: address.state,
-                pincode: address.zipCode
-            };
+            const shippingAddress = buildShippingAddress();
 
-            if (isAuthenticated) {
-                // Authenticated user → create order from cart
+            if (isAuthenticated && paymentMethod === 'online') {
+                // === RAZORPAY ONLINE PAYMENT ===
+                await handleRazorpayPayment(shippingAddress);
+            } else if (isAuthenticated) {
+                // === COD for authenticated users ===
                 await orderAPI.createOrder(shippingAddress, paymentMethod);
                 toast.success('Order placed successfully! 🎉');
                 window.dispatchEvent(new Event('cartUpdated'));
                 navigate('/orders');
             } else {
-                // Guest user → send items + contact info directly
+                // === Guest user → COD only ===
                 const items = guestCartService.getOrderItems();
                 await orderAPI.createGuestOrder({
                     items,
@@ -343,29 +467,44 @@ export default function Checkout() {
                             </div>
 
                             <div className="grid gap-3">
-                                {PAYMENT_METHODS.map((method) => (
-                                    <button
-                                        key={method.id}
-                                        onClick={() => !method.disabled && setPaymentMethod(method.id)}
-                                        disabled={method.disabled}
-                                        className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${paymentMethod === method.id
-                                            ? 'border-[#385040] bg-[#385040]/5 shadow-sm'
-                                            : 'border-gray-200 hover:border-gray-300'
-                                            } ${method.disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
-                                    >
-                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${paymentMethod === method.id ? 'bg-[#385040] text-white' : 'bg-gray-100 text-gray-500'}`}>
-                                            <method.icon className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-sm text-[#1A1A1A]">{method.label}</p>
-                                            <p className="text-xs text-gray-400">{method.desc}</p>
-                                        </div>
-                                        <div className={`ml-auto w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === method.id ? 'border-[#385040]' : 'border-gray-300'}`}>
-                                            {paymentMethod === method.id && <div className="w-2.5 h-2.5 rounded-full bg-[#385040]" />}
-                                        </div>
-                                    </button>
-                                ))}
+                                {PAYMENT_METHODS.map((method) => {
+                                    // Guests can only use COD
+                                    const isDisabled = !isAuthenticated && method.id === 'online';
+                                    return (
+                                        <button
+                                            key={method.id}
+                                            onClick={() => !isDisabled && setPaymentMethod(method.id)}
+                                            disabled={isDisabled}
+                                            className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${paymentMethod === method.id
+                                                ? 'border-[#385040] bg-[#385040]/5 shadow-sm'
+                                                : 'border-gray-200 hover:border-gray-300'
+                                                } ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                        >
+                                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${paymentMethod === method.id ? 'bg-[#385040] text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                                <method.icon className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-sm text-[#1A1A1A]">{method.label}</p>
+                                                <p className="text-xs text-gray-400">
+                                                    {isDisabled ? 'Login required for online payment' : method.desc}
+                                                </p>
+                                            </div>
+                                            <div className={`ml-auto w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === method.id ? 'border-[#385040]' : 'border-gray-300'}`}>
+                                                {paymentMethod === method.id && <div className="w-2.5 h-2.5 rounded-full bg-[#385040]" />}
+                                            </div>
+                                        </button>
+                                    );
+                                })}
                             </div>
+
+                            {paymentMethod === 'online' && (
+                                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                                    <p className="text-xs text-blue-700">
+                                        Your payment is secured by Razorpay. We support UPI, Credit/Debit Cards, Net Banking, and Wallets.
+                                    </p>
+                                </div>
+                            )}
                         </motion.div>
                     </div>
 
@@ -418,7 +557,9 @@ export default function Checkout() {
                                 className="w-full py-4 bg-[#1A1A1A] text-white rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-[#385040] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-95 disabled:opacity-70"
                             >
                                 {placing ? (
-                                    <><Loader2 className="w-4 h-4 animate-spin" /> Placing Order...</>
+                                    <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</>
+                                ) : paymentMethod === 'online' ? (
+                                    <><CreditCard className="w-4 h-4" /> Pay ₹{total.toFixed(2)}</>
                                 ) : (
                                     <>Place Order</>
                                 )}

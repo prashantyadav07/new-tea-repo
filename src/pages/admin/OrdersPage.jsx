@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { adminAPI } from '../../services/adminAPI';
 import { toast } from 'sonner';
 import {
     Search, Filter, Eye, MoreHorizontal, CheckCircle,
     Truck, Package, XCircle, Clock, Calendar, DollarSign,
-    ChevronLeft, ChevronRight
+    ChevronLeft, ChevronRight, RefreshCw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrderDetailsModal from './OrderDetailsModal';
@@ -39,26 +39,51 @@ export default function OrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [viewOrder, setViewOrder] = useState(null); // For details view
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+    const [lastRefreshed, setLastRefreshed] = useState(new Date());
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const intervalRef = useRef(null);
 
     // Fetch Orders
-    const fetchOrders = async () => {
-        setLoading(true);
+    const fetchOrders = useCallback(async (silent = false) => {
+        if (!silent) setLoading(true);
+        setIsRefreshing(true);
         try {
             const response = await adminAPI.getAllOrders(filters);
             if (response.success) {
                 setOrders(response.data);
+                setLastRefreshed(new Date());
             }
         } catch (error) {
             console.error("Failed to fetch orders", error);
-            toast.error("Failed to fetch orders");
+            if (!silent) toast.error("Failed to fetch orders");
         } finally {
             setLoading(false);
+            setIsRefreshing(false);
         }
-    };
+    }, [filters]);
 
     useEffect(() => {
         fetchOrders();
-    }, [filters]);
+    }, [fetchOrders]);
+
+    // Auto-refresh every 30 seconds for real-time order updates
+    useEffect(() => {
+        intervalRef.current = setInterval(() => {
+            fetchOrders(true); // silent refresh
+        }, 30000);
+        return () => clearInterval(intervalRef.current);
+    }, [fetchOrders]);
+
+    // Also refresh when tab becomes visible
+    useEffect(() => {
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                fetchOrders(true);
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, [fetchOrders]);
 
     // Update Status Handler
     const handleStatusUpdate = async (newStatus) => {
@@ -100,7 +125,13 @@ export default function OrdersPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="font-display font-bold text-3xl text-[#1a1a1a]">Orders</h1>
-                    <p className="text-gray-500 mt-1">Manage and track customer orders</p>
+                    <div className="flex items-center gap-2 mt-1">
+                        <p className="text-gray-500">Manage and track customer orders</p>
+                        <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                            Auto-refreshing · Last: {lastRefreshed.toLocaleTimeString()}
+                        </span>
+                    </div>
                 </div>
 
                 <div className="flex gap-3">
@@ -129,11 +160,12 @@ export default function OrdersPage() {
                     </select>
 
                     <button
-                        onClick={fetchOrders}
-                        className="p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
-                        title="Refresh"
+                        onClick={() => fetchOrders(false)}
+                        disabled={isRefreshing}
+                        className="p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        title="Refresh Orders"
                     >
-                        <Filter className="w-5 h-5 text-gray-500" />
+                        <RefreshCw className={`w-5 h-5 text-gray-500 ${isRefreshing ? 'animate-spin' : ''}`} />
                     </button>
                 </div>
             </div>

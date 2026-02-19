@@ -10,6 +10,10 @@ export const orderAPI = {
     getOrderById: (id) => api.get(`/orders/${id}`),
     cancelOrder: (id) => api.post(`/orders/${id}/cancel`),
 
+    // ── Razorpay Payment Routes ──────────────────────────────
+    createRazorpayOrder: (shippingAddress) => api.post('/orders/razorpay/create', { shippingAddress }),
+    verifyRazorpayPayment: (data) => api.post('/orders/razorpay/verify', data),
+
     // ── Guest Routes (no auth) ───────────────────────────────
     createGuestOrder: (data) => axios.post(`${BASE_URL}/orders/guest`, data),
     trackOrders: (mobile) => axios.get(`${BASE_URL}/orders/track`, { params: { mobile } }),

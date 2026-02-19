@@ -30,6 +30,8 @@ const SubmitComplaint = lazy(() => import('../pages/SubmitComplaint'));
 const TrackComplaint = lazy(() => import('../pages/TrackComplaint'));
 const ForgotPassword = lazy(() => import('../pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('../pages/ResetPassword'));
+const OrderSuccess = lazy(() => import('../pages/OrderSuccess'));
+const OrderFailure = lazy(() => import('../pages/OrderFailure'));
 
 // Admin Components
 const AdminLayout = lazy(() => import('../layouts/AdminLayout'));
@@ -69,6 +71,8 @@ function usePrefetchAllRoutes() {
     import('../pages/TrackComplaint');
     import('../pages/ForgotPassword');
     import('../pages/ResetPassword');
+    import('../pages/OrderSuccess');
+    import('../pages/OrderFailure');
 
     // Admin Prefetch
     import('../layouts/AdminLayout');
@@ -100,6 +104,16 @@ export default function AppRoutes() {
           <Route path="courses" element={<Courses />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="order-success" element={
+            <ProtectedRoute>
+              <OrderSuccess />
+            </ProtectedRoute>
+          } />
+          <Route path="order-failure" element={
+            <ProtectedRoute>
+              <OrderFailure />
+            </ProtectedRoute>
+          } />
           <Route path="track-order" element={<TrackOrder />} />
           <Route path="orders" element={
             <ProtectedRoute>
