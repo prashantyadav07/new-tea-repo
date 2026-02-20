@@ -355,6 +355,15 @@ export default function Navbar() {
                   <div className="mt-auto pt-8 border-t border-gray-100 space-y-4">
                     {isAuthenticated ? (
                       <>
+                        {user?.role === 'admin' && (
+                          <Link
+                            to="/admin/dashboard"
+                            onClick={() => setIsOpen(false)}
+                            className="w-full flex items-center justify-center gap-2 py-4 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-amber-100 transition-colors"
+                          >
+                            <LayoutDashboard className="w-4 h-4" /> Admin Panel
+                          </Link>
+                        )}
                         <Link
                           to="/profile"
                           onClick={() => setIsOpen(false)}
