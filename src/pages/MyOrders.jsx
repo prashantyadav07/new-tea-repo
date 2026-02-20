@@ -200,13 +200,13 @@ export default function MyOrders() {
 
                                                             {/* Colored Progress Line (Desktop) */}
                                                             <div
-                                                                className={`absolute top-1/2 left-0 h-0.5 -translate-y-1/2 rounded-full hidden sm:block transition-all duration-1000 ease-out ${status.bg.replace('bg-', 'bg-').replace('50', '500')}`}
+                                                                className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 rounded-full hidden sm:block transition-all duration-1000 ease-out bg-green-600"
                                                                 style={{ width: `${(currentStepIndex / (STATUS_STEPS.length - 1)) * 100}%` }}
                                                             ></div>
 
                                                             {/* Colored Progress Line (Mobile) */}
                                                             <div
-                                                                className={`absolute top-0 left-4 w-0.5 -translate-x-1/2 rounded-full block sm:hidden transition-all duration-1000 ease-out ${status.bg.replace('bg-', 'bg-').replace('50', '500')}`}
+                                                                className="absolute top-0 left-4 w-0.5 -translate-x-1/2 rounded-full block sm:hidden transition-all duration-1000 ease-out bg-green-600"
                                                                 style={{ height: `${(currentStepIndex / (STATUS_STEPS.length - 1)) * 100}%` }}
                                                             ></div>
 

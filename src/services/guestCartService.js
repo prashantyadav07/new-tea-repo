@@ -71,6 +71,7 @@ export const guestCartService = {
         }
 
         writeCart(recalculate(cart));
+        console.log('[DEBUG] guestCartService: Added item. New cart:', cart);
         return this.getCart();
     },
 

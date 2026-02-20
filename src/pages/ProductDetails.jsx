@@ -61,6 +61,7 @@ export default function ProductDetails() {
             return;
         }
         setAdding(true);
+        console.log('[DEBUG] Starting handleAddToCart. Authenticated:', isAuthenticated);
         try {
             if (isAuthenticated) {
                 await cartAPI.addToCart(product.id, selectedVariant.size, quantity);

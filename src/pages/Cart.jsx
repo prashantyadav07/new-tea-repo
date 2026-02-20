@@ -19,10 +19,14 @@ export default function Cart() {
         try {
             setError(null);
             if (isAuthenticated) {
+                console.log('[DEBUG] Cart.jsx: Fetching API cart...');
                 const { data } = await cartAPI.getCart();
+                console.log('[DEBUG] Cart.jsx: API Cart received:', data.data);
                 setCart(data.data);
             } else {
+                console.log('[DEBUG] Cart.jsx: Fetching Guest cart...');
                 const guestCart = guestCartService.getCart();
+                console.log('[DEBUG] Cart.jsx: Guest Cart read:', guestCart);
                 setCart(guestCart);
             }
         } catch (err) {
