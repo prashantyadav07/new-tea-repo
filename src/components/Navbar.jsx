@@ -180,6 +180,15 @@ export default function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-1.5 sm:gap-5">
+          {/* Track Order (Desktop Icon) */}
+          <Link
+            to="/track-order"
+            className="w-10 h-10 rounded-full bg-white border border-gray-200 hidden sm:flex items-center justify-center hover:bg-gray-50 transition-all hover:border-tea-primary group"
+            title="Track Order"
+          >
+            <Package className="w-4 h-4 text-black group-hover:text-tea-primary transition-colors" />
+          </Link>
+
           {/* Green Icon Circle (Hidden on mobile) */}
           <div
             onClick={triggerLeafConfetti}
@@ -326,6 +335,20 @@ export default function Navbar() {
                         {link.label}
                       </NavLink>
                     ))}
+                    {/* Manual Track Order Link for Mobile */}
+                    <NavLink
+                      to="/track-order"
+                      onClick={() => setIsOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center gap-4 px-4 py-4 rounded-xl text-lg font-bold uppercase tracking-wider transition-all ${isActive
+                          ? 'bg-[#385040] text-white shadow-md'
+                          : 'text-[#1A1A1A] hover:bg-gray-50'
+                        }`
+                      }
+                    >
+                      <Package className={`w-5 h-5`} />
+                      Track Order
+                    </NavLink>
                   </div>
 
                   {/* Footer Actions */}

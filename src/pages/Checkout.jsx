@@ -74,23 +74,25 @@ export default function Checkout() {
         email: '',
     });
 
-    // Load saved address or pre-fill from user
+    // Load saved address or pre-fill from user (only for authenticated users)
     useEffect(() => {
+        if (!isAuthenticated) return; // Guest users always start with empty form
         const savedAddress = localStorage.getItem('checkoutAddress');
         if (savedAddress) {
             setAddress(JSON.parse(savedAddress));
         } else if (user?.name) {
             setAddress(prev => ({ ...prev, fullName: user.name }));
         }
-    }, [user]);
+    }, [user, isAuthenticated]);
 
-    // Save address to local storage on change
+    // Save address to local storage on change (only for authenticated users)
     useEffect(() => {
+        if (!isAuthenticated) return;
         const timeoutId = setTimeout(() => {
             localStorage.setItem('checkoutAddress', JSON.stringify(address));
         }, 500);
         return () => clearTimeout(timeoutId);
-    }, [address]);
+    }, [address, isAuthenticated]);
 
     // Fetch cart
     useEffect(() => {
@@ -123,6 +125,12 @@ export default function Checkout() {
             }
         };
         fetchCart();
+
+        const handleCartUpdate = () => {
+            fetchCart();
+        };
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        return () => window.removeEventListener('cartUpdated', handleCartUpdate);
     }, [navigate, isAuthenticated]);
 
     const handleChange = (e) => {
@@ -267,6 +275,87 @@ export default function Checkout() {
         rzp.open();
     };
 
+    /**
+     * Handle Razorpay Online Payment Flow (Guest)
+     */
+    const handleGuestRazorpayPayment = async (shippingAddress) => {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+            toast.error('Failed to load payment gateway.');
+            return;
+        }
+
+        let orderData;
+        try {
+            const items = guestCartService.getOrderItems();
+            const response = await orderAPI.createGuestRazorpayOrder({
+                items,
+                shippingAddress,
+                guestContact: {
+                    mobile: guestContact.mobile.trim(),
+                    name: guestContact.name.trim(),
+                    email: guestContact.email.trim()
+                }
+            });
+            orderData = response.data?.data || response.data;
+        } catch (err) {
+            console.error('Guest Razorpay order creation failed', err);
+            toast.error(err.response?.data?.message || 'Failed to create payment order.');
+            return;
+        }
+
+        const { orderId, orderNumber, razorpayOrderId, amount, currency } = orderData;
+
+        const options = {
+            key: import.meta.env.VITE_RAZORPAY_PUBLIC_ID,
+            amount: amount * 100,
+            currency: currency || 'INR',
+            name: 'Chai Darbar',
+            description: `Order #${orderNumber}`,
+            order_id: razorpayOrderId,
+            prefill: {
+                name: guestContact.name || 'Guest',
+                contact: guestContact.mobile,
+                email: guestContact.email || '',
+            },
+            theme: { color: '#385040' },
+            handler: async (response) => {
+                try {
+                    await orderAPI.verifyGuestRazorpayPayment({
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                        orderId: orderId,
+                    });
+
+                    guestCartService.clearCart();
+                    toast.success('Order placed successfully! 🎉');
+                    navigate('/order-success', {
+                        state: { orderNumber, orderId, amount, paymentId: response.razorpay_payment_id }
+                    });
+                } catch (verifyErr) {
+                    console.error('Payment verification failed', verifyErr);
+                    navigate('/order-failure', {
+                        state: { orderNumber, orderId, reason: verifyErr.response?.data?.message || 'Verification failed' }
+                    });
+                }
+            },
+            modal: {
+                ondismiss: () => {
+                    toast.error('Payment cancelled.');
+                },
+            },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', (response) => {
+            navigate('/order-failure', {
+                state: { orderNumber, orderId, reason: response.error?.description || 'Payment failed' }
+            });
+        });
+        rzp.open();
+    };
+
     const handlePlaceOrder = async () => {
         if (!validate()) {
             toast.error('Please fill all required fields');
@@ -277,8 +366,11 @@ export default function Checkout() {
             const shippingAddress = buildShippingAddress();
 
             if (isAuthenticated && paymentMethod === 'online') {
-                // === RAZORPAY ONLINE PAYMENT ===
+                // === RAZORPAY ONLINE PAYMENT (Authenticated) ===
                 await handleRazorpayPayment(shippingAddress);
+            } else if (!isAuthenticated && paymentMethod === 'online') {
+                // === RAZORPAY ONLINE PAYMENT (Guest) ===
+                await handleGuestRazorpayPayment(shippingAddress);
             } else if (isAuthenticated) {
                 // === COD for authenticated users ===
                 await orderAPI.createOrder(shippingAddress, paymentMethod);
@@ -355,7 +447,7 @@ export default function Checkout() {
                                         label="Mobile Number *"
                                         name="mobile"
                                         type="tel"
-                                        placeholder="9876543210"
+                                        placeholder="9999999999"
                                         value={guestContact.mobile}
                                         onChange={handleGuestChange}
                                         error={errors.mobile}
@@ -404,7 +496,7 @@ export default function Checkout() {
                                     label="Phone"
                                     name="phone"
                                     type="tel"
-                                    placeholder="9876543210"
+                                    placeholder="9999999999"
                                     value={address.phone}
                                     onChange={handleChange}
                                     error={errors.phone}

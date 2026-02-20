@@ -1,11 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Star, Heart } from 'lucide-react';
+import { ShoppingBag, Star, Heart, Loader2 } from 'lucide-react';
+import { cartAPI } from '@/services/cartAPI';
+import { guestCartService } from '@/services/guestCartService';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 
 
 export default function ProductCard({ product, index }) {
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
+    const [adding, setAdding] = useState(false);
 
     // Handle both backend data and potential legacy/dummy structure
     const id = product._id || product.id;
@@ -13,6 +20,7 @@ export default function ProductCard({ product, index }) {
     const category = product.category?.name || product.category || 'Collection';
     const price = product.variants?.[0]?.price || product.price || 0;
     const image = product.image;
+    const defaultVariantSize = product.variants?.[0]?.size;
 
     // Defaults for fields not in backend yet
     const rating = product.rating || 4.8;
@@ -21,29 +29,28 @@ export default function ProductCard({ product, index }) {
     const bgGradient = product.bgGradient || 'from-white to-[#f0fff4]';
     const categoryColor = product.categoryColor || 'text-tea-primary';
 
-    const handleAddToCart = () => {
-        const existingCart = localStorage.getItem('teaCart');
-        const cart = existingCart ? JSON.parse(existingCart) : [];
-        const existingItemIndex = cart.findIndex(item => item.id === id);
-
-        const cartItem = {
-            id,
-            name,
-            price,
-            image,
-            quantity: 1,
-            variant: product.variants?.[0]
-        };
-
-        if (existingItemIndex > -1) {
-            cart[existingItemIndex].quantity += 1;
-        } else {
-            cart.push(cartItem);
+    const handleAddToCart = async (e) => {
+        if (e) e.stopPropagation();
+        if (!defaultVariantSize) {
+            toast.error('No variant available for this product');
+            return;
         }
-
-        localStorage.setItem('teaCart', JSON.stringify(cart));
-        window.dispatchEvent(new Event('cartUpdated'));
-        navigate('/cart');
+        setAdding(true);
+        try {
+            if (isAuthenticated) {
+                await cartAPI.addToCart(id, defaultVariantSize, 1);
+            } else {
+                guestCartService.addToCart(product, defaultVariantSize, 1);
+            }
+            window.dispatchEvent(new Event('cartUpdated'));
+            toast.success('Added to cart!');
+            navigate('/cart');
+        } catch (error) {
+            console.error('Add to cart failed', error);
+            toast.error(error.response?.data?.message || error.message || 'Failed to add to cart');
+        } finally {
+            setAdding(false);
+        }
     };
 
     return (
@@ -130,11 +137,14 @@ export default function ProductCard({ product, index }) {
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handleAddToCart();
+                                handleAddToCart(e);
                             }}
-                            className="bg-[#1A1A1A] text-white px-3 py-2.5 rounded-xl text-xs font-bold shadow-lg hover:shadow-xl hover:bg-black transition-all active:scale-95 flex items-center justify-center gap-2 w-full"
+                            disabled={adding}
+                            className="bg-[#1A1A1A] text-white px-3 py-2.5 rounded-xl text-xs font-bold shadow-lg hover:shadow-xl hover:bg-black transition-all active:scale-95 flex items-center justify-center gap-2 w-full disabled:opacity-70"
                         >
-                            <span>Add</span> <ShoppingBag className="w-3.5 h-3.5" />
+                            {adding ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : (
+                                <><span>Add</span> <ShoppingBag className="w-3.5 h-3.5" /></>
+                            )}
                         </button>
                     </div>
                 </div>

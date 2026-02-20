@@ -9,7 +9,7 @@ const STORAGE_KEY = 'guestCart';
 
 const readCart = () => {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = sessionStorage.getItem(STORAGE_KEY);
         return raw ? JSON.parse(raw) : { items: [] };
     } catch {
         return { items: [] };
@@ -17,7 +17,7 @@ const readCart = () => {
 };
 
 const writeCart = (cart) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     window.dispatchEvent(new Event('cartUpdated'));
 };
 
@@ -112,7 +112,7 @@ export const guestCartService = {
      * Clear entire cart
      */
     clearCart() {
-        localStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(STORAGE_KEY);
         window.dispatchEvent(new Event('cartUpdated'));
     },
 

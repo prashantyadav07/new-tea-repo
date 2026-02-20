@@ -16,6 +16,8 @@ export const orderAPI = {
 
     // ── Guest Routes (no auth) ───────────────────────────────
     createGuestOrder: (data) => axios.post(`${BASE_URL}/orders/guest`, data),
+    createGuestRazorpayOrder: (data) => axios.post(`${BASE_URL}/orders/guest/razorpay/create`, data),
+    verifyGuestRazorpayPayment: (data) => axios.post(`${BASE_URL}/orders/guest/razorpay/verify`, data),
     trackOrders: (mobile) => axios.get(`${BASE_URL}/orders/track`, { params: { mobile } }),
 
     // ── Admin Routes ─────────────────────────────────────────

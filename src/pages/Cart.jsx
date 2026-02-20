@@ -39,6 +39,15 @@ export default function Cart() {
 
     useEffect(() => {
         fetchCart();
+
+        // Listen for cart updates (e.g. from Navbar or other components)
+        const handleCartUpdate = () => {
+            console.log('[DEBUG] Cart.jsx: cartUpdated event received, refreshing cart...');
+            fetchCart();
+        };
+
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        return () => window.removeEventListener('cartUpdated', handleCartUpdate);
     }, [isAuthenticated]);
 
     const updateQuantity = async (productId, variantSize, newQuantity) => {
