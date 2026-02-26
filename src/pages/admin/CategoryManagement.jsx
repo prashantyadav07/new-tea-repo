@@ -3,12 +3,22 @@ import { categoryAPI } from '../../services/categoryAPI';
 import { toast } from 'sonner';
 import { Plus, X, Image as ImageIcon, Loader2, Trash2, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import imageCompression from 'browser-image-compression';
+
+const COMPRESSION_OPTIONS = {
+    maxSizeMB: 0.5,
+    maxWidthOrHeight: 1200,
+    useWebWorker: true,
+    fileType: 'image/webp',
+};
 
 export default function CategoryManagement() {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isCreating, setIsCreating] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isCompressing, setIsCompressing] = useState(false);
 
     // Form State
     const [formData, setFormData] = useState({ name: '', description: '', image: null });
@@ -31,17 +41,38 @@ export default function CategoryManagement() {
         fetchCategories();
     }, []);
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if (!file) return;
+
+        // Show preview immediately from original
+        setPreview(URL.createObjectURL(file));
+
+        // Compress in the background
+        setIsCompressing(true);
+        try {
+            const originalSize = file.size;
+            const compressed = await imageCompression(file, COMPRESSION_OPTIONS);
+            setFormData({ ...formData, image: compressed });
+            toast.success(`Image compressed (${originalSize > 1024 * 1024
+                ? (originalSize / (1024 * 1024)).toFixed(1) + 'MB'
+                : (originalSize / 1024).toFixed(0) + 'KB'
+                } → ${compressed.size > 1024 * 1024
+                    ? (compressed.size / (1024 * 1024)).toFixed(1) + 'MB'
+                    : (compressed.size / 1024).toFixed(0) + 'KB'
+                })`);
+        } catch (err) {
+            console.error('Compression failed, using original:', err);
             setFormData({ ...formData, image: file });
-            setPreview(URL.createObjectURL(file));
+        } finally {
+            setIsCompressing(false);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setUploadProgress(0);
 
         const data = new FormData();
         data.append('name', formData.name);
@@ -49,17 +80,25 @@ export default function CategoryManagement() {
         if (formData.image) data.append('image', formData.image);
 
         try {
-            await categoryAPI.create(data);
+            const config = {
+                onUploadProgress: (progressEvent) => {
+                    const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setUploadProgress(percent);
+                }
+            };
+
+            await categoryAPI.create(data, config);
             toast.success("Category created successfully!");
             setIsCreating(false);
             setFormData({ name: '', description: '', image: null });
             setPreview(null);
-            fetchCategories(); // Refresh list
+            fetchCategories();
         } catch (error) {
             console.error(error);
             toast.error(error.response?.data?.message || "Failed to create category");
         } finally {
             setIsSubmitting(false);
+            setUploadProgress(0);
         }
     };
 
@@ -114,6 +153,14 @@ export default function CategoryManagement() {
                                             <span className="text-xs font-bold uppercase tracking-wider">Upload Image</span>
                                         </div>
                                     )}
+                                    {isCompressing && (
+                                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <Loader2 className="w-6 h-6 animate-spin text-[#385040]" />
+                                                <span className="text-xs font-bold text-[#385040]">Compressing...</span>
+                                            </div>
+                                        </div>
+                                    )}
                                     <input type="file" ref={fileInputRef} hidden accept="image/*" onChange={handleImageChange} required />
                                 </div>
 
@@ -140,13 +187,29 @@ export default function CategoryManagement() {
                                     />
                                 </div>
 
+                                {/* Upload Progress Bar */}
+                                {isSubmitting && uploadProgress > 0 && (
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-xs text-gray-500">
+                                            <span>Uploading...</span>
+                                            <span>{uploadProgress}%</span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                            <div
+                                                className="bg-[#385040] h-2 rounded-full transition-all duration-300 ease-out"
+                                                style={{ width: `${uploadProgress}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
                                 <button
                                     type="submit"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || isCompressing}
                                     className="w-full py-3 bg-[#385040] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#2E4235] transition-colors disabled:opacity-70"
                                 >
                                     {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                                    Create Category
+                                    {isCompressing ? 'Compressing Image...' : 'Create Category'}
                                 </button>
                             </form>
                         </motion.div>

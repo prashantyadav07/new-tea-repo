@@ -18,6 +18,7 @@ export default function ProductDetails() {
     const [adding, setAdding] = useState(false);
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [activeTab, setActiveTab] = useState('description');
+    const [currentImage, setCurrentImage] = useState(null);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -40,6 +41,13 @@ export default function ProductDetails() {
                 setProduct(mapped);
                 if (data.variants?.length > 0) {
                     setSelectedVariant(data.variants[0]);
+                }
+                if (data.images?.length > 0) {
+                    setCurrentImage(data.images[0].url);
+                } else if (data.image) {
+                    setCurrentImage(data.image);
+                } else {
+                    setCurrentImage(mapped.image);
                 }
                 window.scrollTo(0, 0);
             } catch (error) {
@@ -79,6 +87,31 @@ export default function ProductDetails() {
         }
     };
 
+    const handleExpressBuy = () => {
+        if (!selectedVariant) {
+            toast.error('Please select a size');
+            return;
+        }
+
+        // Navigate directly to checkout, passing this single item via state
+        // bypassing the actual cart database specifically for this purchase flow
+        navigate('/checkout', {
+            state: {
+                expressItems: [{
+                    product: {
+                        _id: product.id,
+                        name: product.name,
+                        image: currentImage || product.image,
+                        price: selectedVariant.price || product.price
+                    },
+                    size: selectedVariant.size,
+                    quantity: quantity,
+                    price: selectedVariant.price || product.price
+                }]
+            }
+        });
+    };
+
     return (
         <div className="min-h-screen bg-[#FAF9F6] pb-32 font-sans selection:bg-[#D4F57B] selection:text-[#385040]">
 
@@ -94,27 +127,77 @@ export default function ProductDetails() {
                     </div>
 
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        {/* Image - Floating Style */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className={`relative aspect-[4/5] lg:aspect-square w-full max-w-md mx-auto rounded-[2.5rem] overflow-hidden bg-gradient-to-br ${product.bgGradient} p-8 flex items-center justify-center`}
-                        >
-                            <motion.img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full h-full object-contain drop-shadow-2xl z-10"
-                                whileHover={{ scale: 1.05, rotate: 2 }}
-                                transition={{ type: "spring", stiffness: 100 }}
-                            />
-                            {/* Floating Badge */}
-                            <div className="absolute top-6 right-6 z-20">
-                                <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg text-[#385040] border border-white/50">
-                                    {product.badge || 'Premium'}
-                                </span>
-                            </div>
-                        </motion.div>
+                        {/* Image - Floating Style + Thumbnails */}
+                        <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6 }}
+                                className={`relative aspect-[4/5] lg:aspect-square w-full rounded-[2.5rem] overflow-hidden bg-gradient-to-br ${product.bgGradient} p-8 flex items-center justify-center group`}
+                            >
+                                <AnimatePresence mode="popLayout">
+                                    <motion.img
+                                        key={currentImage}
+                                        src={currentImage || product.image}
+                                        alt={product.name}
+                                        className="w-full h-full object-contain drop-shadow-2xl z-10"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 1.05 }}
+                                        whileHover={{ scale: 1.05, rotate: 2 }}
+                                        transition={{ type: "spring", stiffness: 100 }}
+                                    />
+                                </AnimatePresence>
+                                {/* Floating Badge */}
+                                <div className="absolute top-6 right-6 z-20">
+                                    <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg text-[#385040] border border-white/50">
+                                        {product.badge || 'Premium'}
+                                    </span>
+                                </div>
+
+                                {/* Image Navigation Arrows */}
+                                {product.images?.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={() => {
+                                                const currentIndex = product.images.findIndex(img => img.url === currentImage);
+                                                const prevIndex = currentIndex === 0 ? product.images.length - 1 : currentIndex - 1;
+                                                setCurrentImage(product.images[prevIndex].url);
+                                            }}
+                                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                const currentIndex = product.images.findIndex(img => img.url === currentImage);
+                                                const nextIndex = currentIndex === product.images.length - 1 ? 0 : currentIndex + 1;
+                                                setCurrentImage(product.images[nextIndex].url);
+                                            }}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                                        </button>
+                                    </>
+                                )}
+                            </motion.div>
+
+                            {/* Secondary Thumbnails Gallery */}
+                            {product.images?.length > 1 && (
+                                <div className="flex gap-3 justify-center overflow-x-auto pb-2 scrollbar-none">
+                                    {product.images.map((img, idx) => (
+                                        <button
+                                            key={img.publicId || idx}
+                                            onClick={() => setCurrentImage(img.url)}
+                                            className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${currentImage === img.url ? 'border-[#385040] shadow-md scale-105' : 'border-transparent opacity-70 hover:opacity-100'
+                                                } bg-white`}
+                                        >
+                                            <img src={img.url} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
                         {/* Details - Clean & Sharp */}
                         <div className="flex flex-col">
@@ -144,6 +227,11 @@ export default function ProductDetails() {
                                     <span className="text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2 py-1 rounded ml-2">In Stock</span>
                                 </div>
 
+                                {/* Product Description moved here */}
+                                <div className="prose prose-sm text-gray-600 font-serif leading-relaxed mb-8">
+                                    <p>{product.description}</p>
+                                </div>
+
                                 {/* Variant Size Selector */}
                                 {product.variants && product.variants.length > 0 && (
                                     <div className="mb-8">
@@ -167,26 +255,50 @@ export default function ProductDetails() {
                                     </div>
                                 )}
 
-                                {/* Compact Metadata Pills */}
-                                <div className="flex flex-wrap gap-3 mb-8">
-                                    <div className="px-4 py-2 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-[#385040]" />
-                                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">{product.brewTime}</span>
+                                {/* "Add to Cart" block instead of metadata pills */}
+                                <div className="mb-8">
+                                    <div className="flex gap-4 items-stretch mb-4">
+                                        {/* Quantity Selector */}
+                                        <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50/50">
+                                            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-12 h-12 flex items-center justify-center text-gray-400 hover:text-[#1A1A1A] hover:bg-gray-100/50 rounded-l-xl transition-colors">
+                                                <Minus className="w-4 h-4" />
+                                            </button>
+                                            <span className="w-10 text-center font-bold text-[#1A1A1A]">{quantity}</span>
+                                            <button onClick={() => setQuantity(quantity + 1)} className="w-12 h-12 flex items-center justify-center text-gray-400 hover:text-[#1A1A1A] hover:bg-gray-100/50 rounded-r-xl transition-colors">
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        </div>
+
+                                        {/* Add to Cart Button */}
+                                        <button
+                                            onClick={handleAddToCart}
+                                            disabled={adding || (selectedVariant && selectedVariant.stock === 0)}
+                                            className="flex-1 bg-[#4CAF50] hover:bg-[#43a047] text-white rounded-xl font-bold uppercase tracking-widest text-sm transition-all shadow-sm shadow-green-500/20 active:scale-[0.98] flex items-center justify-center disabled:opacity-70"
+                                        >
+                                            {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Add to Cart'}
+                                        </button>
                                     </div>
-                                    <div className="px-4 py-2 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-2">
-                                        <Thermometer className="w-4 h-4 text-[#385040]" />
-                                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">{product.brewTemp}</span>
-                                    </div>
-                                    <div className="px-4 py-2 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-2">
-                                        <Leaf className="w-4 h-4 text-[#385040]" />
-                                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">{product.origin || 'Assam'}</span>
-                                    </div>
+
+                                    {/* Express Buy Button */}
+                                    <button
+                                        onClick={handleExpressBuy}
+                                        disabled={selectedVariant && selectedVariant.stock === 0}
+                                        className="w-full bg-[#1A1A1A] hover:bg-black text-white rounded-xl font-bold uppercase tracking-widest text-sm py-4 transition-all shadow-xl shadow-black/10 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 mb-3"
+                                    >
+                                        Express Buy
+                                        <div className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-md ml-2">
+                                            {/* Dummy Payment Icons placeholder inline to match screenshot */}
+                                            <span className="text-[10px] text-blue-600 font-bold uppercase leading-none tracking-tighter">Pay<span className="text-cyan-500">tm</span></span>
+                                            <span className="w-3 h-3 bg-[#5e35b1] rounded-full text-[8px] flex items-center justify-center font-bold text-white uppercase italic leading-none">पे</span>
+                                            <span className="text-[11px] font-bold text-black border-l pl-1 border-gray-200">G</span>
+                                        </div>
+                                    </button>
+
+                                    {/* Subtitle text */}
+                                    <p className="text-center text-sm font-medium text-gray-800">Order <span className="text-green-600 font-bold">now</span> & it ships <span className="font-bold">today</span></p>
                                 </div>
 
-                                {/* Collapsible Description - "Read More" feel */}
-                                <div className="prose prose-sm text-gray-600 font-serif leading-relaxed mb-8">
-                                    <p>{product.description}</p>
-                                </div>
+                                {/* Removed lower description block */}
                             </motion.div>
                         </div>
                     </div>
@@ -301,42 +413,6 @@ export default function ProductDetails() {
                     <div className="mt-16 border-t border-gray-300 w-full mb-1"></div>
                     <div className="border-t border-gray-300 w-full mb-1 opacity-70"></div>
                     <div className="border-t border-gray-300 w-full opacity-40"></div>
-                </div>
-            </div>
-
-            {/* --- FLOATING BOTTOM ACTION BAR --- */}
-            <div className="fixed bottom-6 left-4 right-4 z-50">
-                <div className="max-w-xl mx-auto bg-[#1A1A1A] rounded-full p-2 pl-6 shadow-2xl flex items-center justify-between backdrop-blur-xl bg-opacity-95 border border-white/10">
-                    {/* Price Block */}
-                    <div className="flex flex-col">
-                        <span className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Total</span>
-                        <span className="text-xl font-bold text-white">₹{((selectedVariant?.price || product.price) * quantity).toFixed(2)}</span>
-                    </div>
-
-                    {/* Actions Block */}
-                    <div className="flex items-center gap-3">
-                        {/* Quantity Pill */}
-                        <div className="flex items-center bg-white/10 rounded-full h-12 px-1">
-                            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-full flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors">
-                                <Minus className="w-4 h-4" />
-                            </button>
-                            <span className="w-6 text-center font-bold text-white">{quantity}</span>
-                            <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-full flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors">
-                                <Plus className="w-4 h-4" />
-                            </button>
-                        </div>
-
-                        {/* Add Button */}
-                        <button
-                            onClick={handleAddToCart}
-                            disabled={adding}
-                            className="h-12 px-8 bg-[#D4F57B] hover:bg-[#c2e860] text-[#1A1A1A] rounded-full font-bold uppercase tracking-widest text-sm transition-all active:scale-95 flex items-center gap-2 disabled:opacity-70"
-                        >
-                            {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : (
-                                <>Add <ShoppingBag className="w-4 h-4" /></>
-                            )}
-                        </button>
-                    </div>
                 </div>
             </div>
 

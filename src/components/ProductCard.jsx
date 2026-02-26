@@ -19,7 +19,7 @@ export default function ProductCard({ product, index }) {
     const name = product.name;
     const category = product.category?.name || product.category || 'Collection';
     const price = product.variants?.[0]?.price || product.price || 0;
-    const image = product.image;
+    const image = product.images?.[0]?.url || product.image || '/fallback-image.jpg';
     const defaultVariantSize = product.variants?.[0]?.size;
 
     // Defaults for fields not in backend yet

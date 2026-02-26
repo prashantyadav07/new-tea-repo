@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2, CreditCard, Banknote, ShieldCheck, Leaf, MapPin, AlertCircle, Phone, Mail, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cartAPI } from '@/services/cartAPI';
@@ -50,6 +50,9 @@ const loadRazorpayScript = () => {
 
 export default function Checkout() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const isExpress = Boolean(location.state?.expressItems);
+
     const { user, isAuthenticated } = useAuth();
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -74,30 +77,20 @@ export default function Checkout() {
         email: '',
     });
 
-    // Load saved address or pre-fill from user (only for authenticated users)
-    useEffect(() => {
-        if (!isAuthenticated) return; // Guest users always start with empty form
-        const savedAddress = localStorage.getItem('checkoutAddress');
-        if (savedAddress) {
-            setAddress(JSON.parse(savedAddress));
-        } else if (user?.name) {
-            setAddress(prev => ({ ...prev, fullName: user.name }));
-        }
-    }, [user, isAuthenticated]);
+    // (Removed auto-load logic to ensure fields remain blank per user request)
 
-    // Save address to local storage on change (only for authenticated users)
+    // Fetch cart or load from router state for express buy
     useEffect(() => {
-        if (!isAuthenticated) return;
-        const timeoutId = setTimeout(() => {
-            localStorage.setItem('checkoutAddress', JSON.stringify(address));
-        }, 500);
-        return () => clearTimeout(timeoutId);
-    }, [address, isAuthenticated]);
-
-    // Fetch cart
-    useEffect(() => {
-        const fetchCart = async () => {
+        const loadCheckoutData = async () => {
             try {
+                if (isExpress) {
+                    const items = location.state.expressItems;
+                    const totalPrice = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+                    setCart({ items, totalPrice });
+                    setLoading(false);
+                    return;
+                }
+
                 if (isAuthenticated) {
                     const { data } = await cartAPI.getCart();
                     const cartData = data.data;
@@ -117,21 +110,24 @@ export default function Checkout() {
                     setCart(guestCart);
                 }
             } catch (err) {
-                console.error('Failed to fetch cart', err);
-                toast.error('Failed to load cart');
+                console.error('Failed to load checkout data', err);
+                toast.error('Failed to load checkout data');
                 navigate('/cart');
             } finally {
                 setLoading(false);
             }
         };
-        fetchCart();
 
-        const handleCartUpdate = () => {
-            fetchCart();
-        };
-        window.addEventListener('cartUpdated', handleCartUpdate);
-        return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-    }, [navigate, isAuthenticated]);
+        loadCheckoutData();
+
+        if (!isExpress) {
+            const handleCartUpdate = () => {
+                loadCheckoutData();
+            };
+            window.addEventListener('cartUpdated', handleCartUpdate);
+            return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+        }
+    }, [navigate, isAuthenticated, isExpress, location.state]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -287,7 +283,7 @@ export default function Checkout() {
 
         let orderData;
         try {
-            const items = guestCartService.getOrderItems();
+            const items = isExpress ? cart.items : guestCartService.getOrderItems();
             const response = await orderAPI.createGuestRazorpayOrder({
                 items,
                 shippingAddress,
@@ -328,7 +324,7 @@ export default function Checkout() {
                         orderId: orderId,
                     });
 
-                    guestCartService.clearCart();
+                    if (!isExpress) guestCartService.clearCart();
                     toast.success('Order placed successfully! 🎉');
                     navigate('/order-success', {
                         state: { orderNumber, orderId, amount, paymentId: response.razorpay_payment_id }
@@ -373,13 +369,15 @@ export default function Checkout() {
                 await handleGuestRazorpayPayment(shippingAddress);
             } else if (isAuthenticated) {
                 // === COD for authenticated users ===
-                await orderAPI.createOrder(shippingAddress, paymentMethod);
+                const orderPayload = isExpress ? cart.items.map(item => ({ product: item.product._id, quantity: item.quantity, size: item.size })) : undefined;
+
+                await orderAPI.createOrder(shippingAddress, paymentMethod, isExpress ? orderPayload : undefined);
                 toast.success('Order placed successfully! 🎉');
-                window.dispatchEvent(new Event('cartUpdated'));
+                if (!isExpress) window.dispatchEvent(new Event('cartUpdated'));
                 navigate('/orders');
             } else {
                 // === Guest user → COD only ===
-                const items = guestCartService.getOrderItems();
+                const items = isExpress ? cart.items : guestCartService.getOrderItems();
                 await orderAPI.createGuestOrder({
                     items,
                     shippingAddress,
@@ -390,7 +388,7 @@ export default function Checkout() {
                     },
                     paymentMethod
                 });
-                guestCartService.clearCart();
+                if (!isExpress) guestCartService.clearCart();
                 toast.success('Order placed successfully! 🎉 Track your order with your mobile number.');
                 navigate('/track-order');
             }
@@ -411,7 +409,7 @@ export default function Checkout() {
     }
 
     const totalPrice = cart?.totalPrice || 0;
-    const shipping = totalPrice > 500 ? 0 : 50.00;
+    const shipping = 0; // Free shipping permanently
     const total = totalPrice + shipping;
 
     return (
@@ -560,29 +558,27 @@ export default function Checkout() {
 
                             <div className="grid gap-3">
                                 {PAYMENT_METHODS.map((method) => {
-                                    // Guests can only use COD
-                                    const isDisabled = !isAuthenticated && method.id === 'online';
+                                    const isActive = paymentMethod === method.id;
                                     return (
                                         <button
                                             key={method.id}
-                                            onClick={() => !isDisabled && setPaymentMethod(method.id)}
-                                            disabled={isDisabled}
-                                            className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${paymentMethod === method.id
+                                            onClick={() => setPaymentMethod(method.id)}
+                                            className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${isActive
                                                 ? 'border-[#385040] bg-[#385040]/5 shadow-sm'
                                                 : 'border-gray-200 hover:border-gray-300'
-                                                } ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                                }`}
                                         >
-                                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${paymentMethod === method.id ? 'bg-[#385040] text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isActive ? 'bg-[#385040] text-white' : 'bg-gray-100 text-gray-500'}`}>
                                                 <method.icon className="w-5 h-5" />
                                             </div>
                                             <div>
                                                 <p className="font-bold text-sm text-[#1A1A1A]">{method.label}</p>
                                                 <p className="text-xs text-gray-400">
-                                                    {isDisabled ? 'Login required for online payment' : method.desc}
+                                                    {method.desc}
                                                 </p>
                                             </div>
-                                            <div className={`ml-auto w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === method.id ? 'border-[#385040]' : 'border-gray-300'}`}>
-                                                {paymentMethod === method.id && <div className="w-2.5 h-2.5 rounded-full bg-[#385040]" />}
+                                            <div className={`ml-auto w-5 h-5 rounded-full border-2 flex items-center justify-center ${isActive ? 'border-[#385040]' : 'border-gray-300'}`}>
+                                                {isActive && <div className="w-2.5 h-2.5 rounded-full bg-[#385040]" />}
                                             </div>
                                         </button>
                                     );
@@ -614,9 +610,9 @@ export default function Checkout() {
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="text-sm font-bold text-[#1A1A1A] truncate">{item.product?.name}</p>
-                                            <p className="text-xs text-gray-400">{item.variantSize} × {item.quantity}</p>
+                                            <p className="text-xs text-gray-400">{item.variantSize || item.size} × {item.quantity}</p>
                                         </div>
-                                        <span className="text-sm font-bold text-[#1A1A1A] shrink-0">₹{item.itemTotal?.toFixed(2)}</span>
+                                        <span className="text-sm font-bold text-[#1A1A1A] shrink-0">₹{(item.itemTotal || (item.price * item.quantity)).toFixed(2)}</span>
                                     </div>
                                 ))}
                             </div>

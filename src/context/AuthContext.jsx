@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/authAPI';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { guestCartService } from '../services/guestCartService';
 
 
 const AuthContext = createContext(null);
@@ -127,6 +128,7 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
             setIsAuthenticated(false);
             setLoading(false);
+            guestCartService.clearCart();
             // window.location.href = '/login'; // Optional: force redirect or let UI handle it
         }
     };
