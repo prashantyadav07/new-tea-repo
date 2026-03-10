@@ -129,15 +129,26 @@ export default function Checkout() {
         }
     }, [navigate, isAuthenticated, isExpress, location.state]);
 
+    // Sanitize phone/mobile: strip spaces, dashes, +91 prefix, leading 0
+    const sanitizePhone = (val) => {
+        let cleaned = val.replace(/[\s\-().]/g, '');
+        if (cleaned.startsWith('+91')) cleaned = cleaned.slice(3);
+        if (cleaned.startsWith('91') && cleaned.length > 10) cleaned = cleaned.slice(2);
+        if (cleaned.startsWith('0')) cleaned = cleaned.slice(1);
+        return cleaned;
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setAddress(prev => ({ ...prev, [name]: value }));
+        const finalValue = name === 'phone' ? sanitizePhone(value) : value;
+        setAddress(prev => ({ ...prev, [name]: finalValue }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
     const handleGuestChange = (e) => {
         const { name, value } = e.target;
-        setGuestContact(prev => ({ ...prev, [name]: value }));
+        const finalValue = name === 'mobile' ? sanitizePhone(value) : value;
+        setGuestContact(prev => ({ ...prev, [name]: finalValue }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
