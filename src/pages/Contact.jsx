@@ -154,8 +154,15 @@ export default function Contact() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg mb-1">Visit Our Gardens</h3>
-                  <p className="text-white/70 text-sm font-light">123 Tea Garden Lane, Darjeeling<br />West Bengal, India 734101</p>
+                  <h3 className="font-bold text-lg mb-1">Head Office</h3>
+                  <div className="space-y-1">
+                    <p className="text-white text-sm font-semibold italic">Building 0, Floor 0</p>
+                    <p className="text-white/70 text-sm font-light leading-relaxed">
+                      Balaji Mandir Road, Bhartiya Colony<br />
+                      Near Naveen Mandi Sthal<br />
+                      Muzaffarnagar, Uttar Pradesh - 251001
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </div>
