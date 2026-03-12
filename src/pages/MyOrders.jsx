@@ -250,7 +250,7 @@ export default function MyOrders() {
                                                             {order.items?.map((item, idx) => (
                                                                 <div key={idx} className="flex gap-4 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-[#385040]/30 transition-colors">
                                                                     <div className="w-20 h-20 bg-[#F5F5F0] rounded-lg overflow-hidden border border-gray-100 shrink-0">
-                                                                        <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                                        <img src={item.productImage || item.product?.images?.[0]?.url || ''} alt={item.productName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                                     </div>
                                                                     <div className="flex-1 min-w-0 flex flex-col justify-center">
                                                                         <h5 className="font-display font-bold text-[#1A1A1A] truncate text-base">{item.productName}</h5>

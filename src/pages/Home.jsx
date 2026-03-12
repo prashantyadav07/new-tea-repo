@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ShieldCheck, Truck, Leaf, Star, Wind, Flame, Bean, Flower2, Utensils, Trees, Mountain } from 'lucide-react';
+import { ShieldCheck, Truck, Leaf, Star, Wind, Flame, Bean, Flower2, Utensils, Trees, Mountain, Smile, ShieldPlus, Heart, Activity, Ribbon, SmilePlus, Zap, Sparkles, Bone } from 'lucide-react';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import TeaCarousel from '@/components/TeaCarousel';
+import HomeChoose from '@/components/HomeChoose';
 import ProductCard from '@/components/ProductCard';
 import brand from '@/assets/brandwo.png';
 import bro from '../assets/bro.png';
+import circleImage from '@/assets/circleimage.png';
 import { productAPI } from '@/services/productAPI';
 
 export default function Home() {
@@ -74,12 +76,15 @@ export default function Home() {
 
   // Ingredients Data
   const ingredients = [
-    { name: "Cinnamon", origin: "Sri Lanka", icon: Utensils, angle: 0 },
-    { name: "Cloves", origin: "Madagascar", icon: Flower2, angle: 60 },
-    { name: "Star Anise", origin: "Vietnam", icon: Star, angle: 120 },
-    { name: "Fennel Seeds", origin: "Mediterranean", icon: Wind, angle: 180 },
-    { name: "Ginger", origin: "India", icon: Flame, angle: 240 },
-    { name: "Cardamom", origin: "Guatemala", icon: Bean, angle: 300 },
+    { name: "Oral Health", origin: "Health", icon: Smile, angle: 0 },
+    { name: "Better Immune System", origin: "Immunity", icon: ShieldPlus, angle: 40 },
+    { name: "Healthy Heart", origin: "Vitality", icon: Heart, angle: 80 },
+    { name: "Healthy Digestive Tract", origin: "Digestion", icon: Activity, angle: 120 },
+    { name: "Cancer Prevention", origin: "Wellness", icon: Ribbon, angle: 160 },
+    { name: "Increases \"JOSH IN YOU\"", origin: "Energy", icon: Zap, angle: 200 },
+    { name: "Happiness Factor", origin: "Mood", icon: SmilePlus, angle: 240 },
+    { name: "Stronger Bones", origin: "Strength", icon: Bone, angle: 280 },
+    { name: "Skin & Hair Health", origin: "Beauty", icon: Sparkles, angle: 320 },
   ];
 
   const radius = 300; // Radius of the circle in pixels
@@ -356,24 +361,23 @@ export default function Home() {
       <section ref={ingredientsRef} className="bg-gradient-to-b from-white to-[#F5F5F0] py-8 sm:py-24 px-4 overflow-hidden relative border-t border-black/50 min-h-[100vh] sm:min-h-[150vh]">
         <motion.div style={{ opacity: sectionOpacity }} className="sticky top-0 h-[85vh] sm:h-screen flex flex-col justify-center items-center">
           <ScrollReveal>
-            <h2 className="font-display text-3xl sm:text-6xl font-black uppercase text-[#385040] mb-4 sm:mb-8 relative z-20 text-center">
-              Best Quality <br />
-              <span className="text-tea-primary">Ingredients</span>
+            <h2 className="font-display text-3xl sm:text-6xl font-black uppercase text-[#385040] mb-4 sm:mb-8 relative z-20 text-center -mt-8 sm:mt-0">
+              Borsillah <br />
+              <span className="text-tea-primary"> 9 miracles</span>
             </h2>
           </ScrollReveal>
 
           {/* Wrapper for Circular Layout — responsive on all screen sizes */}
-          <div className="relative w-[320px] h-[320px] sm:w-[90vw] sm:h-auto sm:max-w-[1000px] sm:aspect-square flex items-center justify-center -mt-4 sm:mt-0">
+          <div className="relative w-[320px] h-[320px] sm:w-[90vw] sm:h-auto sm:max-w-[1000px] sm:aspect-square flex items-center justify-center mt-12 sm:mt-0">
 
             {/* Central Image */}
-            <div className="absolute z-10 w-32 h-32 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border-[1px] border-black/5 shadow-2xl p-1.5 sm:p-2 bg-white">
-              <div className="w-full h-full rounded-full overflow-hidden relative">
+            <div className="absolute z-10 w-48 h-48 sm:w-96 sm:h-96 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] p-1.5 sm:p-2 -mt-16 sm:-mt-24 md:-mt-32">
+              <div className="w-full h-full relative flex items-center justify-center">
                 <img
-                  src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=600"
+                  src={circleImage}
                   alt="Tea Ingredients"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain filter drop-shadow-2xl scale-[1.10]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/30 mix-blend-overlay" />
               </div>
             </div>
 
@@ -422,7 +426,7 @@ export default function Home() {
               className="absolute w-full h-full flex md:hidden items-center justify-center pointer-events-none"
             >
               {ingredients.map((item) => {
-                const mobileRadius = 130; // Smaller radius for mobile screens
+                const mobileRadius = 155; // Increased radius for 9 items
                 const angleRad = (item.angle * Math.PI) / 180;
                 const x = mobileRadius * Math.cos(angleRad);
                 const y = mobileRadius * Math.sin(angleRad);
@@ -440,14 +444,14 @@ export default function Home() {
                   >
                     <motion.div
                       style={{ rotate: itemRotate }}
-                      className="flex flex-col items-center gap-1"
+                      className="flex flex-col items-center gap-0.5"
                     >
-                      <div className="w-10 h-10 rounded-full bg-[#385040] flex items-center justify-center text-white shadow-lg ring-2 ring-white/50">
-                        <item.icon className="w-5 h-5" />
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#385040] flex items-center justify-center text-white shadow-lg ring-2 ring-white/50">
+                        <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <div className="text-center w-24">
-                        <span className="font-bold font-sans text-[9px] uppercase tracking-wider block text-[#385040] bg-white/60 backdrop-blur-md px-2 py-0.5 rounded-full shadow-sm border border-black/5 mx-auto w-fit">{item.name}</span>
-                        <span className="text-[8px] text-muted-foreground uppercase tracking-wider block mt-0.5 font-medium">{item.origin}</span>
+                      <div className="text-center w-20 sm:w-24 mt-0.5">
+                        <span className="font-bold font-sans text-[7px] sm:text-[9px] uppercase tracking-wider block text-[#385040] bg-white/80 backdrop-blur-md px-1.5 py-0.5 rounded-full shadow-sm border border-black/5 mx-auto w-fit leading-tight">{item.name}</span>
+                        <span className="text-[6px] sm:text-[8px] text-muted-foreground uppercase tracking-wider block mt-[1px] font-medium">{item.origin}</span>
                       </div>
                     </motion.div>
                   </motion.div>
@@ -483,6 +487,9 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* WHY CHOOSE US SECTION */}
+      <HomeChoose />
     </div>
   );
 }

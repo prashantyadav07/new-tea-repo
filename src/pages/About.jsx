@@ -90,9 +90,9 @@ export default function About() {
         {/* Intro Story */}
         <div className="text-center max-w-4xl mx-auto mb-20">
           <ScrollReveal>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-6">Our Story — <span className="italic font-serif text-[#385040]">Born from Legacy, Brewed with Emotion</span></h2>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-6">Our Story — <span className="italic font-serif text-[#385040]">From One Man’s Dream to Your Cup</span></h2>
             <p className="text-gray-600 text-lg leading-relaxed font-serif">
-              This is not just tea. This is 50 years of legacy, love, and unwavering belief — a legacy built by my father, bold Mr. Pawan Kumar Aggarwal, which I am proud to carry forward as his daughter.
+              More than 50 years ago, in a small village, a young man began a simple journey with a powerful belief — that a truly good cup of tea has the power to bring people together.
             </p>
           </ScrollReveal>
         </div>
@@ -103,12 +103,12 @@ export default function About() {
           <div className="order-2 md:order-1 md:pr-16 md:text-right">
             <ScrollReveal>
               <span className="text-[#385040] font-bold text-xs uppercase tracking-widest mb-2 block">Chapter I</span>
-              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a] mb-6">A Journey on <br /><span className="italic font-serif text-[#385040]">Two Wheels</span></h2>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a] mb-6">A Journey with <br /><span className="italic font-serif text-[#385040]">Passion</span></h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6 font-serif">
-                His journey began with nothing but courage and determination. He left his village, Sonjani, and came to Muzaffarnagar in search of work. With no resources, no guarantees — only hope — he started selling tea on a bicycle. One connection at a time. One cup at a time.
+                With nothing but passion and an uncompromising commitment to quality, he left his village and moved to the city. There, he began trading tea — not as just another commodity, but as something far more meaningful. For him, tea was never just a drink.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed font-serif">
-                Even today, after decades, he remains deeply connected to his work. Tea was never just a business for him — it was a relationship. He knew his vendors personally. He understood tea beyond buying and selling. He understood its soul.
+                It was an experience, an aroma that fills homes, a moment of pause in a busy day, a reason for people to sit together and talk.
               </p>
             </ScrollReveal>
           </div>
@@ -137,10 +137,10 @@ export default function About() {
 
           <div className="relative z-10 text-center px-6 md:px-20 py-16">
             <blockquote className="font-display text-3xl sm:text-5xl font-medium text-white leading-tight mb-8">
-              "Chaiwalo ka ghar kahan hai?"
+              "For him, tea was never just a drink."
             </blockquote>
             <p className="text-white/70 text-lg sm:text-xl font-light font-serif max-w-3xl mx-auto">
-              In our neighborhood, people didn’t ask for our address. They simply asked, “Chaiwalo ka ghar kahan hai?” — and everyone knew. Our identity was built on tea. Our home was known because of tea. And we carried that identity with pride.
+              Over the decades, he built relationships with tea growers, carefully selecting teas that met his one simple standard — if it wasn’t good enough for his own cup, it wasn’t good enough for anyone else’s.
             </p>
           </div>
         </ScrollReveal>
@@ -164,15 +164,15 @@ export default function About() {
           <div className="order-2 md:pl-12">
             <ScrollReveal delay={0.2}>
               <span className="text-[#385040] font-bold text-xs uppercase tracking-widest mb-2 block">Chapter II</span>
-              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a] mb-6">The Soul of <br /><span className="italic font-serif text-[#385040]">The Leaf</span></h2>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a] mb-6">The Next <br /><span className="italic font-serif text-[#385040]">Generation</span></h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6 font-serif">
-                My childhood memories are filled with the aroma of tea. Our home was always surrounded by samples from different tea gardens. We never bought tea packets — tea lived with us. I watched my father taste countless varieties, carefully observing every detail.
+                Shopkeepers trusted him. Families trusted him. And slowly, cup by cup, his tea found its way into countless homes. But one man can only travel so far. There are still countless homes where his tea hasn’t yet reached.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed font-serif mb-6">
-                He would often say that the true character of tea reveals itself when made under the open sky, in real conditions, with precise measurements — because tea is not just tasted, it is understood.
+                Countless mornings that haven’t yet begun with that same rich aroma he has spent decades perfecting. That is where we come in.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed font-serif">
-                We grew up with one word at the center of our lives — Chai.
+                As the next generation of this legacy, we grew up watching this dedication firsthand — the early mornings, the careful selection, the belief that quality should never be compromised.
               </p>
             </ScrollReveal>
           </div>
@@ -185,10 +185,10 @@ export default function About() {
               <span className="text-[#385040] font-bold text-xs uppercase tracking-widest mb-2 block">Chapter III</span>
               <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a] mb-6">Trust in <br /><span className="italic font-serif text-[#385040]">Every Cup</span></h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6 font-serif">
-                I saw how tea built trust. How people would come once, and then never go anywhere else. They would say, “Aggarwal ji, we will only drink your tea.” Not because he sold tea, but because he served honesty in every cup.
+                Today, we are taking that same tea, the same standards, and the same passion beyond the physical markets — bringing it directly to homes across the country through our online platform.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed font-serif">
-                Through tea, he built lifelong relationships — from small chai stalls to large corporates. His belief was simple and powerful: “Is chai ki baat hi alag hai.”
+                Our goal is simple. To make sure that no matter where you are, you can experience the same tea that families have trusted for over five decades.
               </p>
             </ScrollReveal>
           </div>
@@ -213,18 +213,17 @@ export default function About() {
         <div className="py-20 text-center max-w-4xl mx-auto">
           <ScrollReveal>
             <div className="w-20 h-1 bg-[#385040] mx-auto mb-10" />
-            <h2 className="font-display text-4xl sm:text-6xl font-bold text-[#1a1a1a] mb-8">A Daughter's <span className="text-[#385040] italic font-serif">Promise</span></h2>
+            <h2 className="font-display text-4xl sm:text-6xl font-bold text-[#1a1a1a] mb-8">Our <span className="text-[#385040] italic font-serif">Promise</span></h2>
             <p className="text-xl sm:text-2xl text-gray-600 leading-relaxed font-serif mb-12">
-              Watching his passion, his dedication, and his love for tea, I always carried one dream in my heart — to take his legacy forward and share it with the world.
+              And we say this with complete confidence:
               <br /><br />
-              That dream has taken shape today as Do Ghoont and TEAVA — where every sip carries peace, warmth, and emotion.
+              Taste it once. Just once. The richness, the aroma, the freshness — it speaks for itself.
             </p>
             <p className="text-lg text-gray-600 leading-relaxed font-serif mb-12">
-              Our promise is simple — tea that travels straight from the gardens to your cup, preserving its true essence — so that every sip feels like your first morning in the tea gardens of Assam.
+              And from that day on, your mornings may never begin the same way again. Because a great day often starts with a truly great cup of tea.
             </p>
             <div className="space-y-4">
-              <p className="italic text-[#385040] text-lg font-serif">For me, this is not a business.</p>
-              <p className="font-bold text-xl text-[#1a1a1a]">This is my identity. This is my inheritance. This is my emotion.</p>
+              <p className="font-bold text-xl text-[#1a1a1a]">And we’re proud to bring that cup to you.</p>
             </div>
           </ScrollReveal>
 
@@ -250,10 +249,10 @@ export default function About() {
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')]" />
 
         <ScrollReveal className="relative z-10">
-          <p className="text-white/60 font-serif italic text-xl mb-6">With love and gratitude,</p>
-          <h3 className="font-display text-3xl sm:text-5xl text-white font-bold mb-8">The Chaiwala's Daughter</h3>
+          <p className="text-white/60 font-serif italic text-xl mb-6">With gratitude,</p>
+          <h3 className="font-display text-3xl sm:text-5xl text-white font-bold mb-8">The Next Generation</h3>
           <img src={brand} alt="Borsillah Logo" className="h-16 mx-auto opacity-80 brightness-0 invert" />
-          <p className="text-white/40 text-sm mt-8 uppercase tracking-widest">I am, and always will be, proud to be a chaiwala’s daughter.</p>
+          <p className="text-white/40 text-sm mt-8 uppercase tracking-widest">Carrying the legacy forward.</p>
         </ScrollReveal>
       </section>
 

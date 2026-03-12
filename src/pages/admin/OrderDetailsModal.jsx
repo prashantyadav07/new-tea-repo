@@ -67,8 +67,8 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                         <h2 className="text-lg font-bold text-[#1A1A1A] flex items-center gap-2">
                             Order #{order.orderNumber}
                             <span className={`px-2.5 py-0.5 text-xs rounded-full border ${order.orderStatus === 'delivered' ? 'bg-green-50 text-green-700 border-green-200' :
-                                    order.orderStatus === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
-                                        'bg-blue-50 text-blue-700 border-blue-200'
+                                order.orderStatus === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
+                                    'bg-blue-50 text-blue-700 border-blue-200'
                                 }`}>
                                 {order.orderStatus.toUpperCase()}
                             </span>
@@ -109,7 +109,7 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                                     <td className="px-4 py-3">
                                                         <div className="flex items-center gap-3">
                                                             <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 overflow-hidden shrink-0">
-                                                                <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" />
+                                                                <img src={item.productImage || item.product?.images?.[0]?.url || ''} alt={item.productName} className="w-full h-full object-cover" />
                                                             </div>
                                                             <span className="font-medium text-[#1A1A1A] line-clamp-1">{item.productName}</span>
                                                         </div>
@@ -169,8 +169,8 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm text-gray-500">Status</span>
                                             <span className={`px-2 py-0.5 text-xs rounded font-bold uppercase ${order.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
-                                                    order.paymentStatus === 'cod' ? 'bg-blue-100 text-blue-700' :
-                                                        'bg-yellow-100 text-yellow-700'
+                                                order.paymentStatus === 'cod' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-yellow-100 text-yellow-700'
                                                 }`}>
                                                 {order.paymentStatus === 'cod' ? 'Pending (COD)' : order.paymentStatus}
                                             </span>
@@ -237,7 +237,7 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                                             #{histOrder.orderNumber?.split('-')[2] || histOrder._id.slice(-6)}
                                                         </span>
                                                         <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase ${histOrder.orderStatus === 'delivered' ? 'bg-green-100 text-green-700' :
-                                                                histOrder.orderStatus === 'cancelled' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
+                                                            histOrder.orderStatus === 'cancelled' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
                                                             }`}>
                                                             {histOrder.orderStatus}
                                                         </span>

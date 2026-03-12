@@ -5,10 +5,10 @@ import bro from '../assets/bro.png'
 
 export default function Footer() {
     const shopLinks = [
-        { label: 'Green Tea', path: '/shop' },
+        // { label: 'Green Tea', path: '/shop' },
         { label: 'Black Tea', path: '/shop' },
-        { label: 'Herbal Blends', path: '/shop' },
-        { label: 'Accessories', path: '/shop' },
+        // { label: 'Herbal Blends', path: '/shop' },
+        // { label: 'Accessories', path: '/shop' },
         { label: 'Shipping Policy', path: '/shipping-policy' },
     ];
 

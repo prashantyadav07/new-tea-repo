@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
+import blogimage from '@/assets/blogbg.png'
+import one from '@/assets/circleimage.png'
 
 const blogPosts = [
     {
@@ -11,7 +13,7 @@ const blogPosts = [
         category: 'Brewing Guides',
         author: 'Jatin Aggarwal',
         date: 'Feb 12, 2026',
-        image: 'https://images.unsplash.com/photo-1544411047-c491584222f0?auto=format&fit=crop&q=80&w=800',
+        image: one,
     },
     {
         id: 2,
@@ -49,21 +51,23 @@ export default function Blog() {
         offset: ['start start', 'end end'],
     });
 
-    const heroImageY = useTransform(scrollYProgress, [0, 0.4], ['0%', '30%']);
+    const heroImageY = useTransform(scrollYProgress, [0, 0.4], ['0', '0']);
     const heroTextY = useTransform(scrollYProgress, [0, 0.4], ['0%', '50%']);
 
     return (
         <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
             {/* HERO SECTION */}
             <section className="relative h-[60vh] min-h-[450px] flex items-center justify-center overflow-hidden">
-                <motion.div style={{ y: heroImageY }} className="absolute inset-0 z-0">
-                    <img
-                        src="https://images.unsplash.com/photo-1492707892479-7bc2d5a827ec?auto=format&fit=crop&q=80&w=1920"
-                        alt="Tea and Writing"
-                        className="w-full h-full object-cover brightness-[0.6] scale-105"
-                    />
+                <div className="absolute inset-0 z-0">
+                    <div className="w-full h-full pt-28 sm:pt-36 pb-8 px-4">
+                        <img
+                            src={blogimage}
+                            alt="Tea and Writing"
+                            className="w-full h-full object-contain scale-[1.10]"
+                        />
+                    </div>
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#FAF9F6]" />
-                </motion.div>
+                </div>
 
                 <motion.div style={{ y: heroTextY }} className="relative z-10 text-center px-4 max-w-4xl mx-auto">
                     <motion.h1
