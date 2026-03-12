@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Leaf, Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import bro from '../assets/bro.png'
+import chailogo from '../assets/chailogo.png'
 
 export default function Footer() {
     const shopLinks = [
@@ -59,8 +59,8 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="col-span-2 lg:col-span-1">
                         <Link to="/" className="flex items-center gap-2 mb-6">
-                            <div className="w-16 h-16  rounded-xl flex items-center justify-center">
-                                <img src={bro} alt="" />
+                            <div className="w-24 h-24  rounded-xl flex items-center justify-center">
+                                <img src={chailogo} alt="" />
                             </div>
                             <span className="font-display font-bold text-2xl tracking-tight">
                                 <span className="text-white">Borsillah</span>

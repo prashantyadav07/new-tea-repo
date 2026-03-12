@@ -4,7 +4,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import bro from '../assets/bro.png';
+import chailogo from '../assets/chailogo.png';
 
 const navItems = [
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -24,7 +24,7 @@ function SidebarContent({ onNavClick }) {
             {/* Logo Area */}
             <div className="h-20 flex items-center px-8 border-b border-gray-100 shrink-0">
                 <div className="flex items-center gap-2">
-                    <img src={bro} alt="Logo" className="w-8 h-8 object-contain" />
+                    <img src={chailogo} alt="Logo" className="w-12 h-12 object-contain" />
                     <span className="font-display font-bold text-xl text-[#1a1a1a]">Admin</span>
                 </div>
             </div>
@@ -93,7 +93,7 @@ export default function AdminSidebar() {
                         <Menu className="w-6 h-6 text-[#1a1a1a]" />
                     </button>
                     <div className="flex items-center gap-2">
-                        <img src={bro} alt="Logo" className="w-7 h-7 object-contain" />
+                        <img src={chailogo} alt="Logo" className="w-10 h-10 object-contain" />
                         <span className="font-display font-bold text-lg text-[#1a1a1a]">Admin</span>
                     </div>
                 </div>

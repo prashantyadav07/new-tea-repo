@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { cartAPI } from '../services/cartAPI';
 import { guestCartService } from '../services/guestCartService';
-import bro from '../assets/bro.png'
+import chailogo from '../assets/chailogo.png'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -170,8 +170,8 @@ export default function Navbar() {
 
         {/* Center: Logo */}
         <Link to="/" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 sm:gap-2 group">
-          <div className="w-10 h-8 sm:w-20 sm:h-16 flex items-center justify-center">
-            <img src={bro} alt="" className="w-full h-full object-contain" />
+          <div className="w-16 h-12 sm:w-28 sm:h-24 flex items-center justify-center">
+            <img src={chailogo} alt="" className="w-full h-full object-contain" />
           </div>
           <span className="font-sans font-black text-sm sm:text-xl tracking-tighter text-black uppercase">
             Borsillah
@@ -292,8 +292,8 @@ export default function Navbar() {
                   <div className="flex items-center justify-between mb-8">
                     {/* Brand Logo */}
                     <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
-                      <div className="w-10 h-8 flex items-center justify-center">
-                        <img src={bro} alt="" className="w-full h-full object-contain" />
+                      <div className="w-16 h-12 flex items-center justify-center">
+                        <img src={chailogo} alt="" className="w-full h-full object-contain" />
                       </div>
                       <span className="font-sans font-black text-lg tracking-tighter text-black uppercase">
                         Borsillah

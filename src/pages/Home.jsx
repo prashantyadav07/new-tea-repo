@@ -7,7 +7,7 @@ import TeaCarousel from '@/components/TeaCarousel';
 import HomeChoose from '@/components/HomeChoose';
 import ProductCard from '@/components/ProductCard';
 import brand from '@/assets/brandwo.png';
-import bro from '../assets/bro.png';
+import chailogo from '../assets/chailogo.png';
 import circleImage from '@/assets/circleimage.png';
 import { productAPI } from '@/services/productAPI';
 
@@ -100,7 +100,7 @@ export default function Home() {
 
         <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto flex flex-col items-center justify-center px-4 overflow-hidden">
           <div className='h-16 -mt-40  md:hidden'>
-            <img className='h-18 mt-10 ' src={bro} alt="" />
+            <img className='h-28 mt-10 ' src={chailogo} alt="" />
           </div>
           {/* Main Typography */}
           <div className="flex flex-col mt-20 items-center text-center -mt-16 sm:-mt-20 px-2 w-full">
