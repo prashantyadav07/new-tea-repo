@@ -59,7 +59,7 @@ export const guestCartService = {
                 product: {
                     _id: product._id,
                     name: product.name,
-                    image: product.image,
+                    image: product.images?.[0]?.url || product.image,
                     slug: product.slug,
                     variants: product.variants
                 },
