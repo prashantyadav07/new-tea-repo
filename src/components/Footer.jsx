@@ -63,7 +63,7 @@ export default function Footer() {
                                 <img src={chailogo} alt="" />
                             </div>
                             <span className="font-display font-bold text-2xl tracking-tight">
-                                <span className="text-white">Borsillah</span>
+                                <span className="text-white">Chai Adda</span>
                             </span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -129,7 +129,7 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                    <p>&copy; {new Date().getFullYear()} Borsillah. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Chai Adda. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
                         <Link to="/privacy-policy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
                         <Link to="/terms-of-service" className="hover:text-gray-300 transition-colors">Terms of Service</Link>
