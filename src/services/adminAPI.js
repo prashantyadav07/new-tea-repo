@@ -125,6 +125,10 @@ export const adminAPI = {
         const response = await api.patch(`/admin/orders/${orderId}/payment`, { paymentStatus });
         return response.data;
     },
+    deleteOrder: async (id) => {
+        const response = await api.delete(`/admin/orders/${id}`);
+        return response.data;
+    },
 
     // ── Complaint Management ─────────────────────────────────
     submitComplaint: async (data) => {

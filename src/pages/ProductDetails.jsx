@@ -8,6 +8,7 @@ import { guestCartService } from '@/services/guestCartService';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import brand from '@/assets/brand.png';
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -358,7 +359,7 @@ export default function ProductDetails() {
                         <div className="flex flex-col items-center text-center p-4">
                             <div className="w-48 h-48 md:w-64 md:h-64 mb-6 rounded-full overflow-hidden bg-white/50 p-2">
                                 <img
-                                    src="https://images.unsplash.com/photo-1594631252845-d9b50291300f?auto=format&fit=crop&q=80&w=500"
+                                    src={brand}
                                     alt="Premium Whole Leaf Tea"
                                     className="w-full h-full object-cover rounded-full hover:scale-105 transition-transform duration-700"
                                 />

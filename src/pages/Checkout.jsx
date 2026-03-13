@@ -196,7 +196,18 @@ export default function Checkout() {
         // 2. Create Razorpay order on backend
         let orderData;
         try {
-            const response = await orderAPI.createRazorpayOrder(shippingAddress);
+            let response;
+            if (isExpress) {
+                // Express Buy → use buy-now endpoint (no cart)
+                const buyNowItems = cart.items.map(item => ({
+                    productId: item.product._id,
+                    variantSize: item.size,
+                    quantity: item.quantity
+                }));
+                response = await orderAPI.buyNowRazorpayCreate(buyNowItems, shippingAddress);
+            } else {
+                response = await orderAPI.createRazorpayOrder(shippingAddress);
+            }
             orderData = response.data?.data || response.data;
         } catch (err) {
             console.error('Razorpay order creation failed', err);
@@ -294,7 +305,9 @@ export default function Checkout() {
 
         let orderData;
         try {
-            const items = isExpress ? cart.items : guestCartService.getOrderItems();
+            const items = isExpress
+                ? cart.items.map(item => ({ productId: item.product._id, variantSize: item.size, quantity: item.quantity }))
+                : guestCartService.getOrderItems();
             const response = await orderAPI.createGuestRazorpayOrder({
                 items,
                 shippingAddress,
@@ -380,15 +393,25 @@ export default function Checkout() {
                 await handleGuestRazorpayPayment(shippingAddress);
             } else if (isAuthenticated) {
                 // === COD for authenticated users ===
-                const orderPayload = isExpress ? cart.items.map(item => ({ product: item.product._id, quantity: item.quantity, size: item.size })) : undefined;
-
-                await orderAPI.createOrder(shippingAddress, paymentMethod, isExpress ? orderPayload : undefined);
+                if (isExpress) {
+                    // Express Buy → use buy-now endpoint (no cart)
+                    const buyNowItems = cart.items.map(item => ({
+                        productId: item.product._id,
+                        variantSize: item.size,
+                        quantity: item.quantity
+                    }));
+                    await orderAPI.buyNow(buyNowItems, shippingAddress, paymentMethod);
+                } else {
+                    await orderAPI.createOrder(shippingAddress, paymentMethod);
+                    window.dispatchEvent(new Event('cartUpdated'));
+                }
                 toast.success('Order placed successfully! 🎉');
-                if (!isExpress) window.dispatchEvent(new Event('cartUpdated'));
                 navigate('/orders');
             } else {
                 // === Guest user → COD only ===
-                const items = isExpress ? cart.items : guestCartService.getOrderItems();
+                const items = isExpress
+                    ? cart.items.map(item => ({ productId: item.product._id, variantSize: item.size, quantity: item.quantity }))
+                    : guestCartService.getOrderItems();
                 await orderAPI.createGuestOrder({
                     items,
                     shippingAddress,

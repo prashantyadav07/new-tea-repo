@@ -14,6 +14,10 @@ export const orderAPI = {
     createRazorpayOrder: (shippingAddress) => api.post('/orders/razorpay/create', { shippingAddress }),
     verifyRazorpayPayment: (data) => api.post('/orders/razorpay/verify', data),
 
+    // ── Buy Now (direct purchase, no cart) ────────────────────
+    buyNow: (items, shippingAddress, paymentMethod) => api.post('/orders/buy-now', { items, shippingAddress, paymentMethod }),
+    buyNowRazorpayCreate: (items, shippingAddress) => api.post('/orders/buy-now/razorpay/create', { items, shippingAddress }),
+
     // ── Guest Routes (no auth) ───────────────────────────────
     createGuestOrder: (data) => axios.post(`${BASE_URL}/orders/guest`, data),
     createGuestRazorpayOrder: (data) => axios.post(`${BASE_URL}/orders/guest/razorpay/create`, data),

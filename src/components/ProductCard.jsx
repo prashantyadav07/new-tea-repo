@@ -58,9 +58,8 @@ export default function ProductCard({ product, index }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
-            whileHover={{ y: -8 }}
             onClick={() => navigate(`/product/${id}`)}
-            className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-transparent hover:border-tea-primary/10 overflow-hidden"
+            className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 cursor-pointer border border-transparent overflow-hidden"
         >
             {/* Image Container */}
             <div className={`relative h-64 sm:h-72 w-full bg-gradient-to-br ${bgGradient} dark:from-white/5 dark:to-white/10 flex items-center justify-center overflow-hidden`}>
@@ -77,7 +76,7 @@ export default function ProductCard({ product, index }) {
                 <div className="absolute top-4 right-4 z-20">
                     <button
                         onClick={(e) => { e.stopPropagation(); /* Add wishlist logic */ }}
-                        className="p-2.5 rounded-full bg-white/60 dark:bg-black/20 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-all text-red-500 hover:scale-110"
+                        className="p-2.5 rounded-full bg-white/60 dark:bg-black/20 backdrop-blur-sm transition-all text-red-500"
                     >
                         <Heart className="w-4 h-4" />
                     </button>
@@ -89,8 +88,6 @@ export default function ProductCard({ product, index }) {
                         src={image}
                         alt={name}
                         className="w-full h-full object-cover drop-shadow-2xl"
-                        whileHover={{ scale: 1.1, rotate: 2 }}
-                        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                     />
                 </div>
             </div>
@@ -102,7 +99,7 @@ export default function ProductCard({ product, index }) {
                         <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${categoryColor}`}>
                             {category}
                         </p>
-                        <h3 className="font-display font-bold text-sm sm:text-xl text-foreground group-hover:text-tea-primary transition-colors leading-tight">
+                        <h3 className="font-display font-bold text-sm sm:text-xl text-foreground transition-colors leading-tight">
                             {name}
                         </h3>
                     </div>
@@ -130,7 +127,7 @@ export default function ProductCard({ product, index }) {
                                 e.stopPropagation();
                                 navigate(`/product/${id}`);
                             }}
-                            className="px-3 py-2.5 rounded-xl text-xs font-bold border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors text-center w-full"
+                            className="px-3 py-2.5 rounded-xl text-xs font-bold border border-gray-200 bg-white transition-colors text-center w-full"
                         >
                             View Details
                         </button>
@@ -140,7 +137,7 @@ export default function ProductCard({ product, index }) {
                                 handleAddToCart(e);
                             }}
                             disabled={adding}
-                            className="bg-[#1A1A1A] text-white px-3 py-2.5 rounded-xl text-xs font-bold shadow-lg hover:shadow-xl hover:bg-black transition-all active:scale-95 flex items-center justify-center gap-2 w-full disabled:opacity-70"
+                            className="bg-[#1A1A1A] text-white px-3 py-2.5 rounded-xl text-xs font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 w-full disabled:opacity-70"
                         >
                             {adding ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : (
                                 <><span>Add</span> <ShoppingBag className="w-3.5 h-3.5" /></>

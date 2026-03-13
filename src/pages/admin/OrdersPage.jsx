@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import {
     Search, Filter, Eye, MoreHorizontal, CheckCircle,
     Truck, Package, XCircle, Clock, Calendar, DollarSign,
-    ChevronLeft, ChevronRight, RefreshCw
+    ChevronLeft, ChevronRight, RefreshCw, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrderDetailsModal from './OrderDetailsModal';
@@ -41,6 +41,7 @@ export default function OrdersPage() {
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [lastRefreshed, setLastRefreshed] = useState(new Date());
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState(null); // order to delete
     const intervalRef = useRef(null);
 
     // Fetch Orders
@@ -89,34 +90,54 @@ export default function OrdersPage() {
     const handleStatusUpdate = async (newStatus) => {
         if (!selectedOrder) return;
 
-        try {
-            const response = await adminAPI.updateOrderStatus(selectedOrder._id, newStatus);
-            if (response.success) {
-                toast.success(`Order status updated to ${newStatus}`);
-                setOrders(orders.map(o => o._id === selectedOrder._id ? response.data : o));
-                setIsStatusModalOpen(false);
-                setSelectedOrder(null);
-            }
-        } catch (error) {
-            console.error("Update failed", error);
-            toast.error(error.response?.data?.message || "Failed to update status");
-        }
+        toast.promise(adminAPI.updateOrderStatus(selectedOrder._id, newStatus), {
+            loading: `Updating order status to ${newStatus}...`,
+            success: (response) => {
+                if (response.success) {
+                    setOrders(orders.map(o => o._id === selectedOrder._id ? response.data : o));
+                    setIsStatusModalOpen(false);
+                    setSelectedOrder(null);
+                    return `Order status updated to ${newStatus}`;
+                }
+                throw new Error(response.message || 'Failed to update status');
+            },
+            error: (err) => err.response?.data?.message || err.message || 'Failed to update status'
+        });
     };
 
     // Mark Payment as Received (COD)
     const handlePaymentUpdate = async (orderId) => {
-        try {
-            const response = await adminAPI.updatePaymentStatus(orderId, 'paid');
-            if (response.success) {
-                toast.success('Payment marked as received');
-                setOrders(orders.map(o => o._id === orderId ? response.data : o));
-                setIsStatusModalOpen(false);
-                setSelectedOrder(null);
-            }
-        } catch (error) {
-            console.error("Payment update failed", error);
-            toast.error(error.response?.data?.message || "Failed to update payment");
-        }
+        toast.promise(adminAPI.updatePaymentStatus(orderId, 'paid'), {
+            loading: 'Marking payment as received...',
+            success: (response) => {
+                if (response.success) {
+                    setOrders(orders.map(o => o._id === orderId ? response.data : o));
+                    setIsStatusModalOpen(false);
+                    setSelectedOrder(null);
+                    return 'Payment marked as received';
+                }
+                throw new Error(response.message || 'Failed up update payment');
+            },
+            error: (err) => err.response?.data?.message || err.message || 'Failed to update payment'
+        });
+    };
+
+    // Delete Order Handler
+    const handleDeleteOrder = async () => {
+        if (!deleteConfirm) return;
+
+        toast.promise(adminAPI.deleteOrder(deleteConfirm._id), {
+            loading: `Deleting order #${deleteConfirm.orderNumber}...`,
+            success: (response) => {
+                if (response.success) {
+                    setOrders(orders.filter(o => o._id !== deleteConfirm._id));
+                    setDeleteConfirm(null);
+                    return `Order #${deleteConfirm.orderNumber} deleted`;
+                }
+                throw new Error(response.message || 'Failed to delete order');
+            },
+            error: (err) => err.response?.data?.message || err.message || 'Failed to delete order'
+        });
     };
 
     return (
@@ -253,6 +274,13 @@ export default function OrdersPage() {
                                                 >
                                                     <MoreHorizontal className="w-5 h-5" />
                                                 </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirm(order)}
+                                                    className="p-2 hover:bg-red-50 hover:shadow-md rounded-lg transition-all text-gray-400 hover:text-red-500"
+                                                    title="Delete Order"
+                                                >
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -331,6 +359,47 @@ export default function OrdersPage() {
                                     </button>
                                 </div>
                             )}
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {deleteConfirm && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50"
+                            onClick={() => setDeleteConfirm(null)}
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-2xl shadow-xl z-50 p-6 border border-gray-100"
+                        >
+                            <div className="text-center">
+                                <div className="mx-auto w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-4">
+                                    <Trash2 className="w-6 h-6 text-red-500" />
+                                </div>
+                                <h3 className="text-lg font-bold text-[#1a1a1a] mb-2">Delete Order</h3>
+                                <p className="text-gray-500 text-sm mb-6">
+                                    Are you sure you want to delete order <span className="font-mono font-bold text-[#1a1a1a]">#{deleteConfirm.orderNumber}</span>? It will be hidden from all views.
+                                </p>
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setDeleteConfirm(null)}
+                                    className="flex-1 py-3 text-gray-600 font-bold bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleDeleteOrder}
+                                    className="flex-1 py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-colors"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </motion.div>
                     </>
                 )}
