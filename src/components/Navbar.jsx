@@ -174,7 +174,7 @@ export default function Navbar() {
             <img src={chailogo} alt="" className="w-full h-full object-contain" />
           </div>
           <span className="font-sans font-black text-sm sm:text-xl tracking-tighter text-black uppercase">
-            Borsillah
+            Chai <span className="ml-1">Adda</span>
           </span>
         </Link>
 

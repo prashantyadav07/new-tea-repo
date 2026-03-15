@@ -18,11 +18,11 @@ const teaImages = [
         title: "Herbal Purity",
         desc: "100% natural ingredients for a healthy lifestyle."
     },
-    {
-        url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1200&auto=format&fit=crop&q=80",
-        title: "Premium Oolong",
-        desc: "A complex flavor profile for the true connoisseur."
-    }
+    // {
+    //     url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1200&auto=format&fit=crop&q=80",
+    //     title: "Premium Oolong",
+    //     desc: "A complex flavor profile for the true connoisseur."
+    // }
 ];
 
 export default function TeaCarousel() {

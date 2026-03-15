@@ -84,7 +84,7 @@ export default function ProductCard({ product, index }) {
 
                 {/* Product Image */}
                 <div className="block w-full h-full relative z-10">
-                    <motion.img
+                    <img
                         src={image}
                         alt={name}
                         className="w-full h-full object-cover drop-shadow-2xl"

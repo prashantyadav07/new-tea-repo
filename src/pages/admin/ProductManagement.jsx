@@ -62,42 +62,54 @@ export default function ProductManagement() {
         setIsCreating(true);
         setIsEditing(true);
         setEditId(product._id);
+        
+        // Ensure product.images is an array of objects
+        const initialExistingImages = product.images || (product.image ? [{url: product.image, publicId: null}] : []);
+
         setFormData({
             name: product.name,
             description: product.description || '',
             price: product.variants?.[0]?.price || '',
             stock: product.variants?.[0]?.stock || '',
             category: product.category?._id || product.category || '',
-            images: [],
+            images: [], // For NEW files only
+            existingImages: initialExistingImages, // Keeping track of already uploaded images
             allowMultipleImages: product.allowMultipleImages || false
         });
-        setPreviews(product.images?.map(img => img.url) || [product.image].filter(Boolean));
+        setPreviews(initialExistingImages.map(img => img.url));
     };
 
     const handleImageChange = async (e) => {
-        const files = Array.from(e.target.files);
+        let files = Array.from(e.target.files);
         if (!files.length) return;
 
+        // Sort files by name naturally to respect numbering (e.g. img1, img2, img10)
+        files.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+
+        let currentImages = Array.isArray(formData.images) ? formData.images : [];
+        let currentPreviews = Array.isArray(previews) ? previews : [];
+
         if (formData.allowMultipleImages) {
-            if (files.length > 5) {
-                toast.error("Maximum 5 images allowed");
+            if (currentImages.length + files.length > 5) {
+                toast.error(`Maximum 5 images allowed. You can only add ${Math.max(0, 5 - currentImages.length)} more.`);
                 return;
             }
         } else {
-            if (files.length > 1) {
+            if (currentImages.length + files.length > 1) {
                 toast.error("Only 1 image allowed when multiple images are disabled");
                 return;
             }
         }
 
         // Show previews immediately from originals
-        setPreviews(files.map(file => URL.createObjectURL(file)));
+        const newPreviews = files.map(file => URL.createObjectURL(file));
+        setPreviews([...currentPreviews, ...newPreviews]);
 
         // Compress images in the background
         setIsCompressing(true);
         try {
             const compressed = await compressImages(files);
-            setFormData({ ...formData, images: compressed });
+            setFormData({ ...formData, images: [...currentImages, ...compressed] });
             toast.success(`Images compressed (${files.reduce((s, f) => s + f.size, 0) > 1024 * 1024
                 ? (files.reduce((s, f) => s + f.size, 0) / (1024 * 1024)).toFixed(1) + 'MB'
                 : (files.reduce((s, f) => s + f.size, 0) / 1024).toFixed(0) + 'KB'
@@ -107,7 +119,7 @@ export default function ProductManagement() {
                 })`);
         } catch (err) {
             console.error('Compression failed, using originals:', err);
-            setFormData({ ...formData, images: files });
+            setFormData({ ...formData, images: [...currentImages, ...files] });
         } finally {
             setIsCompressing(false);
         }
@@ -122,7 +134,9 @@ export default function ProductManagement() {
         Object.keys(formData).forEach(key => {
             if (key === 'images' && formData[key]?.length > 0) {
                 formData[key].forEach(file => data.append('images', file));
-            } else if (key !== 'price' && key !== 'stock' && key !== 'images' && formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
+            } else if (key === 'existingImages' && formData[key]?.length > 0) {
+                data.append('existingImages', JSON.stringify(formData[key]));
+            } else if (key !== 'price' && key !== 'stock' && key !== 'images' && key !== 'existingImages' && formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
                 data.append(key, formData[key]);
             }
         });
@@ -257,15 +271,58 @@ export default function ProductManagement() {
                                             <span className="text-xs text-gray-500">Upload up to 5 images for gallery</span>
                                         </label>
                                     </div>
-                                    <div onClick={() => fileInputRef.current?.click()} className="cursor-pointer border-2 border-dashed border-gray-200 rounded-xl aspect-square flex items-center justify-center relative overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors">
+                                    <div className="border-2 border-dashed border-gray-200 rounded-xl aspect-square flex items-center justify-center relative overflow-hidden bg-gray-50 transition-colors">
                                         {previews.length > 0 ? (
-                                            <div className={`w-full h-full grid gap-1 ${previews.length === 1 ? 'grid-cols-1' : previews.length === 2 ? 'grid-cols-2' : previews.length <= 4 ? 'grid-cols-2 grid-rows-2' : 'grid-cols-3 grid-rows-2'}`}>
+                                            <div className={`w-full h-full grid gap-1 ${previews.length === 1 && !formData.allowMultipleImages ? 'grid-cols-1' : (previews.length + (formData.allowMultipleImages ? 1 : 0)) === 2 ? 'grid-cols-2' : (previews.length + (formData.allowMultipleImages ? 1 : 0)) <= 4 ? 'grid-cols-2 grid-rows-2' : 'grid-cols-3 grid-rows-2'}`}>
                                                 {previews.map((src, i) => (
-                                                    <img key={i} src={src} alt={`Preview ${i + 1}`} className="w-full h-full object-cover" />
+                                                    <div key={i} className="relative group w-full h-full">
+                                                        <img src={src} alt={`Preview ${i + 1}`} className="w-full h-full object-cover" />
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                const newPreviews = [...previews];
+                                                                newPreviews.splice(i, 1);
+                                                                setPreviews(newPreviews);
+
+                                                                const existingCount = formData.existingImages?.length || 0;
+                                                                if (i < existingCount) {
+                                                                    // Removing an existing image
+                                                                    const newExisting = [...formData.existingImages];
+                                                                    newExisting.splice(i, 1);
+                                                                    setFormData({ ...formData, existingImages: newExisting });
+                                                                } else {
+                                                                    // Removing a newly uploaded image
+                                                                    const newImages = [...formData.images];
+                                                                    newImages.splice(i - existingCount, 1);
+                                                                    setFormData({ ...formData, images: newImages });
+                                                                }
+                                                            }}
+                                                            className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <X className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
                                                 ))}
+                                                {/* Add More Button inside grid if allowed */}
+                                                {formData.allowMultipleImages && previews.length < 5 && (
+                                                    <div 
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            fileInputRef.current?.click();
+                                                        }}
+                                                        className="w-full h-full flex flex-col items-center justify-center gap-1 bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors text-gray-400 border border-dashed border-gray-300"
+                                                    >
+                                                        <Plus className="w-6 h-6" />
+                                                        <span className="text-[10px] font-bold uppercase tracking-wider text-center px-1">Add More</span>
+                                                    </div>
+                                                )}
                                             </div>
                                         ) : (
-                                            <div className="flex flex-col items-center gap-2 text-gray-400 text-center">
+                                            <div 
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 text-center cursor-pointer hover:bg-gray-100"
+                                            >
                                                 <ImageIcon className="w-8 h-8 mx-auto" />
                                                 <span className="text-xs font-bold uppercase tracking-wider">Upload Image{formData.allowMultipleImages ? 's' : ''}</span>
                                             </div>

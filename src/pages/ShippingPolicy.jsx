@@ -19,7 +19,7 @@ const sections = [
         content: [
             'Orders are processed within 1-2 business days from the time of purchase.',
             'Orders placed on weekends or public holidays will be processed on the next business day.',
-            'You will receive a tracking number via email once your order has been dispatched.',
+            // 'You will receive a tracking number via email once your order has been dispatched.',
         ],
     },
     {
@@ -45,7 +45,7 @@ const sections = [
         title: 'Order Guarantee',
         content: [
             'We guarantee the freshness and quality of every package we send.',
-            'Our packaging is designed to withstand transit while keeping the tea leaves in perfect condition.',
+            'Our packaging is designed to withstand transit while keeping the tea  in perfect condition.',
             'If your package is lost in transit, we will send a replacement at no extra cost.',
         ],
     },

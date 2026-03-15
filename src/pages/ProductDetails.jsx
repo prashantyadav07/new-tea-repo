@@ -128,25 +128,23 @@ export default function ProductDetails() {
                     </div>
 
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        {/* Image - Floating Style + Thumbnails */}
-                        <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
+                        {/* Image - Floating Style + Thumbnails */}                        <div className="flex flex-col gap-4 w-full md:max-w-lg lg:max-w-2xl mx-auto">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6 }}
-                                className={`relative aspect-[4/5] lg:aspect-square w-full rounded-[2.5rem] overflow-hidden bg-gradient-to-br ${product.bgGradient} p-8 flex items-center justify-center group`}
+                                className="relative aspect-[4/5] lg:aspect-square w-full rounded-[2rem] overflow-hidden flex items-center justify-center group"
                             >
                                 <AnimatePresence mode="popLayout">
                                     <motion.img
                                         key={currentImage}
                                         src={currentImage || product.image}
                                         alt={product.name}
-                                        className="w-full h-full object-contain drop-shadow-2xl z-10"
+                                        className="w-full h-auto object-contain z-10 shadow-sm"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 1.05 }}
-                                        whileHover={{ scale: 1.05, rotate: 2 }}
-                                        transition={{ type: "spring", stiffness: 100 }}
+                                        transition={{ duration: 0.4 }}
                                     />
                                 </AnimatePresence>
                                 {/* Floating Badge */}

@@ -222,7 +222,7 @@ export default function Checkout() {
             key: import.meta.env.VITE_RAZORPAY_PUBLIC_ID, // Use Public ID to avoid deployment warnings
             amount: amount * 100, // Amount in paise
             currency: currency || 'INR',
-            name: 'Chai Darbar',
+            name: 'Chai Adda',
             description: `Order #${orderNumber}`,
             order_id: razorpayOrderId,
             prefill: {
@@ -330,7 +330,7 @@ export default function Checkout() {
             key: import.meta.env.VITE_RAZORPAY_PUBLIC_ID,
             amount: amount * 100,
             currency: currency || 'INR',
-            name: 'Chai Darbar',
+            name: 'Chai Adda',
             description: `Order #${orderNumber}`,
             order_id: razorpayOrderId,
             prefill: {
