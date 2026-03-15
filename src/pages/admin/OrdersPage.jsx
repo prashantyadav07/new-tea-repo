@@ -18,7 +18,6 @@ const StatusBadge = ({ status }) => {
         delivered: "bg-green-50 text-green-700 border-green-200",
         cancelled: "bg-red-50 text-red-700 border-red-200",
         pending: "bg-gray-50 text-gray-700 border-gray-200",
-        cod: "bg-orange-50 text-orange-700 border-orange-200",
         paid: "bg-emerald-50 text-emerald-700 border-emerald-200"
     };
 
@@ -176,7 +175,6 @@ export default function OrdersPage() {
                     >
                         <option value="">All Payments</option>
                         <option value="pending">Pending</option>
-                        <option value="cod">COD</option>
                         <option value="paid">Paid</option>
                     </select>
 
@@ -248,11 +246,9 @@ export default function OrdersPage() {
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full ${order.paymentStatus === 'paid'
                                                 ? 'bg-green-50 text-green-600 border border-green-200'
-                                                : order.paymentStatus === 'cod'
-                                                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                                                    : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
+                                                : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
                                                 }`}>
-                                                {order.paymentStatus === 'cod' ? 'COD' : order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}
+                                                {order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
@@ -346,7 +342,7 @@ export default function OrdersPage() {
                                 Cancel
                             </button>
 
-                            {/* Mark Payment Received (for COD/pending orders) */}
+                            {/* Mark Payment Received (for pending orders) */}
                             {selectedOrder.paymentStatus !== 'paid' && (
                                 <div className="mt-4 pt-4 border-t border-gray-100">
                                     <p className="text-sm text-gray-500 mb-2">Payment: <span className="font-bold capitalize">{selectedOrder.paymentStatus}</span></p>

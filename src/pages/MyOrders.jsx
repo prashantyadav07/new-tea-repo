@@ -283,30 +283,28 @@ export default function MyOrders() {
                                                             </div>
                                                         )}
 
-                                                        {order.paymentStatus !== 'cod' && (
-                                                            <div>
-                                                                <h4 className="font-display font-bold text-[#1A1A1A] flex items-center gap-2 mb-3">
-                                                                    <CreditCard className="w-4 h-4 text-gray-400" /> Payment Info
-                                                                </h4>
-                                                                <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
-                                                                    <div className="flex items-center gap-3">
-                                                                        <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center text-gray-500">
-                                                                            <CreditCard className="w-5 h-5" />
-                                                                        </div>
-                                                                        <div>
-                                                                            <p className="text-sm font-bold text-[#1A1A1A]">Online Payment</p>
-                                                                            <p className="text-xs text-gray-400">
-                                                                                {order.paymentStatus === 'paid' ? 'Paid via Gateway' : 'Payment Pending'}
-                                                                            </p>
-                                                                        </div>
+                                                        <div>
+                                                            <h4 className="font-display font-bold text-[#1A1A1A] flex items-center gap-2 mb-3">
+                                                                <CreditCard className="w-4 h-4 text-gray-400" /> Payment Info
+                                                            </h4>
+                                                            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center text-gray-500">
+                                                                        <CreditCard className="w-5 h-5" />
                                                                     </div>
-                                                                    <span className={`px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider ${order.paymentStatus === 'paid' ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'
-                                                                        }`}>
-                                                                        {order.paymentStatus === 'paid' ? 'PAID' : 'PENDING'}
-                                                                    </span>
+                                                                    <div>
+                                                                        <p className="text-sm font-bold text-[#1A1A1A]">Online Payment</p>
+                                                                        <p className="text-xs text-gray-400">
+                                                                            {order.paymentStatus === 'paid' ? 'Paid via Gateway' : 'Payment Pending'}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+                                                                <span className={`px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider ${order.paymentStatus === 'paid' ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'
+                                                                    }`}>
+                                                                    {order.paymentStatus === 'paid' ? 'PAID' : 'PENDING'}
+                                                                </span>
                                                             </div>
-                                                        )}
+                                                        </div>
                                                     </div>
 
                                                 </div>

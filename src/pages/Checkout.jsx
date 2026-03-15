@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 
 
 const PAYMENT_METHODS = [
-    { id: 'cod', label: 'Cash on Delivery', icon: Banknote, desc: 'Pay when you receive' },
     { id: 'online', label: 'Pay Online (Razorpay)', icon: CreditCard, desc: 'UPI, Cards, Net Banking' },
 ];
 
@@ -57,7 +56,7 @@ export default function Checkout() {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
     const [placing, setPlacing] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('cod');
+    const [paymentMethod, setPaymentMethod] = useState('online');
     const [errors, setErrors] = useState({});
 
     const [address, setAddress] = useState({
@@ -385,46 +384,12 @@ export default function Checkout() {
         try {
             const shippingAddress = buildShippingAddress();
 
-            if (isAuthenticated && paymentMethod === 'online') {
+            if (isAuthenticated) {
                 // === RAZORPAY ONLINE PAYMENT (Authenticated) ===
                 await handleRazorpayPayment(shippingAddress);
-            } else if (!isAuthenticated && paymentMethod === 'online') {
+            } else {
                 // === RAZORPAY ONLINE PAYMENT (Guest) ===
                 await handleGuestRazorpayPayment(shippingAddress);
-            } else if (isAuthenticated) {
-                // === COD for authenticated users ===
-                if (isExpress) {
-                    // Express Buy → use buy-now endpoint (no cart)
-                    const buyNowItems = cart.items.map(item => ({
-                        productId: item.product._id,
-                        variantSize: item.size,
-                        quantity: item.quantity
-                    }));
-                    await orderAPI.buyNow(buyNowItems, shippingAddress, paymentMethod);
-                } else {
-                    await orderAPI.createOrder(shippingAddress, paymentMethod);
-                    window.dispatchEvent(new Event('cartUpdated'));
-                }
-                toast.success('Order placed successfully! 🎉');
-                navigate('/orders');
-            } else {
-                // === Guest user → COD only ===
-                const items = isExpress
-                    ? cart.items.map(item => ({ productId: item.product._id, variantSize: item.size, quantity: item.quantity }))
-                    : guestCartService.getOrderItems();
-                await orderAPI.createGuestOrder({
-                    items,
-                    shippingAddress,
-                    guestContact: {
-                        mobile: guestContact.mobile.trim(),
-                        name: guestContact.name.trim() || address.fullName,
-                        email: guestContact.email.trim() || ''
-                    },
-                    paymentMethod
-                });
-                if (!isExpress) guestCartService.clearCart();
-                toast.success('Order placed successfully! 🎉 Track your order with your mobile number.');
-                navigate('/track-order');
             }
         } catch (err) {
             console.error('Order placement failed', err);

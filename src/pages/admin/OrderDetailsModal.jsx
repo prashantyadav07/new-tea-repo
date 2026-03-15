@@ -163,16 +163,14 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm text-gray-500">Method</span>
                                             <span className="text-sm font-medium text-[#1A1A1A] capitalize">
-                                                {order.paymentStatus === 'cod' ? 'Cash on Delivery' : 'Online'}
+                                                Online
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm text-gray-500">Status</span>
-                                            <span className={`px-2 py-0.5 text-xs rounded font-bold uppercase ${order.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
-                                                order.paymentStatus === 'cod' ? 'bg-blue-100 text-blue-700' :
-                                                    'bg-yellow-100 text-yellow-700'
+                                            <span className={`px-2 py-0.5 text-xs rounded font-bold uppercase ${order.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                                                 }`}>
-                                                {order.paymentStatus === 'cod' ? 'Pending (COD)' : order.paymentStatus}
+                                                {order.paymentStatus}
                                             </span>
                                         </div>
                                     </div>

@@ -212,7 +212,7 @@ export default function AdminOrderDetail() {
                         <div className="p-4 space-y-4">
                             <div className="flex justify-between items-center">
                                 <span className="text-gray-500">Method</span>
-                                <span className="font-bold uppercase text-[#1a1a1a]">{order.paymentMethod}</span>
+                                <span className="font-bold uppercase text-[#1a1a1a]">Online</span>
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="text-gray-500">Status</span>
