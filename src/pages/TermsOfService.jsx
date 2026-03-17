@@ -8,7 +8,7 @@ const sections = [
         icon: Gavel,
         title: 'Agreement to Terms',
         content: [
-            'By accessing or using the Borsillah website, you agree to be bound by these Terms of Service and all applicable laws and regulations.',
+            'By accessing or using the Chai Adda website, you agree to be bound by these Terms of Service and all applicable laws and regulations.',
             'If you do not agree with any of these terms, you are prohibited from using or accessing this site.',
             'We reserve the right to update or modify these terms at any time without prior notice.',
         ],
@@ -17,7 +17,7 @@ const sections = [
         icon: Scale,
         title: 'Use License',
         content: [
-            'Permission is granted to temporarily download one copy of the materials on Borsillah for personal, non-commercial transitory viewing only.',
+            'Permission is granted to temporarily download one copy of the materials on Chai Adda for personal, non-commercial transitory viewing only.',
             'This is the grant of a license, not a transfer of title, and under this license, you may not modify or copy the materials.',
             'You may not use the materials for any commercial purpose or for any public display.',
         ],
@@ -26,8 +26,8 @@ const sections = [
         icon: AlertCircle,
         title: 'Disclaimer',
         content: [
-            'The materials on Borsillah are provided on an "as is" basis. Borsillah makes no warranties, expressed or implied.',
-            'Borsillah does not warrant that the materials on its website are accurate, complete, or current.',
+            'The materials on Chai Adda are provided on an "as is" basis. Chai Adda makes no warranties, expressed or implied.',
+            'Chai Adda does not warrant that the materials on its website are accurate, complete, or current.',
             'Product descriptions and pricing are subject to change without notice.',
         ],
     },
@@ -35,9 +35,9 @@ const sections = [
         icon: Ban,
         title: 'Limitations',
         content: [
-            'In no event shall Borsillah or its suppliers be liable for any damages arising out of the use or inability to use the materials.',
-            'Borsillah is not responsible for any information or content on websites linked to its site.',
-            'These limitations apply even if Borsillah or an authorized representative has been notified of the possibility of such damage.',
+            'In no event shall Chai Adda or its suppliers be liable for any damages arising out of the use or inability to use the materials.',
+            'Chai Adda is not responsible for any information or content on websites linked to its site.',
+            'These limitations apply even if Chai Adda or an authorized representative has been notified of the possibility of such damage.',
         ],
     },
     {
@@ -140,7 +140,7 @@ export default function TermsOfService() {
                     <div className="mt-16 p-8 sm:p-12 bg-white border border-black/5 rounded-2xl text-center">
                         <h3 className="font-display text-2xl font-bold text-[#385040] mb-3">Acceptance of Terms</h3>
                         <p className="text-gray-500 mb-6 max-w-md mx-auto italic">
-                            "By using Borsillah, you acknowledge that you have read, understood, and agree to be bound by these terms."
+                            "By using Chai Adda, you acknowledge that you have read, understood, and agree to be bound by these terms."
                         </p>
                     </div>
                 </ScrollReveal>

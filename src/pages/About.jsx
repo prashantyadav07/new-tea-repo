@@ -251,7 +251,7 @@ export default function About() {
         <ScrollReveal className="relative z-10">
           <p className="text-white/60 font-serif italic text-xl mb-6">With gratitude,</p>
           <h3 className="font-display text-3xl sm:text-5xl text-white font-bold mb-8">The Next Generation</h3>
-          <img src={brand} alt="Borsillah Logo" className="h-16 mx-auto opacity-80 brightness-0 invert" />
+          <img src={brand} alt="Chai Adda Logo" className="h-16 mx-auto opacity-80 brightness-0 invert" />
           <p className="text-white/40 text-sm mt-8 uppercase tracking-widest">Carrying the legacy forward.</p>
         </ScrollReveal>
       </section>

@@ -153,7 +153,7 @@ export default function Privacy() {
                             We're here to help. Reach out to our privacy team any time.
                         </p>
                         <a
-                            href="mailto:support@Borsillah.com"
+                            href="mailto:support@Chai Adda.com"
                             className="inline-flex items-center gap-2 px-8 py-3 bg-[#D4F57B] text-[#385040] rounded-full font-bold text-sm uppercase tracking-widest hover:bg-[#c8e96f] transition-colors"
                         >
                             Contact Us

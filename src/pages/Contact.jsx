@@ -125,7 +125,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email Us</h3>
-                  <p className="text-white/70 text-sm font-light">hello@teamone.com</p>
+                  <p className="text-white/70 text-sm font-light">Namanmzn1996@gmail.com</p>
                 </div>
               </motion.div>
 

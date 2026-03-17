@@ -35,7 +35,7 @@ const blogPosts = [
     },
     {
         id: 4,
-        title: 'The History of Borsillah Tea Estate',
+        title: 'The History of Chai Adda Tea Estate',
         excerpt: 'Travel back through time to witness the legacy of our gardens and the families behind them.',
         category: 'Legacy',
         author: 'Vikram Singh',

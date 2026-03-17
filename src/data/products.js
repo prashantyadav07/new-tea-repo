@@ -1,4 +1,4 @@
-// Borsillah Product Data
+// Chai Adda Product Data
 // Product images from the design reference
 
 export const teaProducts = [

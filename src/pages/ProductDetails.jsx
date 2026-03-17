@@ -362,7 +362,7 @@ export default function ProductDetails() {
                                     className="w-full h-full object-cover rounded-full hover:scale-105 transition-transform duration-700"
                                 />
                             </div>
-                            <h3 className="font-serif text-xl tracking-widest text-[#1A1A1A] uppercase mb-6">Borsillah Estates</h3>
+                            <h3 className="font-serif text-xl tracking-widest text-[#1A1A1A] uppercase mb-6">Chai Adda Estates</h3>
                             <ul className="space-y-4 text-left inline-block">
                                 {[
                                     'Whole leaf ingredients',

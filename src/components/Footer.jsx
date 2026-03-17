@@ -120,7 +120,7 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">Get in Touch</h4>
                         <ul className="space-y-3 text-sm text-gray-400">
-                            <li>support@Borsillah.com</li>
+                            <li>Namanmzn1996@gmail.com</li>
                             <li>+91 98765 43210</li>
                             <li>Mon - Sat: 9:00 AM - 6:00 PM</li>
                         </ul>

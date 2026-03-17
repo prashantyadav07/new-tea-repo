@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Leaf, Sun, Wind, Droplets, Heart, Trees } from 'lucide-react';
+import Susimg from "../assets/brandwo.png"
 
 export default function Sustainability() {
     const containerRef = useRef(null);
@@ -79,7 +80,7 @@ export default function Sustainability() {
                                 For the earth, <br /><span className="italic font-serif text-[#385040]">for the future.</span>
                             </h2>
                             <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                                Sustainability isn't a department at Borsillah—it's the foundation of everything we do. From the way we source our leaves to the materials we use for our labels, we choose the path that preserves the planet.
+                                Sustainability isn't a department at Chai Adda—it's the foundation of everything we do. From the way we source our leaves to the materials we use for our labels, we choose the path that preserves the planet.
                             </p>
                         </ScrollReveal>
 
@@ -101,7 +102,7 @@ export default function Sustainability() {
                     <div className="relative">
                         <ScrollReveal delay={0.2} className="relative z-10 aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
                             <img
-                                src="https://images.unsplash.com/photo-1544411047-c491584222f0?auto=format&fit=crop&q=80&w=800"
+                                src={Susimg}
                                 alt="Compostable Tea Bag"
                                 className="w-full h-full object-cover"
                             />
@@ -142,7 +143,7 @@ export default function Sustainability() {
                 <ScrollReveal>
                     <h2 className="font-display text-3xl sm:text-5xl font-bold text-[#385040] mb-8">Join the Movement</h2>
                     <p className="text-gray-600 text-lg mb-10 leading-relaxed">
-                        By choosing Borsillah, you aren't just buying premium tea; you're supporting a system that gives back to the earth more than it takes. Better for you, better for the planet.
+                        By choosing Chai Adda, you aren't just buying premium tea; you're supporting a system that gives back to the earth more than it takes. Better for you, better for the planet.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="/shop" className="px-10 py-4 bg-[#385040] text-white rounded-full font-bold uppercase tracking-widest hover:bg-[#2E4235] transition-colors">
