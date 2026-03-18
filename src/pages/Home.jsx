@@ -7,7 +7,8 @@ import TeaCarousel from '@/components/TeaCarousel';
 import HomeChoose from '@/components/HomeChoose';
 import ProductCard from '@/components/ProductCard';
 import brandWebp from '@/assets/brandwo.webp';
-import brand from '@/assets/brandwo.png';
+import brandwo800 from '@/assets/brandwo-800w.webp';
+import brandwo1400 from '@/assets/brandwo-1400w.webp';
 import chailogo from '../assets/chailogo.webp';
 import circleImage from '@/assets/circleimage.webp';
 import SEOHelmet from '@/components/SEOHelmet';
@@ -198,20 +199,20 @@ export default function Home() {
             style={{ y: heroImageY, scale: heroImageScale, x: "-50%", willChange: 'transform' }}
             initial={{ y: 150, opacity: 1, rotate: 5 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
+            layout={false}
             className="absolute top-[60%]  lg:top-[46%] left-1/2 z-20 pointer-events-none w-[95vw]  max-w-[600px]"
           >
-            <picture>
-              <source srcSet={brandWebp} type="image/webp" />
-              <img
-                src={brand}
+            <img
+                src={brandWebp}
+                srcSet={`${brandwo800} 800w, ${brandwo1400} 1400w`}
+                sizes="(max-width: 1024px) 100vw, 685px"
                 fetchPriority="high"
                 width="600"
                 height="800"
                 alt="Premium Tea Pouch"
                 className="w-full h-auto drop-shadow-[0_40px_70px_rgba(0,0,0,0.5)] object-contain filter brightness-105 contrast-105"
               />
-            </picture>
           </motion.div>
 
         </div>
@@ -287,10 +288,11 @@ export default function Home() {
               >
                 <div className="absolute inset-0 bg-black/20 blur-xl rounded-full transform scale-90 translate-y-10" />
                 <img
-                  src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=800"
+                  src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=75&w=896&fm=webp"
                   alt="Premium Tea Pack"
-                  width="384"
-                  height="384"
+                  width="448"
+                  height="298"
+                  loading="lazy"
                   className="w-full h-auto rounded-2xl shadow-2xl relative z-10 transform transition-transform duration-700 group-hover:scale-105"
                 />
               </motion.div>
@@ -415,6 +417,7 @@ export default function Home() {
                   alt="Tea Ingredients"
                   width="500"
                   height="500"
+                  loading="lazy"
                   className="w-full h-full object-contain filter drop-shadow-2xl scale-[1.10]"
                 />
               </div>

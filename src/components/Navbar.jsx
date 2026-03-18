@@ -171,7 +171,7 @@ export default function Navbar() {
         {/* Center: Logo */}
         <Link to="/" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 sm:gap-2 group">
           <div className="w-16 h-12 sm:w-28 sm:h-24 flex items-center justify-center">
-            <img src={chailogo} alt="" className="w-full h-full object-contain" />
+            <img src={chailogo} alt="" className="w-full h-full object-contain" style={{ aspectRatio: '1/1', objectFit: 'contain' }} />
           </div>
           <span className="font-sans font-black text-sm sm:text-xl tracking-tighter text-black uppercase">
             Chai <span className="ml-1">Adda</span>
@@ -293,7 +293,7 @@ export default function Navbar() {
                     {/* Brand Logo */}
                     <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
                       <div className="w-16 h-12 flex items-center justify-center">
-                        <img src={chailogo} alt="" className="w-full h-full object-contain" />
+                        <img src={chailogo} alt="" className="w-full h-full object-contain" style={{ aspectRatio: '1/1', objectFit: 'contain' }} />
                       </div>
                       <span className="font-sans font-black text-lg tracking-tighter text-black uppercase">
                         Chai Adda

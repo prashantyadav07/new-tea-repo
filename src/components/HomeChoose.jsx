@@ -3,6 +3,10 @@ import { Check, X } from 'lucide-react';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import left from "../assets/cleft.webp"
 import right from "../assets/cright.webp"
+import cleft336 from '../assets/cleft-336w.webp'
+import cleft672 from '../assets/cleft-672w.webp'
+import cright336 from '../assets/cright-336w.webp'
+import cright672 from '../assets/cright-672w.webp'
 
 const HomeChoose = () => {
     return (
@@ -27,6 +31,11 @@ const HomeChoose = () => {
                                     src={left}
                                     alt="Chaiadda Tea"
                                     className="max-w-full max-h-full object-contain"
+                                    width="336"
+                                    height="285"
+                                    loading="lazy"
+                                    srcSet={`${cleft336} 336w, ${cleft672} 672w`}
+                                    sizes="(max-width: 768px) 100vw, 336px"
                                 />
                             </div>
 
@@ -61,6 +70,11 @@ const HomeChoose = () => {
                                     src={right}
                                     alt="Other Tea Brands"
                                     className="max-w-full max-h-full object-contain"
+                                    width="336"
+                                    height="248"
+                                    loading="lazy"
+                                    srcSet={`${cright336} 336w, ${cright672} 672w`}
+                                    sizes="(max-width: 768px) 100vw, 336px"
                                 />
                             </div>
 
