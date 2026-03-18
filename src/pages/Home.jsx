@@ -195,7 +195,7 @@ export default function Home() {
           {/* Key Product Image (Centered & Overlapping) */}
           <motion.div
             style={{ y: heroImageY, scale: heroImageScale, x: "-50%" }}
-            initial={{ y: 150, opacity: 0, rotate: 5 }}
+            initial={{ y: 150, opacity: 1, rotate: 5 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="absolute top-[60%]  lg:top-[46%] left-1/2 z-20 pointer-events-none w-[95vw]  max-w-[600px]"

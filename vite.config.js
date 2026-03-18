@@ -35,7 +35,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  css: {
+    devSourcemap: false,
+  },
   build: {
+    cssCodeSplit: true,
     target: 'esnext',
     chunkSizeWarningLimit: 500,
     rollupOptions: {
