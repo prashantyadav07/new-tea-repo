@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { cartAPI } from '../services/cartAPI';
 import { guestCartService } from '../services/guestCartService';
-import chailogo from '../assets/chailogo.png'
+import chailogo from '../assets/chailogo.webp'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

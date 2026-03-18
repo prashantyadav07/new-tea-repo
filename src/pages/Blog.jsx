@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
-import blogimage from '@/assets/blogbg.png';
-import one from '@/assets/circleimage.png';
+import blogimage from '@/assets/blogbg.webp';
+import one from '@/assets/circleimage.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 
 const blogPosts = [

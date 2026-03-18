@@ -4,7 +4,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import chailogo from '../assets/chailogo.png';
+import chailogo from '../assets/chailogo.webp';
 
 const navItems = [
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },

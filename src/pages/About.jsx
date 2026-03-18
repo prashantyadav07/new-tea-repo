@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 
 const RevealWaveImage = lazy(() => import('@/components/ui/reveal-wave-image').then(module => ({ default: module.RevealWaveImage })));
-import brand from '@/assets/brandwo.png';
+import brand from '@/assets/brandwo.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 
 export default function About() {

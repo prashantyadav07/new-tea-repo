@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import local assets
-import brandImg from '../assets/brand.png';
-import blogBgImg from '../assets/blogbg.png';
-import circleImg from '../assets/circleimage.png';
+import brandImg from '../assets/brand.webp';
+import blogBgImg from '../assets/blogbg.webp';
+import circleImg from '../assets/circleimage.webp';
 
 const teaImages = [
     {

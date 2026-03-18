@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Leaf, Sun, Wind, Droplets, Heart, Trees } from 'lucide-react';
-import Susimg from "../assets/brandwo.png"
+import Susimg from "../assets/brandwo.webp"
 import SEOHelmet from '@/components/SEOHelmet';
 
 export default function Sustainability() {

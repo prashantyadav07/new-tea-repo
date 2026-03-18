@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Leaf, Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import chailogo from '../assets/chailogo.png'
+import chailogo from '../assets/chailogo.webp'
 
 export default function Footer() {
     const shopLinks = [

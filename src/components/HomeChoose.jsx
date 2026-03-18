@@ -1,8 +1,8 @@
 import React from 'react';
 import { Check, X } from 'lucide-react';
 import { ScrollReveal } from '@/components/ScrollAnimations';
-import left from "../assets/cleft.png"
-import right from "../assets/cright.png"
+import left from "../assets/cleft.webp"
+import right from "../assets/cright.webp"
 
 const HomeChoose = () => {
     return (

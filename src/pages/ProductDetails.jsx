@@ -8,7 +8,7 @@ import { guestCartService } from '@/services/guestCartService';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
-import brand from '@/assets/brand.png';
+import brand from '@/assets/brand.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 
 export default function ProductDetails() {
