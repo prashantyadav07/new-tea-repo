@@ -40,13 +40,9 @@ async function convertImage(filePath, file) {
   const webpPath = filePath.replace(ext, '.webp');
   
   let transform = sharp(filePath);
-  const dims = dimensionsMap[file] || { width: 1000 };
   
-  // Resize to 2x rendered width
-  transform = transform.resize(dims);
-  
-  // Convert to WebP quality 82
-  await transform.webp({ quality: 82 }).toFile(webpPath);
+  // Convert to WebP quality 95 (no resizing to preserve pure quality)
+  await transform.webp({ quality: 95 }).toFile(webpPath);
   
   const newSize = fs.statSync(webpPath).size;
   const savings = (((originalSize - newSize) / originalSize) * 100).toFixed(2);

@@ -6,6 +6,7 @@ import { guestCartService } from '@/services/guestCartService';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 
 
 
@@ -19,7 +20,11 @@ export default function ProductCard({ product, index }) {
     const name = product.name;
     const category = product.category?.name || product.category || 'Collection';
     const price = product.variants?.[0]?.price || product.price || 0;
-    const image = product.images?.[0]?.url || product.image || '/fallback-image.jpg';
+    const imageBase = product.images?.[0]?.url || product.image || '/fallback-image.jpg';
+    
+    // Optimize Cloudinary URL if present
+    const image = getOptimizedCloudinaryUrl(imageBase, 327);
+
     const defaultVariantSize = product.variants?.[0]?.size;
 
     // Defaults for fields not in backend yet

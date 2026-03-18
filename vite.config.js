@@ -40,6 +40,10 @@ export default defineConfig({
   },
   build: {
     cssCodeSplit: true,
+    cssMinify: true,
+    modulePreload: {
+      polyfill: false
+    },
     target: 'esnext',
     chunkSizeWarningLimit: 500,
     rollupOptions: {

@@ -8,6 +8,7 @@ import { guestCartService } from '@/services/guestCartService';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 import brand from '@/assets/brand.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 
@@ -45,11 +46,11 @@ export default function ProductDetails() {
                     setSelectedVariant(data.variants[0]);
                 }
                 if (data.images?.length > 0) {
-                    setCurrentImage(data.images[0].url);
+                    setCurrentImage(getOptimizedCloudinaryUrl(data.images[0].url, 600));
                 } else if (data.image) {
-                    setCurrentImage(data.image);
+                    setCurrentImage(getOptimizedCloudinaryUrl(data.image, 600));
                 } else {
-                    setCurrentImage(mapped.image);
+                    setCurrentImage(getOptimizedCloudinaryUrl(mapped.image, 600));
                 }
                 window.scrollTo(0, 0);
             } catch (error) {
@@ -192,9 +193,8 @@ export default function ProductDetails() {
                                     <>
                                         <button
                                             onClick={() => {
-                                                const currentIndex = product.images.findIndex(img => img.url === currentImage);
                                                 const prevIndex = currentIndex === 0 ? product.images.length - 1 : currentIndex - 1;
-                                                setCurrentImage(product.images[prevIndex].url);
+                                                setCurrentImage(getOptimizedCloudinaryUrl(product.images[prevIndex].url, 600));
                                             }}
                                             className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
                                         >
@@ -202,9 +202,8 @@ export default function ProductDetails() {
                                         </button>
                                         <button
                                             onClick={() => {
-                                                const currentIndex = product.images.findIndex(img => img.url === currentImage);
                                                 const nextIndex = currentIndex === product.images.length - 1 ? 0 : currentIndex + 1;
-                                                setCurrentImage(product.images[nextIndex].url);
+                                                setCurrentImage(getOptimizedCloudinaryUrl(product.images[nextIndex].url, 600));
                                             }}
                                             className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
                                         >
@@ -220,7 +219,7 @@ export default function ProductDetails() {
                                     {product.images.map((img, idx) => (
                                         <button
                                             key={img.publicId || idx}
-                                            onClick={() => setCurrentImage(img.url)}
+                                            onClick={() => setCurrentImage(getOptimizedCloudinaryUrl(img.url, 600))}
                                             className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${currentImage === img.url ? 'border-[#385040] shadow-md scale-105' : 'border-transparent opacity-70 hover:opacity-100'
                                                 } bg-white`}
                                         >

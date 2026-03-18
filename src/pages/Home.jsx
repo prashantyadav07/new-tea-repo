@@ -12,6 +12,7 @@ import chailogo from '../assets/chailogo.webp';
 import circleImage from '@/assets/circleimage.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
+import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -92,7 +93,7 @@ export default function Home() {
   const radius = 300; // Radius of the circle in pixels
 
   return (
-    <div ref={containerRef} className="bg-[#385040] overflow-x-hidden" data-scroll-container>
+    <div ref={containerRef} className="relative bg-[#385040] overflow-x-hidden" data-scroll-container>
       <SEOHelmet 
         title="Best Chai in India | Order Premium Organic Tea Online"
         description="India's premium online chai brand. Order authentic masala chai, organic green tea, and herbal blends online. Pan-India delivery to all states and cities."
@@ -194,7 +195,7 @@ export default function Home() {
 
           {/* Key Product Image (Centered & Overlapping) */}
           <motion.div
-            style={{ y: heroImageY, scale: heroImageScale, x: "-50%" }}
+            style={{ y: heroImageY, scale: heroImageScale, x: "-50%", willChange: 'transform' }}
             initial={{ y: 150, opacity: 1, rotate: 5 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
@@ -258,13 +259,13 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
-            {featuredTeas.map((product, i) => (
-              <ScrollReveal key={product.id} delay={i * 0.1}>
-                <ProductCard product={product} />
-              </ScrollReveal>
-            ))}
-          </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
+              {featuredTeas.map((product, i) => (
+                <ScrollReveal key={product._id || product.id || i} delay={i * 0.1}>
+                  <ProductCard product={product} />
+                </ScrollReveal>
+              ))}
+            </div>
         </div>
       </section>
 
