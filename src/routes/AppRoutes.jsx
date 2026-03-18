@@ -32,6 +32,8 @@ const ForgotPassword = lazy(() => import('../pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('../pages/ResetPassword'));
 const OrderSuccess = lazy(() => import('../pages/OrderSuccess'));
 const OrderFailure = lazy(() => import('../pages/OrderFailure'));
+const CityLandingPage = lazy(() => import('../pages/CityLandingPage'));
+const BlogArticleTemplate = lazy(() => import('../pages/blog/BlogArticleTemplate'));
 
 // Admin Components
 const AdminLayout = lazy(() => import('../layouts/AdminLayout'));
@@ -73,6 +75,8 @@ function usePrefetchAllRoutes() {
     import('../pages/ResetPassword');
     import('../pages/OrderSuccess');
     import('../pages/OrderFailure');
+    import('../pages/CityLandingPage');
+    import('../pages/blog/BlogArticleTemplate');
 
     // Admin Prefetch
     import('../layouts/AdminLayout');
@@ -93,7 +97,7 @@ export default function AppRoutes() {
   usePrefetchAllRoutes();
 
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#FAF9F6]" />}>
+    <Suspense fallback={<div />}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
@@ -136,8 +140,21 @@ export default function AppRoutes() {
           <Route path="shipping-policy" element={<ShippingPolicy />} />
           <Route path="sustainability" element={<Sustainability />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogArticleTemplate />} />
           <Route path="complaint" element={<SubmitComplaint />} />
           <Route path="track-complaint" element={<TrackComplaint />} />
+
+          {/* City Landing Pages */}
+          <Route path="chai-muzaffarnagar" element={<CityLandingPage citySlug="muzaffarnagar" />} />
+          <Route path="chai-meerut" element={<CityLandingPage citySlug="meerut" />} />
+          <Route path="chai-saharanpur" element={<CityLandingPage citySlug="saharanpur" />} />
+          <Route path="chai-delhi" element={<CityLandingPage citySlug="delhi" />} />
+          <Route path="chai-noida" element={<CityLandingPage citySlug="noida" />} />
+          <Route path="chai-mumbai" element={<CityLandingPage citySlug="mumbai" />} />
+          <Route path="chai-bengaluru" element={<CityLandingPage citySlug="bengaluru" />} />
+          <Route path="chai-lucknow" element={<CityLandingPage citySlug="lucknow" />} />
+          <Route path="chai-jaipur" element={<CityLandingPage citySlug="jaipur" />} />
+          <Route path="chai-kolkata" element={<CityLandingPage citySlug="kolkata" />} />
 
           {/* Alias for terms */}
           <Route path="terms" element={<Navigate to="/terms-of-service" replace />} />

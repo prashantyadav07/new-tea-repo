@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Shield, Eye, Cookie, Users, Lock, FileText } from 'lucide-react';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const sections = [
     {
@@ -72,6 +73,12 @@ export default function Privacy() {
 
     return (
         <div ref={containerRef} className="relative bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
+            <SEOHelmet 
+                title="Privacy Policy | Chai Adda"
+                description="Privacy Policy for Chai Adda."
+                url="https://www.chaiadda.co.in/privacy"
+                noindex={true}
+            />
             {/* HERO */}
             <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
                 <motion.div style={{ y: heroImageY }} className="absolute inset-0 z-0">

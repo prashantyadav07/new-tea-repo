@@ -1,0 +1,71 @@
+{
+  "name": "Chai Adda - Order Tea Online India",
+  "short_name": "Chai Adda",
+  "description": "India's premium online chai brand. Pan-India delivery to all states and cities.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF9F6",
+  "theme_color": "#385040",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/chailogo.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/chailogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "food",
+    "shopping"
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/og-image-mobile.jpg",
+      "sizes": "750x1334",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    }
+  ]
+}

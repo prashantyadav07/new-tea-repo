@@ -1,5 +1,6 @@
 import { Star, Users, Clock, PlayCircle, BookOpen, Award } from 'lucide-react';
 import { ScrollReveal } from '@/components/ScrollAnimations';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function Courses() {
   const courses = [
@@ -47,6 +48,33 @@ export default function Courses() {
 
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24">
+      <SEOHelmet 
+        title="Tea Making Courses Online India | Learn Authentic Chai"
+        description="Join Chai Adda's expert-led online tea making courses. Master the art of brewing authentic Indian chai, exploring global tea cultivation, and more."
+        url="https://www.chaiadda.co.in/courses"
+        breadcrumbs={[
+            { name: "Home", url: "https://www.chaiadda.co.in/" },
+            { name: "Courses", url: "https://www.chaiadda.co.in/courses" }
+        ]}
+        schema={{
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Tea Making Courses by Chai Adda",
+            "description": "Expert-led online tea courses for learners across India.",
+            "itemListElement": courses.map((course, idx) => ({
+                "@type": "ListItem",
+                "position": idx + 1,
+                "item": {
+                    "@type": "Course",
+                    "name": course.title,
+                    "description": course.description,
+                    "provider": { "@type": "Organization", "name": "Chai Adda", "url": "https://www.chaiadda.co.in" },
+                    "educationalLevel": course.level,
+                    "inLanguage": "en-IN"
+                }
+            }))
+        }}
+      />
       {/* Page Header */}
       <section className="relative py-20 overflow-hidden bg-[#385040]">
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />

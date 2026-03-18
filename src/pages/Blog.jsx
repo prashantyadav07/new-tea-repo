@@ -2,8 +2,9 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
-import blogimage from '@/assets/blogbg.png'
-import one from '@/assets/circleimage.png'
+import blogimage from '@/assets/blogbg.png';
+import one from '@/assets/circleimage.png';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const blogPosts = [
     {
@@ -56,6 +57,15 @@ export default function Blog() {
 
     return (
         <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
+            <SEOHelmet 
+                title="Chai Blog | Tea Recipes, Tips & Culture for India"
+                description="Explore the Chai Adda blog for the best tea recipes, health tips, and insights into India's rich tea culture. Discover the art of brewing perfect chai."
+                url="https://www.chaiadda.co.in/blog"
+                breadcrumbs={[
+                    { name: "Home", url: "https://www.chaiadda.co.in/" },
+                    { name: "Blog", url: "https://www.chaiadda.co.in/blog" }
+                ]}
+            />
             {/* HERO SECTION */}
             <section className="relative h-[60vh] min-h-[450px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">

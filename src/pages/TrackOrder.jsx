@@ -3,6 +3,7 @@ import { Search, Package, Loader2, Phone, Clock, CheckCircle, Truck, XCircle } f
 import { motion, AnimatePresence } from 'framer-motion';
 import { orderAPI } from '@/services/orderAPI';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const STATUS_CONFIG = {
     pending: { icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50', label: 'Pending' },
@@ -42,6 +43,12 @@ export default function TrackOrder() {
 
     return (
         <div className="min-h-screen bg-[#F9F9F9] pt-32 pb-16 font-sans text-[#1A1A1A]">
+            <SEOHelmet 
+                title="Track Order | Chai Adda"
+                description="Track your Chai Adda order status."
+                url="https://www.chaiadda.co.in/track-order"
+                noindex={true}
+            />
             <div className="max-w-2xl mx-auto px-4 sm:px-6">
 
                 {/* Header */}

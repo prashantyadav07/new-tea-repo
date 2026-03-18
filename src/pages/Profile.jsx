@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Camera, Save, X, Loader2, Leaf, ShieldCheck, Clock, MessageSquare, AlertCircle, CheckCircle } from 'lucide-react';
 import { adminAPI } from '../services/adminAPI';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function Profile() {
     const { user, updateProfile } = useAuth();
@@ -85,6 +86,12 @@ export default function Profile() {
 
     return (
         <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-[#FAF9F6]">
+            <SEOHelmet 
+                title="My Profile | Chai Adda"
+                description="Manage your Chai Adda profile and preferences."
+                url="https://www.chaiadda.co.in/profile"
+                noindex={true}
+            />
             <motion.div
                 variants={containerVariants}
                 initial="hidden"

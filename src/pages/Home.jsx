@@ -9,6 +9,7 @@ import ProductCard from '@/components/ProductCard';
 import brand from '@/assets/brandwo.png';
 import chailogo from '../assets/chailogo.png';
 import circleImage from '@/assets/circleimage.png';
+import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
 
 export default function Home() {
@@ -91,6 +92,32 @@ export default function Home() {
 
   return (
     <div ref={containerRef} className="bg-[#385040] overflow-x-hidden" data-scroll-container>
+      <SEOHelmet 
+        title="Best Chai in India | Order Premium Organic Tea Online"
+        description="India's premium online chai brand. Order authentic masala chai, organic green tea, and herbal blends online. Pan-India delivery to all states and cities."
+        url="https://www.chaiadda.co.in/"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "Do you deliver chai to all states in India?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we deliver pan-India to every state and city." } },
+              { "@type": "Question", "name": "Is Chai Adda tea 100% certified organic?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, our teas are 100% organically grown without pesticides." } },
+              { "@type": "Question", "name": "How long does delivery take to Delhi, Mumbai, Bengaluru?", "acceptedAnswer": { "@type": "Answer", "text": "Delivery takes 2-4 days depending on the city." } },
+              { "@type": "Question", "name": "Can I order Chai Adda tea in bulk or wholesale across India?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we offer bulk and wholesale ordering pan-India." } },
+              { "@type": "Question", "name": "What makes Chai Adda better than other tea brands in India?", "acceptedAnswer": { "@type": "Answer", "text": "Our commitment to 100% organic ingredients, authentic Indian recipes, and ethical sourcing." } }
+            ]
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "AggregateRating",
+            "itemReviewed": { "@type": "Organization", "name": "Chai Adda" },
+            "ratingValue": "4.8",
+            "reviewCount": "128"
+          }
+        ]}
+        breadcrumbs={[{ name: "Home", url: "https://www.chaiadda.co.in/" }]}
+      />
 
       {/* HERO SECTION (Sounder Replica) */}
       <section className="relative h-screen min-h-[580px] sm:min-h-[800px] w-full flex items-center justify-center overflow-hidden">

@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { FileText, Gavel, Scale, AlertCircle, Ban, HelpCircle } from 'lucide-react';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const sections = [
     {
@@ -63,6 +64,12 @@ export default function TermsOfService() {
 
     return (
         <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
+            <SEOHelmet 
+                title="Terms of Service | Chai Adda"
+                description="Terms of Service for Chai Adda."
+                url="https://www.chaiadda.co.in/terms"
+                noindex={true}
+            />
             {/* HERO */}
             <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
                 <motion.div style={{ y: heroImageY }} className="absolute inset-0 z-0">

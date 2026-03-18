@@ -4,6 +4,7 @@ import { Package, Clock, Truck, CheckCircle, XCircle, Loader2, ShoppingBag, Arro
 import { motion, AnimatePresence } from 'framer-motion';
 import { orderAPI } from '@/services/orderAPI';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const STATUS_STEPS = ['placed', 'dispatched', 'shipped', 'delivered'];
 
@@ -96,6 +97,12 @@ export default function MyOrders() {
 
     return (
         <div className="min-h-screen bg-[#F9F9F9] pt-24 pb-20 font-sans text-[#1A1A1A]">
+            <SEOHelmet 
+                title="My Orders | Chai Adda"
+                description="View and manage your Chai Adda orders."
+                url="https://www.chaiadda.co.in/my-orders"
+                noindex={true}
+            />
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}

@@ -1,0 +1,39 @@
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /privacy
+Disallow: /terms
+Disallow: /track-order
+Disallow: /login
+Disallow: /signup
+Disallow: /my-orders
+Disallow: /profile
+Disallow: /submit-complaint
+Disallow: /track-complaint
+Disallow: /admin
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+Sitemap: https://www.chaiadda.co.in/sitemap-index.xml

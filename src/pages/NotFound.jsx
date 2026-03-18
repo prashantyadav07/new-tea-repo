@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
+import SEOHelmet from '@/components/SEOHelmet';
 
 /**
  * NotFound (404) Page
@@ -12,6 +13,12 @@ export default function NotFound() {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center px-4">
+      <SEOHelmet 
+        title="Page Not Found | Chai Adda"
+        description="The page you are looking for does not exist."
+        url="https://www.chaiadda.co.in/404"
+        noindex={true}
+      />
       <div className="text-center max-w-md">
         {/* Icon */}
         <div className="flex justify-center mb-6">

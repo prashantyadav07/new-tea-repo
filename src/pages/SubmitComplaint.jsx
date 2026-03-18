@@ -4,6 +4,7 @@ import { Send, MessageSquare, CheckCircle, Loader2, ArrowRight } from 'lucide-re
 import { adminAPI } from '../services/adminAPI';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function SubmitComplaint() {
     const { user, isAuthenticated } = useAuth();
@@ -108,6 +109,12 @@ export default function SubmitComplaint() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
+            <SEOHelmet 
+                title="Submit a Complaint | Chai Adda"
+                description="Submit a complaint to Chai Adda customer support."
+                url="https://www.chaiadda.co.in/complaint"
+                noindex={true}
+            />
             {/* Hero Header */}
             <div className="bg-[#385040] text-white py-20 px-6">
                 <div className="max-w-3xl mx-auto text-center">

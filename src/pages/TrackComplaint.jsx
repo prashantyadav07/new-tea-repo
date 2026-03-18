@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Loader2, ArrowRight, MessageSquare, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { adminAPI } from '../services/adminAPI';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function TrackComplaint() {
     const [complaintId, setComplaintId] = useState('');
@@ -31,6 +32,12 @@ export default function TrackComplaint() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
+            <SEOHelmet 
+                title="Track Complaint | Chai Adda"
+                description="Track the status of your complaint at Chai Adda."
+                url="https://www.chaiadda.co.in/track-complaint"
+                noindex={true}
+            />
             {/* Hero Section */}
             <div className="bg-[#385040] text-white py-20 px-6">
                 <div className="max-w-3xl mx-auto text-center">

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { RevealWaveImage } from '@/components/ui/reveal-wave-image';
 import brand from '@/assets/brandwo.png';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function About() {
   const containerRef = useRef(null);
@@ -29,6 +30,15 @@ export default function About() {
 
   return (
     <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden">
+      <SEOHelmet 
+        title="About Chai Adda | India's Premium Organic Tea Brand"
+        description="Learn about Chai Adda, India's premium organic tea brand. Discover our heritage, 100% organic quality, and mission to serve authentic chai across India."
+        url="https://www.chaiadda.co.in/about"
+        breadcrumbs={[
+            { name: "Home", url: "https://www.chaiadda.co.in/" },
+            { name: "About Us", url: "https://www.chaiadda.co.in/about" }
+        ]}
+      />
 
       {/* HERO SECTION */}
       <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden">

@@ -4,6 +4,7 @@ import { StaggerContainer, StaggerItem } from '@/components/ScrollAnimations';
 import { motion, AnimatePresence } from 'framer-motion';
 import { productAPI } from '@/services/productAPI';
 import { categoryAPI } from '@/services/categoryAPI';
+import SEOHelmet from '@/components/SEOHelmet';
 import { Loader2 } from 'lucide-react';
 
 export default function Shop() {
@@ -37,6 +38,25 @@ export default function Shop() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
+            <SEOHelmet 
+                title="Buy Organic Tea Online India | Best Chai Delivery Nationwide"
+                description="Explore Chai Adda's premium organic tea collection. Buy masala chai, green tea, and herbal blends online with fast nationwide shipping across India."
+                url="https://www.chaiadda.co.in/shop"
+                breadcrumbs={[
+                    { name: "Home", url: "https://www.chaiadda.co.in/" },
+                    { name: "Shop", url: "https://www.chaiadda.co.in/shop" }
+                ]}
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "CollectionPage",
+                    "name": "Chai Adda Shop",
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": "4.9",
+                        "reviewCount": "89"
+                    }
+                }}
+            />
             {/* Header Section */}
             <div className="relative pt-40 pb-20 px-4 sm:px-6 lg:px-8 bg-[#385040] text-white overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />

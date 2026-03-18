@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, CheckCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const FloatingInput = ({ icon: Icon, type = 'text', label, value, onChange, id, showPasswordToggle }) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -79,6 +80,12 @@ export default function Signup() {
 
     return (
         <div className="min-h-screen pt-20 bg-[#FAF9F6] flex items-stretch overflow-hidden">
+            <SEOHelmet 
+                title="Sign Up | Chai Adda"
+                description="Create an account to join the Chai Adda community."
+                url="https://www.chaiadda.co.in/signup"
+                noindex={true}
+            />
             {/* Visual Section (Left) - Hidden on mobile */}
             <motion.div
                 initial={{ opacity: 0, x: -50 }}

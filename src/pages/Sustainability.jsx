@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Leaf, Sun, Wind, Droplets, Heart, Trees } from 'lucide-react';
 import Susimg from "../assets/brandwo.png"
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function Sustainability() {
     const containerRef = useRef(null);
@@ -39,6 +40,15 @@ export default function Sustainability() {
 
     return (
         <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
+            <SEOHelmet 
+                title="Sustainability | Ethical Organic Tea Sourcing Across India"
+                description="Learn about Chai Adda's commitment to sustainability, ethical sourcing, and regenerative tea farming across India. 100% organic and plastic-free."
+                url="https://www.chaiadda.co.in/sustainability"
+                breadcrumbs={[
+                    { name: "Home", url: "https://www.chaiadda.co.in/" },
+                    { name: "Sustainability", url: "https://www.chaiadda.co.in/sustainability" }
+                ]}
+            />
             {/* HERO SECTION */}
             <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
                 <motion.div style={{ y: heroImageY }} className="absolute inset-0 z-0">

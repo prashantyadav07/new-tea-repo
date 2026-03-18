@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { Truck, Globe, Clock, RefreshCcw, ShieldCheck, MapPin } from 'lucide-react';
+import SEOHelmet from '@/components/SEOHelmet';
 
 const sections = [
     {
@@ -63,6 +64,23 @@ export default function ShippingPolicy() {
 
     return (
         <div ref={containerRef} className="bg-[#FAF9F6] min-h-screen overflow-hidden" data-scroll-container>
+            <SEOHelmet 
+                title="Shipping Policy | Pan-India Tea Delivery | Chai Adda"
+                description="Review Chai Adda's shipping policy. We offer fast pan-India tea delivery to all states and metros with clear timelines and reliable service."
+                url="https://www.chaiadda.co.in/shipping-policy"
+                breadcrumbs={[
+                    { name: "Home", url: "https://www.chaiadda.co.in/" },
+                    { name: "Shipping Policy", url: "https://www.chaiadda.co.in/shipping-policy" }
+                ]}
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        { "@type": "Question", "name": "What are the shipping zones in India?", "acceptedAnswer": { "@type": "Answer", "text": "We ship to all major cities across India." } },
+                        { "@type": "Question", "name": "How long does domestic delivery take?", "acceptedAnswer": { "@type": "Answer", "text": "Domestic delivery takes 3-7 business days depending on the city." } }
+                    ]
+                }}
+            />
             {/* HERO */}
             <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
                 <motion.div style={{ y: heroImageY }} className="absolute inset-0 z-0">

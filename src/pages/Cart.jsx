@@ -6,6 +6,7 @@ import { cartAPI } from '@/services/cartAPI';
 import { guestCartService } from '@/services/guestCartService';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function Cart() {
     const navigate = useNavigate();
@@ -146,6 +147,12 @@ export default function Cart() {
 
     return (
         <div className="min-h-screen bg-[#F9F9F9] pt-24 pb-32 lg:pb-20 font-sans text-[#1A1A1A]">
+            <SEOHelmet 
+                title="Your Cart | Chai Adda"
+                description="Review items in your Chai Adda shopping cart."
+                url="https://www.chaiadda.co.in/cart"
+                noindex={true}
+            />
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}

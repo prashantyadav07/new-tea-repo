@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone, Send, ArrowRight, Loader2 } from 'lucide-react'; /
 import { useState } from 'react'; // Added useState
 import { adminAPI } from '../services/adminAPI'; // Added adminAPI
 import { toast } from 'sonner'; // Added toast
+import SEOHelmet from '../components/SEOHelmet';
 
 // Custom Animated Input Component
 const FloatingInput = ({ label, type = "text", placeholder, rows, value, onChange, id }) => { // Added props
@@ -77,6 +78,24 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
+      <SEOHelmet 
+        title="Contact Us | Chai Adda India | Tea Helpline & Wholesale"
+        description="Contact Chai Adda for pan-India tea delivery support, wholesale inquiries, or general questions. We are India's premium online chai brand."
+        url="https://www.chaiadda.co.in/contact"
+        breadcrumbs={[
+            { name: "Home", url: "https://www.chaiadda.co.in/" },
+            { name: "Contact", url: "https://www.chaiadda.co.in/contact" }
+        ]}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "Do you offer pan-India delivery?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we deliver to all states and territories across India." } },
+            { "@type": "Question", "name": "How can I contact support?", "acceptedAnswer": { "@type": "Answer", "text": "You can email us at Namanmzn1996@gmail.com or call +91 98765 43210." } },
+            { "@type": "Question", "name": "Do you provide tea for wholesale?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we supply premium tea for wholesale across India. Contact us for bulk pricing." } }
+          ]
+        }}
+      />
       {/* Background Texture Overlay */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 bg-[url('https://www.transparenttextures.com/patterns/paper.png')]" />
 

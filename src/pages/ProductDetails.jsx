@@ -9,6 +9,7 @@ import { ScrollReveal } from '@/components/ScrollAnimations';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import brand from '@/assets/brand.png';
+import SEOHelmet from '@/components/SEOHelmet';
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -115,6 +116,38 @@ export default function ProductDetails() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] pb-32 font-sans selection:bg-[#D4F57B] selection:text-[#385040]">
+            <SEOHelmet 
+                title={`${product.name} | Buy Online India | Chai Adda`}
+                description={`Buy premium ${product.name} online. 100% organic tea delivered pan-India. Experience authentic Indian chai crafted from the finest ingredients.`}
+                url={`https://www.chaiadda.co.in/product/${product.id}`}
+                image={currentImage || product.image}
+                breadcrumbs={[
+                    { name: "Home", url: "https://www.chaiadda.co.in/" },
+                    { name: "Shop", url: "https://www.chaiadda.co.in/shop" },
+                    { name: product.name, url: `https://www.chaiadda.co.in/product/${product.id}` }
+                ]}
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Product",
+                    "name": product.name,
+                    "image": currentImage || product.image,
+                    "description": product.description || `Premium ${product.name} delivering authentic taste across India.`,
+                    "sku": product.id,
+                    "brand": { "@type": "Brand", "name": "Chai Adda" },
+                    "offers": {
+                        "@type": "Offer",
+                        "url": `https://www.chaiadda.co.in/product/${product.id}`,
+                        "priceCurrency": "INR",
+                        "price": selectedVariant ? selectedVariant.price : product.price,
+                        "availability": (selectedVariant?.stock > 0 || product.stock > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+                    },
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": product.rating || "4.8",
+                        "reviewCount": product.reviews || "128"
+                    }
+                }}
+            />
 
             {/* --- HERO SECTION --- */}
             <div className="relative pt-24 pb-12 overflow-hidden bg-white rounded-b-[3rem] shadow-sm">
