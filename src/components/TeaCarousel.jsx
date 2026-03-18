@@ -2,27 +2,27 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Import local assets
+import brandImg from '../assets/brand.png';
+import blogBgImg from '../assets/blogbg.png';
+import circleImg from '../assets/circleimage.png';
+
 const teaImages = [
     {
-        url: "https://plus.unsplash.com/premium_photo-1692049122910-d8b131ed54c1?w=1200&auto=format&fit=crop&q=80",
-        title: "Artisanal Selection",
-        desc: "Hand-picked leaves from the heart of tea gardens."
+        url: brandImg,
+        title: "Pure Heritage",
+        desc: "Experience the authentic taste of hand-picked tea leaves from our premium gardens."
     },
     {
-        url: "https://images.unsplash.com/photo-1544787216-75fe7ba68b59?w=1200&auto=format&fit=crop&q=80",
-        title: "Morning Rituals",
-        desc: "Start your day with clarity and tradition."
+        url: blogBgImg,
+        title: "Tea Traditions",
+        desc: "Discover the rich history and culture behind every cup of our artisanal blends."
     },
     {
-        url: "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=1200&auto=format&fit=crop&q=80",
-        title: "Herbal Purity",
-        desc: "100% natural ingredients for a healthy lifestyle."
-    },
-    // {
-    //     url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1200&auto=format&fit=crop&q=80",
-    //     title: "Premium Oolong",
-    //     desc: "A complex flavor profile for the true connoisseur."
-    // }
+        url: circleImg,
+        title: "Modern Brewing",
+        desc: "Blending traditional techniques with modern perfection for the ultimate tea experience."
+    }
 ];
 
 export default function TeaCarousel() {

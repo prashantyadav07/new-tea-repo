@@ -362,7 +362,7 @@ export default function Home() {
         <motion.div style={{ opacity: sectionOpacity }} className="sticky top-0 h-[85vh] sm:h-screen flex flex-col justify-center items-center">
           <ScrollReveal>
             <h2 className="font-display text-3xl sm:text-6xl font-black uppercase text-[#385040] mb-4 sm:mb-8 relative z-20 text-center -mt-8 sm:mt-0">
-              Borsillah <br />
+              Chai Adda <br />
               <span className="text-tea-primary"> 9 miracles</span>
             </h2>
           </ScrollReveal>
