@@ -7,7 +7,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 // INDUSTRY-GRADE ROUTING: Lazy + Eager Prefetch
 // ──────────────────────────────────────────────────────────
 
-const Home = lazy(() => import('../pages/Home'));
+import Home from '../pages/Home';
 const Shop = lazy(() => import('../pages/Shop'));
 const ProductDetails = lazy(() => import('../pages/ProductDetails'));
 const About = lazy(() => import('../pages/About'));
@@ -46,58 +46,9 @@ const AdminUsers = lazy(() => import('../pages/admin/AdminUsers'));
 const AdminComplaints = lazy(() => import('../pages/admin/AdminComplaints'));
 const AdminOrderDetail = lazy(() => import('../pages/admin/AdminOrderDetail'));
 
-// Prefetch all page chunks immediately after first render
-function usePrefetchAllRoutes() {
-  useEffect(() => {
-    // Fire all imports in parallel — they cache in Vite's module system
-    import('../pages/Home');
-    import('../pages/Shop');
-    import('../pages/ProductDetails');
-    import('../pages/About');
-    import('../pages/Contact');
-    import('../pages/Courses');
-    import('../pages/Cart');
-    import('../pages/Checkout');
-    import('../pages/MyOrders');
-    import('../pages/NotFound');
-    import('../pages/TrackOrder');
-    import('../pages/Login');
-    import('../pages/Signup');
-    import('../pages/Profile');
-    import('../pages/Privacy');
-    import('../pages/TermsOfService');
-    import('../pages/ShippingPolicy');
-    import('../pages/Sustainability');
-    import('../pages/Blog');
-    import('../pages/SubmitComplaint');
-    import('../pages/TrackComplaint');
-    import('../pages/ForgotPassword');
-    import('../pages/ResetPassword');
-    import('../pages/OrderSuccess');
-    import('../pages/OrderFailure');
-    import('../pages/CityLandingPage');
-    import('../pages/blog/BlogArticleTemplate');
-
-    // Admin Prefetch
-    import('../layouts/AdminLayout');
-    import('../pages/admin/AdminDashboard');
-    import('../pages/admin/CategoryManagement');
-    import('../pages/admin/ProductManagement');
-    import('../pages/admin/OrdersPage');
-    import('../pages/admin/AdminAdmins');
-    import('../pages/admin/AdminUsers');
-    import('../pages/admin/AdminComplaints');
-    import('../pages/admin/AdminOrderDetail');
-  }, []);
-}
-
-
-
 export default function AppRoutes() {
-  usePrefetchAllRoutes();
-
   return (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: 'transparent' }} />}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />

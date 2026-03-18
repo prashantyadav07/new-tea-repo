@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ScrollReveal } from '@/components/ScrollAnimations';
-import { RevealWaveImage } from '@/components/ui/reveal-wave-image';
+
+const RevealWaveImage = lazy(() => import('@/components/ui/reveal-wave-image').then(module => ({ default: module.RevealWaveImage })));
 import brand from '@/assets/brandwo.png';
 import SEOHelmet from '@/components/SEOHelmet';
 
@@ -124,11 +126,13 @@ export default function About() {
           </div>
           <div className="order-1 md:order-2 relative">
             <ScrollReveal delay={0.2} className="relative z-10 w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700 bg-gray-200">
-              <RevealWaveImage
-                src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=75&w=600"
-                alt="Vintage Bicycle"
-                className="w-full h-full object-cover sepia-[0.3]"
-              />
+              <Suspense fallback={<div className="w-full h-full bg-gray-200 animate-pulse" />}>
+                <RevealWaveImage
+                  src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=75&w=600"
+                  alt="Vintage Bicycle"
+                  className="w-full h-full object-cover sepia-[0.3]"
+                />
+              </Suspense>
             </ScrollReveal>
             {/* Decorative Elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#D4F57B]/20 rounded-full blur-3xl -z-10" />
@@ -204,11 +208,13 @@ export default function About() {
           </div>
           <div className="order-1 md:order-2 relative">
             <ScrollReveal delay={0.2} className="relative z-10 w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl -rotate-2 hover:rotate-0 transition-transform duration-700 bg-gray-200">
-              <RevealWaveImage
-                src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&q=75&w=600"
-                alt="Tea Cup"
-                className="w-full h-full object-cover"
-              />
+              <Suspense fallback={<div className="w-full h-full bg-gray-200 animate-pulse" />}>
+                <RevealWaveImage
+                  src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&q=75&w=600"
+                  alt="Tea Cup"
+                  className="w-full h-full object-cover"
+                />
+              </Suspense>
             </ScrollReveal>
             {/* Decorative Elements */}
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#385040]/10 rounded-full blur-3xl -z-10" />

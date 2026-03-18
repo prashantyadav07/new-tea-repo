@@ -6,9 +6,10 @@ import { ScrollReveal } from '@/components/ScrollAnimations';
 import TeaCarousel from '@/components/TeaCarousel';
 import HomeChoose from '@/components/HomeChoose';
 import ProductCard from '@/components/ProductCard';
+import brandWebp from '@/assets/brandwo.webp';
 import brand from '@/assets/brandwo.png';
-import chailogo from '../assets/chailogo.png';
-import circleImage from '@/assets/circleimage.png';
+import chailogo from '../assets/chailogo.webp';
+import circleImage from '@/assets/circleimage.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
 
@@ -127,7 +128,7 @@ export default function Home() {
 
         <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto flex flex-col items-center justify-center px-4 overflow-hidden">
           <div className='h-16 -mt-40  md:hidden'>
-            <img className='h-28 mt-10 ' src={chailogo} alt="" />
+            <img className='h-28 mt-10 ' src={chailogo} width="112" height="112" alt="" />
           </div>
           {/* Main Typography */}
           <div className="flex flex-col mt-20 items-center text-center -mt-16 sm:-mt-20 px-2 w-full">
@@ -161,7 +162,7 @@ export default function Home() {
             <div className="flex -space-x-4 ">
               {[1, 2, 3].map(i => (
                 <div key={i} className="w-12 h-12 rounded-full border-2 border-[#385040] overflow-hidden bg-gray-300 shadow-xl">
-                  <img src={`https://i.pravatar.cc/100?img=${i + 40}`} alt="User" className="w-full h-full object-cover" />
+                  <img src={`https://i.pravatar.cc/100?img=${i + 40}`} width="48" height="48" alt="User" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
@@ -179,7 +180,7 @@ export default function Home() {
             className="absolute bottom-[10%] right-10 lg:right-24 hidden lg:block"
           >
             <div className="w-64 h-40 bg-white/5 backdrop-blur-md rounded-[32px] overflow-hidden relative group cursor-pointer border border-white/10 hover:border-white/20 transition-all shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&q=80&w=500" alt="Video" className="w-full h-full object-cover opacity-60" />
+              <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&q=80&w=500" width="256" height="160" alt="Video" className="w-full h-full object-cover opacity-60" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-12 h-12 bg-[#D4F57B] rounded-full flex items-center justify-center pl-1 shadow-lg group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-black" viewBox="0 0 24 24" fill="currentColor">
@@ -199,11 +200,17 @@ export default function Home() {
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="absolute top-[60%]  lg:top-[46%] left-1/2 z-20 pointer-events-none w-[95vw]  max-w-[600px]"
           >
-            <img
-              src={brand}
-              alt="Premium Tea Pouch"
-              className="w-full h-auto drop-shadow-[0_40px_70px_rgba(0,0,0,0.5)] object-contain filter brightness-105 contrast-105"
-            />
+            <picture>
+              <source srcSet={brandWebp} type="image/webp" />
+              <img
+                src={brand}
+                fetchPriority="high"
+                width="600"
+                height="800"
+                alt="Premium Tea Pouch"
+                className="w-full h-auto drop-shadow-[0_40px_70px_rgba(0,0,0,0.5)] object-contain filter brightness-105 contrast-105"
+              />
+            </picture>
           </motion.div>
 
         </div>
@@ -281,6 +288,8 @@ export default function Home() {
                 <img
                   src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=800"
                   alt="Premium Tea Pack"
+                  width="384"
+                  height="384"
                   className="w-full h-auto rounded-2xl shadow-2xl relative z-10 transform transition-transform duration-700 group-hover:scale-105"
                 />
               </motion.div>
@@ -403,6 +412,8 @@ export default function Home() {
                 <img
                   src={circleImage}
                   alt="Tea Ingredients"
+                  width="500"
+                  height="500"
                   className="w-full h-full object-contain filter drop-shadow-2xl scale-[1.10]"
                 />
               </div>

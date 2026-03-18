@@ -16,13 +16,13 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          utils: ['axios', 'framer-motion', 'sonner']
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-animation': ['framer-motion'],
+          'vendor-ui': ['lucide-react', 'axios', 'sonner']
         }
       }
     }
