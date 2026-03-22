@@ -5,12 +5,14 @@ import { ShoppingBag, Star, ArrowLeft, Minus, Plus, ChevronDown, ChevronUp, Leaf
 import { productAPI } from '@/services/productAPI';
 import { cartAPI } from '@/services/cartAPI';
 import { guestCartService } from '@/services/guestCartService';
+import { offerAPI } from '@/services/offerAPI';
 import { ScrollReveal } from '@/components/ScrollAnimations';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 import brand from '@/assets/brand.webp';
 import SEOHelmet from '@/components/SEOHelmet';
+import OfferBadge from '@/components/OfferBadge';
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -22,6 +24,7 @@ export default function ProductDetails() {
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [activeTab, setActiveTab] = useState('description');
     const [currentImage, setCurrentImage] = useState(null);
+    const [offers, setOffers] = useState([]);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -53,6 +56,13 @@ export default function ProductDetails() {
                     setCurrentImage(getOptimizedCloudinaryUrl(mapped.image, 600));
                 }
                 window.scrollTo(0, 0);
+
+                // Fetch offers using the resolved MongoDB ObjectId, NOT the URL slug
+                try {
+                    const res = await offerAPI.getOffersByProduct(data._id);
+                    if (res.success && res.data?.length > 0) setOffers(res.data);
+                } catch { /* silent */ }
+
             } catch (error) {
                 console.error("Failed to fetch product details", error);
                 navigate('/shop'); // Redirect to shop on error
@@ -250,13 +260,45 @@ export default function ProductDetails() {
                                     {product.name}
                                 </h1>
 
-                                <div className="flex items-baseline gap-3 mb-4">
-                                    <span className="text-4xl font-bold text-[#385040]">₹{(selectedVariant?.price || product.price).toFixed(2)}</span>
-                                    {product.originalPrice && (
-                                        <span className="text-lg text-gray-400 line-through">₹{product.originalPrice}</span>
-                                    )}
-                                    <span className="text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2 py-1 rounded ml-2">In Stock</span>
-                                </div>
+                                {/* --- REDESIGNED PRICING BLOCK --- */}
+                                {offers.length > 0 ? (
+                                    <div className="mb-6">
+                                        <div className="flex items-baseline gap-3 mb-1 flex-wrap">
+                                            <span className="text-4xl font-bold text-[#385040]">
+                                                ₹{(selectedVariant?.price || product.price).toFixed(2)}
+                                            </span>
+                                            {(selectedVariant?.originalPrice || product.originalPrice) && (
+                                                <span className="text-xl text-gray-400 line-through">
+                                                    ₹{Number(selectedVariant?.originalPrice || product.originalPrice).toFixed(2)}
+                                                </span>
+                                            )}
+                                            <span className="text-lg font-bold text-[#c18667] ml-1">
+                                                ({offers[0].title})
+                                            </span>
+                                            <span className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-1 rounded ml-2">
+                                                {product.stock > 0 || (selectedVariant && selectedVariant.stock > 0) ? 'In Stock' : 'Out of Stock'}
+                                            </span>
+                                        </div>
+                                        <div className="text-gray-500 text-sm mb-3">
+                                            MRP (incl. of all taxes)
+                                        </div>
+                                        {offers[0].description && (
+                                            <div className="text-sm font-medium text-[#385040] mb-4 flex items-center gap-2">
+                                                <span className="text-[#c18667]">✦</span> {offers[0].description}
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex items-baseline gap-3 mb-6">
+                                        <span className="text-4xl font-bold text-[#385040]">₹{(selectedVariant?.price || product.price).toFixed(2)}</span>
+                                        {(selectedVariant?.originalPrice || product.originalPrice) && (
+                                            <span className="text-xl text-gray-400 line-through">₹{Number(selectedVariant?.originalPrice || product.originalPrice).toFixed(2)}</span>
+                                        )}
+                                        <div className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-1 rounded inline-block">
+                                            {product.stock > 0 || (selectedVariant && selectedVariant.stock > 0) ? 'In Stock' : 'Out of Stock'}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Product Description moved here */}
                                 <div className="prose prose-sm text-gray-600 font-serif leading-relaxed mb-8">

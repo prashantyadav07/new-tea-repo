@@ -162,7 +162,107 @@ export const adminAPI = {
         // Public endpoint, use raw axios if needed, but api instance handles it fine
         const response = await api.get(`/complaints/track/${id}`);
         return response.data;
-    }
+    },
+
+    // ══════════════════════════════════════════════════════════
+    // NEW FEATURE API METHODS (additive only)
+    // ══════════════════════════════════════════════════════════
+
+    // ── Offers ────────────────────────────────────────────────
+    getAllOffers: async () => {
+        const response = await api.get('/offers');
+        return response.data;
+    },
+    createOffer: async (formData) => {
+        const response = await api.post('/offers', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response.data;
+    },
+    updateOffer: async (id, formData) => {
+        const response = await api.patch(`/offers/${id}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response.data;
+    },
+    toggleOffer: async (id) => {
+        const response = await api.patch(`/offers/${id}/toggle`);
+        return response.data;
+    },
+    deleteOffer: async (id) => {
+        const response = await api.delete(`/offers/${id}`);
+        return response.data;
+    },
+
+    // ── Notifications (optimized polling) ─────────────────────
+    getNotifications: async (params = {}) => {
+        const response = await api.get('/notifications', { params });
+        return response.data;
+    },
+    getUnreadCount: async () => {
+        const response = await api.get('/notifications/unread-count');
+        return response.data;
+    },
+    markNotificationRead: async (id) => {
+        const response = await api.patch(`/notifications/${id}/read`);
+        return response.data;
+    },
+    markAllNotificationsRead: async () => {
+        const response = await api.patch('/notifications/mark-all-read');
+        return response.data;
+    },
+    deleteNotification: async (id) => {
+        const response = await api.delete(`/notifications/${id}`);
+        return response.data;
+    },
+
+    // ── Reports ───────────────────────────────────────────────
+    getMonthlyReport: async (month, year) => {
+        const response = await api.get(`/reports/monthly?month=${month}&year=${year}`);
+        return response.data;
+    },
+    exportReportExcel: async (month, year) => {
+        const response = await api.get(`/reports/monthly/excel?month=${month}&year=${year}`, {
+            responseType: 'blob',
+        });
+        return response.data;
+    },
+    exportReportPDF: async (month, year) => {
+        const response = await api.get(`/reports/monthly/pdf?month=${month}&year=${year}`, {
+            responseType: 'blob',
+        });
+        return response.data;
+    },
+
+    // ── Stock Alerts ──────────────────────────────────────────
+    getLowStockProducts: async () => {
+        const response = await api.get('/stock-alerts');
+        return response.data;
+    },
+    getStockSummary: async () => {
+        const response = await api.get('/stock-alerts/summary');
+        return response.data;
+    },
+    getLowStockCount: async () => {
+        const response = await api.get('/stock-alerts/count');
+        return response.data;
+    },
+
+    // ── Settings (dynamic threshold) ──────────────────────────
+    getSettings: async () => {
+        const response = await api.get('/settings');
+        return response.data;
+    },
+    updateSettings: async (data) => {
+        const response = await api.patch('/settings', data);
+        return response.data;
+    },
+
+    // ── Admin Logs ────────────────────────────────────────────
+    getAdminLogs: async (params = {}) => {
+        const response = await api.get('/admin-logs', { params });
+        return response.data;
+    },
 };
 
 export const adminAxiosInstance = api;

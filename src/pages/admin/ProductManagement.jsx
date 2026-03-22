@@ -31,7 +31,7 @@ export default function ProductManagement() {
 
     // Form State
     const [formData, setFormData] = useState({
-        name: '', description: '', price: '', stock: '', category: '', images: [], allowMultipleImages: false
+        name: '', description: '', price: '', originalPrice: '', stock: '', category: '', images: [], allowMultipleImages: false
     });
     const [previews, setPreviews] = useState([]);
     const fileInputRef = useRef(null);
@@ -70,6 +70,7 @@ export default function ProductManagement() {
             name: product.name,
             description: product.description || '',
             price: product.variants?.[0]?.price || '',
+            originalPrice: product.variants?.[0]?.originalPrice || '',
             stock: product.variants?.[0]?.stock || '',
             category: product.category?._id || product.category || '',
             images: [], // For NEW files only
@@ -145,6 +146,7 @@ export default function ProductManagement() {
         const variants = [{
             size: 'Standard',
             price: Number(formData.price),
+            originalPrice: formData.originalPrice ? Number(formData.originalPrice) : undefined,
             stock: Number(formData.stock)
         }];
         data.append('variants', JSON.stringify(variants));
@@ -184,7 +186,7 @@ export default function ProductManagement() {
         setIsCreating(false);
         setIsEditing(false);
         setEditId(null);
-        setFormData({ name: '', description: '', price: '', stock: '', category: '', images: [], allowMultipleImages: false });
+        setFormData({ name: '', description: '', price: '', originalPrice: '', stock: '', category: '', images: [], allowMultipleImages: false });
         setPreviews([]);
         setUploadProgress(0);
     };
@@ -227,7 +229,7 @@ export default function ProductManagement() {
                             setIsCreating(true);
                             setIsEditing(false);
                             setEditId(null);
-                            setFormData({ name: '', description: '', price: '', stock: '', category: '', images: [], allowMultipleImages: false });
+                            setFormData({ name: '', description: '', price: '', originalPrice: '', stock: '', category: '', images: [], allowMultipleImages: false });
                             setPreviews([]);
                         }}
                         className="flex items-center gap-2 px-4 py-2 bg-[#385040] text-white rounded-xl font-bold text-sm hover:bg-[#2E4235] transition-colors shadow-lg shadow-[#385040]/20"
@@ -352,15 +354,25 @@ export default function ProductManagement() {
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Price (₹)</label>
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Selling Price</label>
                                             <input
                                                 type="number"
                                                 value={formData.price}
                                                 onChange={e => setFormData({ ...formData, price: e.target.value })}
                                                 className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-[#385040]"
                                                 required
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Original/MRP</label>
+                                            <input
+                                                type="number"
+                                                value={formData.originalPrice}
+                                                onChange={e => setFormData({ ...formData, originalPrice: e.target.value })}
+                                                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-[#385040]"
+                                                placeholder="Opt."
                                             />
                                         </div>
                                         <div className="space-y-1">

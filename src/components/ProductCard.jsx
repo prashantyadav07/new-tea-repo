@@ -7,8 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
-
-
+import OfferBadge from '@/components/OfferBadge';
 
 export default function ProductCard({ product, index }) {
     const navigate = useNavigate();
@@ -112,6 +111,11 @@ export default function ProductCard({ product, index }) {
                         <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                         <span className="text-xs font-bold text-foreground">{rating}</span>
                     </div>
+                </div>
+
+                {/* Offer Badge Integration */}
+                <div className="mb-2 h-5">
+                    <OfferBadge productId={id} />
                 </div>
 
                 <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-6 h-8 sm:h-10 hidden sm:block">

@@ -14,6 +14,8 @@ import circleImage from '@/assets/circleimage.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
+import OfferBanner from '@/components/OfferBanner';
+import OfferPopup from '@/components/OfferPopup';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -121,6 +123,11 @@ export default function Home() {
         ]}
         breadcrumbs={[{ name: "Home", url: "https://www.chaiadda.co.in/" }]}
       />
+
+      {/* Offer Banner — additive */}
+      <div className="relative z-10">
+        <OfferBanner />
+      </div>
 
       {/* HERO SECTION (Sounder Replica) */}
       <section className="relative h-screen min-h-[580px] sm:min-h-[800px] w-full flex items-center justify-center overflow-hidden">
@@ -532,6 +539,9 @@ export default function Home() {
 
       {/* WHY CHOOSE US SECTION */}
       <HomeChoose />
+
+      {/* Offer Popup — session-once modal */}
+      <OfferPopup />
     </div>
   );
 }

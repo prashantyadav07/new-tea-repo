@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, ShoppingBag, FolderTree, Users, ArrowUpRight, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, FolderTree, Users, ArrowUpRight, AlertCircle, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { adminAPI } from '../../services/adminAPI';
 import { toast } from 'sonner';
@@ -48,13 +48,20 @@ export default function AdminDashboard() {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [lowStockCount, setLowStockCount] = useState(0);
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await adminAPI.getDashboardStats();
+                const [response, lowStockRes] = await Promise.all([
+                    adminAPI.getDashboardStats(),
+                    adminAPI.getLowStockCount().catch(() => ({ success: false })),
+                ]);
                 if (response.success) {
                     setStats(response.data);
+                }
+                if (lowStockRes.success) {
+                    setLowStockCount(lowStockRes.data.count);
                 }
             } catch (err) {
                 console.error("Failed to fetch dashboard stats:", err);
@@ -96,6 +103,14 @@ export default function AdminDashboard() {
             icon: AlertCircle,
             color: 'bg-red-500',
             link: '/admin/complaints'
+        },
+        // ── New: Low Stock Alert Card ──
+        {
+            title: 'Low Stock Items',
+            value: lowStockCount,
+            icon: AlertTriangle,
+            color: 'bg-amber-500',
+            link: '/admin/inventory'
         },
     ];
 

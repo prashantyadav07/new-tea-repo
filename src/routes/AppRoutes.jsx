@@ -45,6 +45,12 @@ const AdminAdmins = lazy(() => import('../pages/admin/AdminAdmins'));
 const AdminUsers = lazy(() => import('../pages/admin/AdminUsers'));
 const AdminComplaints = lazy(() => import('../pages/admin/AdminComplaints'));
 const AdminOrderDetail = lazy(() => import('../pages/admin/AdminOrderDetail'));
+const AdminNotifications = lazy(() => import('../pages/admin/AdminNotifications'));
+
+// ── New Feature Admin Pages ──
+const OfferManagement = lazy(() => import('../pages/admin/OfferManagement'));
+const InventoryPage = lazy(() => import('../pages/admin/InventoryPage'));
+const ReportsPage = lazy(() => import('../pages/admin/ReportsPage'));
 
 export default function AppRoutes() {
   return (
@@ -126,6 +132,11 @@ export default function AppRoutes() {
           <Route path="admins" element={<AdminAdmins />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="complaints" element={<AdminComplaints />} />
+          {/* ── New Feature Routes ── */}
+          <Route path="offers" element={<OfferManagement />} />
+          <Route path="inventory" element={<InventoryPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="notifications" element={<AdminNotifications />} />
         </Route>
 
         {/* 404 Page */}

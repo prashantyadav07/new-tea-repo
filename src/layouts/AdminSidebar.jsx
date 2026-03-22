@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare, Gift, Package, BarChart3, ScrollText, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import chailogo from '../assets/chailogo.webp';
+import NotificationPanel from '../components/NotificationPanel';
 
 const navItems = [
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -14,6 +15,11 @@ const navItems = [
     { label: 'Users', path: '/admin/users', icon: Users },
     { label: 'Admins', path: '/admin/admins', icon: Settings },
     { label: 'Complaints', path: '/admin/complaints', icon: MessageSquare },
+    // ── New Feature Nav Items ──
+    { label: 'Offers', path: '/admin/offers', icon: Gift },
+    { label: 'Inventory', path: '/admin/inventory', icon: Package },
+    { label: 'Reports', path: '/admin/reports', icon: BarChart3 },
+    { label: 'Notifications', path: '/admin/notifications', icon: Bell },
 ];
 
 function SidebarContent({ onNavClick }) {
@@ -22,11 +28,12 @@ function SidebarContent({ onNavClick }) {
     return (
         <>
             {/* Logo Area */}
-            <div className="h-20 flex items-center px-8 border-b border-gray-100 shrink-0">
+            <div className="h-20 flex items-center justify-between px-8 border-b border-gray-100 shrink-0">
                 <div className="flex items-center gap-2">
                     <img src={chailogo} alt="Logo" className="w-12 h-12 object-contain" />
                     <span className="font-display font-bold text-xl text-[#1a1a1a]">Admin</span>
                 </div>
+                <NotificationPanel />
             </div>
 
             {/* Navigation */}
