@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Leaf, Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react';
+import { Leaf, Instagram, Facebook, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import chailogo from '../assets/chailogo.webp'
 
@@ -70,10 +70,15 @@ export default function Footer() {
                             Bringing tranquility to your daily ritual, one cup at a time. Premium hand-picked tea leaves from the finest places in india.
                         </p>
                         <div className="flex gap-3">
-                            {[Instagram, Twitter, Facebook].map((Icon, i) => (
+                            {[
+                                { Icon: Instagram, href: "https://www.instagram.com/chaiadda.co?igsh=eHFhMWM2NGM1cDZv&utm_source=qr" },
+                                { Icon: Facebook, href: "https://www.facebook.com/share/184ioRP2Ne/?mibextid=wwXIfr" }
+                            ].map(({ Icon, href }, i) => (
                                 <a
                                     key={i}
-                                    href="#"
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-tea-primary hover:text-white transition-all duration-300"
                                 >
                                     <Icon className="w-4 h-4" />

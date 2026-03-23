@@ -41,8 +41,8 @@ const SEOHelmet = ({
       "name": "India"
     },
     "sameAs": [
-      "https://www.instagram.com/chaiadda.co",
-      "https://www.facebook.com/share/184ioRP2Ne/"
+      "https://www.instagram.com/chaiadda.co?igsh=eHFhMWM2NGM1cDZv&utm_source=qr",
+      "https://www.facebook.com/share/184ioRP2Ne/?mibextid=wwXIfr"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

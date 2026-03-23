@@ -97,7 +97,7 @@ export default function Home() {
 
   return (
     <div ref={containerRef} className="relative bg-[#385040] overflow-x-hidden" data-scroll-container>
-      <SEOHelmet 
+      <SEOHelmet
         title="Best Chai in India | Order Premium Organic Tea Online"
         description="India's premium online chai brand. Order authentic masala chai, organic green tea, and herbal blends online. Pan-India delivery to all states and cities."
         url="https://www.chaiadda.co.in/"
@@ -181,24 +181,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Video Preview (Right) - Desktop only */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-            className="absolute bottom-[10%] right-10 lg:right-24 hidden lg:block"
-          >
-            <div className="w-64 h-40 bg-white/5 backdrop-blur-md rounded-[32px] overflow-hidden relative group cursor-pointer border border-white/10 hover:border-white/20 transition-all shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&q=80&w=500" width="256" height="160" alt="Video" className="w-full h-full object-cover opacity-60" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 bg-[#D4F57B] rounded-full flex items-center justify-center pl-1 shadow-lg group-hover:scale-110 transition-transform">
-                  <svg className="w-5 h-5 text-black" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+
 
 
           {/* Key Product Image (Centered & Overlapping) */}
@@ -211,15 +194,15 @@ export default function Home() {
             className="absolute top-[60%]  lg:top-[46%] left-1/2 z-20 pointer-events-none w-[95vw]  max-w-[600px]"
           >
             <img
-                src={brandWebp}
-                srcSet={`${brandwo800} 800w, ${brandwo1400} 1400w`}
-                sizes="(max-width: 1024px) 100vw, 685px"
-                fetchPriority="high"
-                width="600"
-                height="800"
-                alt="Premium Tea Pouch"
-                className="w-full h-auto drop-shadow-[0_40px_70px_rgba(0,0,0,0.5)] object-contain filter brightness-105 contrast-105"
-              />
+              src={brandWebp}
+              srcSet={`${brandwo800} 800w, ${brandwo1400} 1400w`}
+              sizes="(max-width: 1024px) 100vw, 685px"
+              fetchPriority="high"
+              width="600"
+              height="800"
+              alt="Premium Tea Pouch"
+              className="w-full h-auto drop-shadow-[0_40px_70px_rgba(0,0,0,0.5)] object-contain filter brightness-105 contrast-105"
+            />
           </motion.div>
 
         </div>
@@ -267,13 +250,13 @@ export default function Home() {
             </Link>
           </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
-              {featuredTeas.map((product, i) => (
-                <ScrollReveal key={product._id || product.id || i} delay={i * 0.1}>
-                  <ProductCard product={product} />
-                </ScrollReveal>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
+            {featuredTeas.map((product, i) => (
+              <ScrollReveal key={product._id || product.id || i} delay={i * 0.1}>
+                <ProductCard product={product} />
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 
