@@ -109,7 +109,7 @@ export default function SubmitComplaint() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
-            <SEOHelmet 
+            <SEOHelmet
                 title="Submit a Complaint | Chai Adda"
                 description="Submit a complaint to Chai Adda customer support."
                 url="https://www.chaiadda.co.in/complaint"
@@ -188,7 +188,7 @@ export default function SubmitComplaint() {
                                 id="phone"
                                 value={formData.phone}
                                 onChange={handleChange}
-                                placeholder="+91 98765 43210"
+                                placeholder="+91 9873270675"
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#385040]/20 focus:border-[#385040] transition-colors"
                             />
                         </div>

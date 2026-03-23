@@ -59,9 +59,6 @@ export default function ProductCard({ product, index }) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
             onClick={() => navigate(`/product/${id}`)}
             className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 cursor-pointer border border-transparent overflow-hidden"
         >

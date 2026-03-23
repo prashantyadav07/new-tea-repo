@@ -17,7 +17,7 @@ export function ScrollReveal({
     ...props
 }) {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once, margin: '-10% 0px -10% 0px' });
+    const isInView = useInView(ref, { once, margin: '0px 0px 100px 0px' });
 
     const directionMap = {
         up: { y: distance, x: 0 },
@@ -114,7 +114,7 @@ export function StaggerContainer({
     once = true,
 }) {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once, margin: '-50px 0px' });
+    const isInView = useInView(ref, { once, margin: '0px 0px 200px 0px' });
 
     return (
         <motion.div

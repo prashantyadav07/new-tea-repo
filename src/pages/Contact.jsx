@@ -78,20 +78,20 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
-      <SEOHelmet 
+      <SEOHelmet
         title="Contact Us | Chai Adda India | Tea Helpline & Wholesale"
         description="Contact Chai Adda for pan-India tea delivery support, wholesale inquiries, or general questions. We are India's premium online chai brand."
         url="https://www.chaiadda.co.in/contact"
         breadcrumbs={[
-            { name: "Home", url: "https://www.chaiadda.co.in/" },
-            { name: "Contact", url: "https://www.chaiadda.co.in/contact" }
+          { name: "Home", url: "https://www.chaiadda.co.in/" },
+          { name: "Contact", url: "https://www.chaiadda.co.in/contact" }
         ]}
         schema={{
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "mainEntity": [
             { "@type": "Question", "name": "Do you offer pan-India delivery?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we deliver to all states and territories across India." } },
-            { "@type": "Question", "name": "How can I contact support?", "acceptedAnswer": { "@type": "Answer", "text": "You can email us at Namanmzn1996@gmail.com or call +91 98765 43210." } },
+            { "@type": "Question", "name": "How can I contact support?", "acceptedAnswer": { "@type": "Answer", "text": "You can email us at Namanmzn1996@gmail.com or call +91 9873270675." } },
             { "@type": "Question", "name": "Do you provide tea for wholesale?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we supply premium tea for wholesale across India. Contact us for bulk pricing." } }
           ]
         }}
@@ -159,7 +159,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Call Us</h3>
-                  <p className="text-white/70 text-sm font-light">+91 98765 43210</p>
+                  <p className="text-white/70 text-sm font-light">+91 9873270675</p>
                 </div>
               </motion.div>
 
