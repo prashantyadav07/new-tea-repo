@@ -10,7 +10,7 @@ import brandWebp from '@/assets/brandwo.webp';
 import brandwo800 from '@/assets/brandwo-800w.webp';
 import brandwo1400 from '@/assets/brandwo-1400w.webp';
 import chailogo from '../assets/chailogo.webp';
-import circleImage from '@/assets/circleimage.webp';
+import blogbg from '@/assets/blogbg.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
@@ -400,15 +400,15 @@ export default function Home() {
           <div className="relative w-[320px] h-[320px] sm:w-[90vw] sm:h-auto sm:max-w-[1000px] sm:aspect-square flex items-center justify-center mt-12 sm:mt-0">
 
             {/* Central Image */}
-            <div className="absolute z-10 w-48 h-48 sm:w-96 sm:h-96 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] p-1.5 sm:p-2 -mt-16 sm:-mt-24 md:-mt-32">
+            <div className="absolute z-10 w-48 h-48 sm:w-96 sm:h-96 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] p-1.5 sm:p-2 -mt-8 sm:-mt-12 md:-mt-16">
               <div className="w-full h-full relative flex items-center justify-center">
                 <img
-                  src={circleImage}
+                  src={blogbg}
                   alt="Tea Ingredients"
                   width="500"
                   height="500"
                   loading="lazy"
-                  className="w-full h-full object-contain filter drop-shadow-2xl scale-[1.10]"
+                  className="w-full h-full object-contain filter drop-shadow-2xl scale-[0.80]"
                 />
               </div>
             </div>
