@@ -23,7 +23,7 @@ export default function ProductDetails() {
     const [adding, setAdding] = useState(false);
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [activeTab, setActiveTab] = useState('description');
-    const [currentImage, setCurrentImage] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [offers, setOffers] = useState([]);
 
     useEffect(() => {
@@ -48,13 +48,7 @@ export default function ProductDetails() {
                 if (data.variants?.length > 0) {
                     setSelectedVariant(data.variants[0]);
                 }
-                if (data.images?.length > 0) {
-                    setCurrentImage(getOptimizedCloudinaryUrl(data.images[0].url, 600));
-                } else if (data.image) {
-                    setCurrentImage(getOptimizedCloudinaryUrl(data.image, 600));
-                } else {
-                    setCurrentImage(getOptimizedCloudinaryUrl(mapped.image, 600));
-                }
+                setCurrentIndex(0);
                 window.scrollTo(0, 0);
 
                 // Fetch offers using the resolved MongoDB ObjectId, NOT the URL slug
@@ -100,6 +94,10 @@ export default function ProductDetails() {
         }
     };
 
+    const displayImage = product.images?.[currentIndex]?.url
+        ? getOptimizedCloudinaryUrl(product.images[currentIndex].url, 600)
+        : product.image;
+
     const handleExpressBuy = () => {
         if (!selectedVariant) {
             toast.error('Please select a size');
@@ -114,7 +112,7 @@ export default function ProductDetails() {
                     product: {
                         _id: product.id,
                         name: product.name,
-                        image: currentImage || product.image,
+                        image: displayImage,
                         price: selectedVariant.price || product.price
                     },
                     size: selectedVariant.size,
@@ -127,11 +125,11 @@ export default function ProductDetails() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] pb-32 font-sans selection:bg-[#D4F57B] selection:text-[#385040]">
-            <SEOHelmet 
+            <SEOHelmet
                 title={`${product.name} | Buy Online India | Chai Adda`}
                 description={`Buy premium ${product.name} online. 100% organic tea delivered pan-India. Experience authentic Indian chai crafted from the finest ingredients.`}
                 url={`https://www.chaiadda.co.in/product/${product.id}`}
-                image={currentImage || product.image}
+                image={displayImage}
                 breadcrumbs={[
                     { name: "Home", url: "https://www.chaiadda.co.in/" },
                     { name: "Shop", url: "https://www.chaiadda.co.in/shop" },
@@ -141,7 +139,7 @@ export default function ProductDetails() {
                     "@context": "https://schema.org",
                     "@type": "Product",
                     "name": product.name,
-                    "image": currentImage || product.image,
+                    "image": displayImage,
                     "description": product.description || `Premium ${product.name} delivering authentic taste across India.`,
                     "sku": product.id,
                     "brand": { "@type": "Brand", "name": "Chai Adda" },
@@ -161,34 +159,34 @@ export default function ProductDetails() {
             />
 
             {/* --- HERO SECTION --- */}
-            <div className="relative pt-24 pb-12 overflow-hidden bg-white rounded-b-[3rem] shadow-sm">
+            <div className="relative pt-32 lg:pt-48 pb-12 overflow-hidden bg-white rounded-b-[3rem] shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumbs */}
                     <div className="flex items-center gap-2 mb-6">
                         <Link to="/shop" className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#385040] hover:border-[#385040] transition-all">
                             <ArrowLeft className="w-4 h-4" />
                         </Link>
-                        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">/ {product.category}</span>
-                    </div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">/ {product.category}</span>                    </div>
 
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        {/* Image - Floating Style + Thumbnails */}                        <div className="flex flex-col gap-4 w-full md:max-w-lg lg:max-w-2xl mx-auto">
+                        {/* Image - Floating Style + Thumbnails */}
+                        <div className="flex flex-col gap-4 w-full md:max-w-lg lg:max-w-2xl mx-auto">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6 }}
                                 className="relative aspect-[4/5] lg:aspect-square w-full rounded-[2rem] overflow-hidden flex items-center justify-center group"
                             >
-                                <AnimatePresence mode="popLayout">
+                                <AnimatePresence mode="popLayout" initial={false}>
                                     <motion.img
-                                        key={currentImage}
-                                        src={currentImage || product.image}
+                                        key={currentIndex}
+                                        src={displayImage}
                                         alt={product.name}
                                         className="w-full h-auto object-contain z-10 shadow-sm"
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 1.05 }}
-                                        transition={{ duration: 0.4 }}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
                                     />
                                 </AnimatePresence>
                                 {/* Floating Badge */}
@@ -204,7 +202,7 @@ export default function ProductDetails() {
                                         <button
                                             onClick={() => {
                                                 const prevIndex = currentIndex === 0 ? product.images.length - 1 : currentIndex - 1;
-                                                setCurrentImage(getOptimizedCloudinaryUrl(product.images[prevIndex].url, 600));
+                                                setCurrentIndex(prevIndex);
                                             }}
                                             className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
                                         >
@@ -213,7 +211,7 @@ export default function ProductDetails() {
                                         <button
                                             onClick={() => {
                                                 const nextIndex = currentIndex === product.images.length - 1 ? 0 : currentIndex + 1;
-                                                setCurrentImage(getOptimizedCloudinaryUrl(product.images[nextIndex].url, 600));
+                                                setCurrentIndex(nextIndex);
                                             }}
                                             className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/60 hover:bg-white/90 backdrop-blur-sm rounded-full text-[#385040] transition-all shadow-md"
                                         >
@@ -229,8 +227,8 @@ export default function ProductDetails() {
                                     {product.images.map((img, idx) => (
                                         <button
                                             key={img.publicId || idx}
-                                            onClick={() => setCurrentImage(getOptimizedCloudinaryUrl(img.url, 600))}
-                                            className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${currentImage === img.url ? 'border-[#385040] shadow-md scale-105' : 'border-transparent opacity-70 hover:opacity-100'
+                                            onClick={() => setCurrentIndex(idx)}
+                                            className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${currentIndex === idx ? 'border-[#385040] shadow-md scale-105' : 'border-transparent opacity-70 hover:opacity-100'
                                                 } bg-white`}
                                         >
                                             <img src={img.url} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />

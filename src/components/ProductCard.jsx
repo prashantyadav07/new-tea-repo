@@ -114,7 +114,7 @@ export default function ProductCard({ product, index }) {
                 </div>
 
                 {/* Offer Badge Integration */}
-                <div className="mb-2 h-5">
+                <div className="mb-2 min-h-[1.25rem]">
                     <OfferBadge productId={id} />
                 </div>
 
