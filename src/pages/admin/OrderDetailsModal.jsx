@@ -123,7 +123,15 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                         </tbody>
                                         <tfoot className="bg-white border-t border-gray-200">
                                             <tr>
-                                                <td colSpan="4" className="px-4 py-3 text-right font-bold text-gray-600">Total</td>
+                                                <td colSpan="4" className="px-4 py-2 text-right text-gray-500 font-medium">Subtotal</td>
+                                                <td className="px-4 py-2 text-right font-medium text-[#1A1A1A]">₹{order.subtotal}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="4" className="px-4 py-2 text-right text-gray-500 font-medium">Delivery Charge</td>
+                                                <td className="px-4 py-2 text-right font-medium text-[#1A1A1A]">₹{order.shipping || 0}</td>
+                                            </tr>
+                                            <tr className="border-t border-gray-100">
+                                                <td colSpan="4" className="px-4 py-3 text-right font-bold text-gray-900">Total</td>
                                                 <td className="px-4 py-3 text-right font-bold text-[#385040] text-lg">₹{order.total}</td>
                                             </tr>
                                         </tfoot>

@@ -129,9 +129,19 @@ export default function AdminOrderDetail() {
                                 </div>
                             ))}
                         </div>
-                        <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center text-lg font-bold">
-                            <span>Total Amount</span>
-                            <span>₹{order.totalPrice}</span>
+                        <div className="p-4 bg-gray-50 border-t border-gray-100 space-y-2">
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-gray-500">Subtotal</span>
+                                <span className="font-medium text-[#1a1a1a]">₹{order.subtotal}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-gray-500">Delivery Charge</span>
+                                <span className="font-medium text-[#1a1a1a]">₹{order.shipping || 0}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-lg font-bold border-t border-gray-200 pt-2 mt-2">
+                                <span>Total Amount</span>
+                                <span className="text-[#385040]">₹{order.total}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

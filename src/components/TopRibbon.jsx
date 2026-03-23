@@ -4,7 +4,7 @@ export default function TopRibbon() {
     const announcements = [
         { text: "100% ORGANIC & HERBAL BLENDS", icon: Leaf },
         { text: "PURE QUALITY GUARANTEE", icon: ShieldCheck },
-        { text: "FAST GLOBAL SHIPPING ON ALL ORDERS", icon: Truck },
+        { text: "FLAT ₹40 DELIVERY ON ALL DOMESTIC ORDERS", icon: Truck },
         { text: "HAND-PICKED FROM PREMIUM TEA ESTATES", icon: Coffee },
         { text: "EXPERIENCE THE ART OF BREWING", icon: Star },
     ];

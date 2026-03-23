@@ -134,9 +134,19 @@ export default function TrackOrder() {
                                                     ))}
                                                 </div>
 
-                                                <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
-                                                    <span className="text-sm font-bold text-gray-500">Total</span>
-                                                    <span className="font-display text-xl font-bold text-[#1A1A1A]">₹{order.total?.toFixed(2)}</span>
+                                                <div className="pt-3 border-t border-gray-100 space-y-2">
+                                                    <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                                                        <span>Subtotal</span>
+                                                        <span>₹{order.subtotal?.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                                                        <span>Delivery Charge</span>
+                                                        <span>₹{(order.shipping || 0).toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center pt-1 border-t border-gray-50">
+                                                        <span className="text-sm font-bold text-gray-900">Total</span>
+                                                        <span className="font-display text-xl font-bold text-[#385040]">₹{order.total?.toFixed(2)}</span>
+                                                    </div>
                                                 </div>
                                             </motion.div>
                                         );

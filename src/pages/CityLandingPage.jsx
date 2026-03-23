@@ -251,7 +251,7 @@ const CityLandingPage = ({ citySlug }) => {
         {/* CTA Banner */}
         <div className="bg-[#E5B95E] text-[#385040] py-16 px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready for a Premium Tea Experience?</h2>
-          <p className="text-xl mb-8">Enjoy Free Shipping Across India on all orders above ₹499.</p>
+          <p className="text-xl mb-8">Flat ₹40 delivery charge across India on all orders.</p>
           <Link 
             to="/shop" 
             className="inline-block bg-[#385040] hover:bg-[#2c3f32] text-white font-bold py-3 px-8 rounded-lg transition duration-300"

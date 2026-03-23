@@ -408,7 +408,7 @@ export default function Checkout() {
     }
 
     const totalPrice = cart?.totalPrice || 0;
-    const shipping = 0; // Free shipping permanently
+    const shipping = 40.00; 
     const total = totalPrice + shipping;
 
     return (
@@ -623,9 +623,9 @@ export default function Checkout() {
                                     <span className="font-bold">₹{totalPrice.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Shipping</span>
-                                    <span className={`font-bold ${shipping === 0 ? 'text-green-600' : ''}`}>
-                                        {shipping === 0 ? 'Free' : `₹${shipping.toFixed(2)}`}
+                                    <span>Delivery Charge</span>
+                                    <span className={`font-bold`}>
+                                        ₹{shipping.toFixed(2)}
                                     </span>
                                 </div>
                             </div>

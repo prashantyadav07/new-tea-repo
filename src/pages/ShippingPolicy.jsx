@@ -11,7 +11,7 @@ const sections = [
         content: [
             'We currently ship to all major cities across India.',
             'International shipping is available to selected countries including USA, UK, Canada, and UAE.',
-            'Shipping costs are calculated at checkout based on your location and package weight.',
+            'A flat delivery charge of ₹40 is applied to all domestic orders within India.',
         ],
     },
     {

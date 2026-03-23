@@ -124,7 +124,7 @@ export default function Cart() {
 
     const cartItems = cart?.items || [];
     const totalPrice = cart?.totalPrice || 0;
-    const shipping = totalPrice > 500 ? 0 : 50.00;
+    const shipping = 40.00;
     const total = totalPrice + shipping;
 
     // Empty cart
@@ -264,12 +264,11 @@ export default function Cart() {
                                     <span className="font-bold text-[#1A1A1A]">₹{totalPrice.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Shipping Estimate</span>
-                                    <span className={shipping === 0 ? "text-[#385040] font-bold" : "font-bold text-[#1A1A1A]"}>
-                                        {shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}
+                                    <span>Delivery Charge</span>
+                                    <span className="font-bold text-[#1A1A1A]">
+                                        ₹{shipping.toFixed(2)}
                                     </span>
                                 </div>
-                                {shipping === 0 && <p className="text-xs text-green-600 text-right -mt-2">Free shipping applied!</p>}
                             </div>
 
                             <div className="pt-4 border-t border-gray-100 mb-8">

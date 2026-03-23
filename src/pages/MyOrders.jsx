@@ -270,6 +270,16 @@ export default function MyOrders() {
                                                                 </div>
                                                             ))}
                                                         </div>
+                                                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+                                                            <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                                                                <span>Subtotal</span>
+                                                                <span>₹{order.subtotal?.toFixed(2)}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                                                                <span>Delivery Charge</span>
+                                                                <span>₹{(order.shipping || 0).toFixed(2)}</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     {/* Shipping & Payment Details */}
