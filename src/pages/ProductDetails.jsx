@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 import brand from '@/assets/brand.webp';
+import brandwo from '@/assets/brandwo.webp';
 import SEOHelmet from '@/components/SEOHelmet';
 import OfferBadge from '@/components/OfferBadge';
 
@@ -68,7 +69,16 @@ export default function ProductDetails() {
         }
     }, [id, navigate]);
 
-    if (!product) return null;
+    if (!product) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="w-12 h-12 animate-spin text-[#385040] opacity-20" />
+                    <p className="text-sm font-medium text-[#385040] animate-pulse uppercase tracking-[0.2em]">Brewing your tea...</p>
+                </div>
+            </div>
+        );
+    }
 
     const handleAddToCart = async () => {
         if (!selectedVariant) {
@@ -407,9 +417,9 @@ export default function ProductDetails() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="relative min-h-[300px]">
-                                <img src="https://images.unsplash.com/photo-1565498971161-42ae3dbbb7ea?auto=format&fit=crop&q=80&w=2835" alt="Estate" className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-[#385040] to-transparent"></div>
+                            <div className="relative min-h-[200px] lg:min-h-[300px]">
+                                <img src={brandwo} alt="Estate" className="absolute inset-0 w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#385040]/80 to-transparent"></div>
                             </div>
                         </div>
                     </div>
