@@ -6,11 +6,83 @@ import { toast } from 'sonner';
 
 
 
+const UserModal = ({ isOpen, onClose, onSubmit, initialData }) => {
+    const [formData, setFormData] = useState({ name: '', email: '', mobile: '', role: 'user' });
+
+    useEffect(() => {
+        if (initialData) setFormData({ 
+            name: initialData.name || '', 
+            email: initialData.email || '', 
+            mobile: initialData.mobile || '', 
+            role: initialData.role || 'user' 
+        });
+    }, [initialData, isOpen]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl"
+            >
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold font-display">Edit User</h2>
+                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors"><X className="w-5 h-5" /></button>
+                </div>
+                <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input
+                            required type="text" value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#385040]/20 focus:border-[#385040]"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input
+                            required type="email" value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#385040]/20 focus:border-[#385040]"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Mobile</label>
+                        <input
+                            type="text" value={formData.mobile}
+                            onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#385040]/20 focus:border-[#385040]"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                        <select
+                            value={formData.role}
+                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#385040]/20 focus:border-[#385040]"
+                        >
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div className="flex justify-end gap-3 mt-6">
+                        <button type="button" onClick={onClose} className="px-4 py-2 text-gray-500 hover:bg-gray-50 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" className="px-4 py-2 bg-[#385040] text-white rounded-lg font-medium hover:bg-[#2c3e32]">Save Changes</button>
+                    </div>
+                </form>
+            </motion.div>
+        </div>
+    );
+};
+
 export default function AdminUsers() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [roleFilter, setRoleFilter] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState(null);
 
     const fetchUsers = async () => {
         try {
@@ -27,6 +99,18 @@ export default function AdminUsers() {
         fetchUsers();
     }, [roleFilter]);
 
+    const handleUpdate = async (data) => {
+        try {
+            await adminAPI.updateUser(editingUser._id, data);
+            toast.success('User updated successfully');
+            setIsModalOpen(false);
+            setEditingUser(null);
+            fetchUsers();
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to update user');
+        }
+    };
+
     const handleDelete = async (id) => {
         if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
         try {
@@ -39,8 +123,8 @@ export default function AdminUsers() {
     };
 
     const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase()) ||
+        user.name?.toLowerCase().includes(search.toLowerCase()) ||
+        user.email?.toLowerCase().includes(search.toLowerCase()) ||
         user.mobile?.includes(search)
     );
 
@@ -79,7 +163,7 @@ export default function AdminUsers() {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left min-w-[700px] md:min-w-full">
                         <thead className="bg-gray-50 text-xs uppercase text-gray-500 font-bold">
                             <tr>
                                 <th className="px-6 py-4">User</th>
@@ -98,7 +182,7 @@ export default function AdminUsers() {
                                                 <img src={user.photo} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
                                             ) : (
                                                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold">
-                                                    {user.name.charAt(0)}
+                                                    {(user.name || 'U').charAt(0)}
                                                 </div>
                                             )}
                                             <div>
@@ -131,7 +215,12 @@ export default function AdminUsers() {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex justify-end gap-2">
-
+                                            <button
+                                                onClick={() => { setEditingUser(user); setIsModalOpen(true); }}
+                                                className="px-3 py-1.5 text-xs font-bold text-blue-500 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+                                            >
+                                                Edit
+                                            </button>
                                             <button
                                                 onClick={() => handleDelete(user._id)}
                                                 className="px-3 py-1.5 text-xs font-bold text-red-500 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
@@ -155,7 +244,16 @@ export default function AdminUsers() {
                 </div>
             </div>
 
-
+            <AnimatePresence>
+                {isModalOpen && (
+                    <UserModal
+                        isOpen={isModalOpen}
+                        initialData={editingUser}
+                        onClose={() => { setIsModalOpen(false); setEditingUser(null); }}
+                        onSubmit={handleUpdate}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 }

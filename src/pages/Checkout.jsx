@@ -14,9 +14,12 @@ const PAYMENT_METHODS = [
     { id: 'online', label: 'Pay Online (Razorpay)', icon: CreditCard, desc: 'UPI, Cards, Net Banking' },
 ];
 
-const InputField = ({ label, name, type = 'text', placeholder, value, onChange, error, colSpan = '', autoComplete }) => (
+const InputField = ({ label, name, type = 'text', placeholder, value, onChange, error, colSpan = '', autoComplete, required }) => (
     <div className={colSpan}>
-        <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">{label}</label>
+        <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+        </label>
         <input
             type={type}
             name={name}
@@ -164,8 +167,12 @@ export default function Checkout() {
 
         // Guest-specific validation
         if (!isAuthenticated) {
-            if (!guestContact.mobile.trim()) errs.mobile = 'Mobile number is required for guest checkout';
+            if (!guestContact.mobile.trim()) errs.mobile = 'Mobile number is required';
             else if (!/^[6-9]\d{9}$/.test(guestContact.mobile.trim())) errs.mobile = 'Enter a valid 10-digit mobile number';
+            
+            if (!guestContact.name.trim()) errs.name = 'Name is required';
+            if (!guestContact.email.trim()) errs.email = 'Email is required';
+            else if (!/\S+@\S+\.\S+/.test(guestContact.email)) errs.email = 'Enter a valid email address';
         }
 
         setErrors(errs);
@@ -441,7 +448,7 @@ export default function Checkout() {
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <InputField
-                                        label="Mobile Number *"
+                                        label="Mobile Number"
                                         name="mobile"
                                         type="tel"
                                         placeholder="9999999999"
@@ -449,24 +456,29 @@ export default function Checkout() {
                                         onChange={handleGuestChange}
                                         error={errors.mobile}
                                         autoComplete="tel"
+                                        required
                                     />
                                     <InputField
-                                        label="Name (optional)"
+                                        label="Name"
                                         name="name"
                                         placeholder="Your name"
                                         value={guestContact.name}
                                         onChange={handleGuestChange}
+                                        error={errors.name}
                                         autoComplete="name"
+                                        required
                                     />
                                     <InputField
-                                        label="Email (optional)"
+                                        label="Email"
                                         name="email"
                                         type="email"
                                         placeholder="email@example.com"
                                         value={guestContact.email}
                                         onChange={handleGuestChange}
+                                        error={errors.email}
                                         autoComplete="email"
                                         colSpan="sm:col-span-2"
+                                        required
                                     />
                                 </div>
                             </motion.div>
@@ -488,6 +500,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.fullName}
                                     autoComplete="name"
+                                    required
                                 />
                                 <InputField
                                     label="Phone"
@@ -498,6 +511,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.phone}
                                     autoComplete="tel"
+                                    required
                                 />
                                 <InputField
                                     label="Street Address"
@@ -508,6 +522,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.street}
                                     autoComplete="street-address"
+                                    required
                                 />
                                 <InputField
                                     label="City"
@@ -517,6 +532,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.city}
                                     autoComplete="address-level2"
+                                    required
                                 />
                                 <InputField
                                     label="State"
@@ -526,6 +542,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.state}
                                     autoComplete="address-level1"
+                                    required
                                 />
                                 <InputField
                                     label="ZIP Code"
@@ -535,6 +552,7 @@ export default function Checkout() {
                                     onChange={handleChange}
                                     error={errors.zipCode}
                                     autoComplete="postal-code"
+                                    required
                                 />
                                 <InputField
                                     label="Country"

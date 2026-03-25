@@ -24,6 +24,8 @@ export default function CategoryManagement() {
     const [formData, setFormData] = useState({ name: '', description: '', image: null });
     const [preview, setPreview] = useState(null);
     const fileInputRef = useRef(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
 
     const fetchCategories = async () => {
         try {
@@ -69,6 +71,18 @@ export default function CategoryManagement() {
         }
     };
 
+    const handleEdit = (category) => {
+        setIsCreating(true);
+        setIsEditing(true);
+        setEditId(category._id);
+        setFormData({
+            name: category.name,
+            description: category.description || '',
+            image: null
+        });
+        setPreview(category.image);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -87,19 +101,36 @@ export default function CategoryManagement() {
                 }
             };
 
-            await categoryAPI.create(data, config);
-            toast.success("Category created successfully!");
-            setIsCreating(false);
-            setFormData({ name: '', description: '', image: null });
-            setPreview(null);
+            if (isEditing) {
+                await categoryAPI.update(editId, data, config);
+                toast.success("Category updated successfully!");
+            } else {
+                if (!formData.image) {
+                    toast.error("Please upload an image");
+                    setIsSubmitting(false);
+                    return;
+                }
+                await categoryAPI.create(data, config);
+                toast.success("Category created successfully!");
+            }
+            closeModal();
             fetchCategories();
         } catch (error) {
             console.error(error);
-            toast.error(error.response?.data?.message || "Failed to create category");
+            toast.error(error.response?.data?.message || `Failed to ${isEditing ? 'update' : 'create'} category`);
         } finally {
             setIsSubmitting(false);
             setUploadProgress(0);
         }
+    };
+
+    const closeModal = () => {
+        setIsCreating(false);
+        setIsEditing(false);
+        setEditId(null);
+        setFormData({ name: '', description: '', image: null });
+        setPreview(null);
+        setUploadProgress(0);
     };
 
     const handleDelete = async (id) => {
@@ -121,7 +152,13 @@ export default function CategoryManagement() {
                     <p className="text-gray-500 text-sm">Manage your product categories</p>
                 </div>
                 <button
-                    onClick={() => setIsCreating(true)}
+                    onClick={() => {
+                        setIsCreating(true);
+                        setIsEditing(false);
+                        setEditId(null);
+                        setFormData({ name: '', description: '', image: null });
+                        setPreview(null);
+                    }}
                     className="flex items-center gap-2 px-4 py-2 bg-[#385040] text-white rounded-xl font-bold text-sm hover:bg-[#2E4235] transition-colors shadow-lg shadow-[#385040]/20"
                 >
                     <Plus className="w-4 h-4" /> Add New
@@ -139,8 +176,8 @@ export default function CategoryManagement() {
                             className="bg-white rounded-2xl w-full max-w-lg shadow-2xl p-6"
                         >
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="font-bold text-lg">Create Category</h3>
-                                <button onClick={() => setIsCreating(false)}><X className="w-5 h-5 text-gray-400" /></button>
+                                <h3 className="font-bold text-lg">{isEditing ? 'Edit Category' : 'Create Category'}</h3>
+                                <button onClick={closeModal}><X className="w-5 h-5 text-gray-400" /></button>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
@@ -161,7 +198,7 @@ export default function CategoryManagement() {
                                             </div>
                                         </div>
                                     )}
-                                    <input type="file" ref={fileInputRef} hidden accept="image/*" onChange={handleImageChange} required />
+                                    <input type="file" ref={fileInputRef} hidden accept="image/*" onChange={handleImageChange} required={!isEditing} />
                                 </div>
 
                                 <div className="space-y-1">
@@ -209,7 +246,7 @@ export default function CategoryManagement() {
                                     className="w-full py-3 bg-[#385040] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#2E4235] transition-colors disabled:opacity-70"
                                 >
                                     {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                                    {isCompressing ? 'Compressing Image...' : 'Create Category'}
+                                    {isCompressing ? 'Compressing Image...' : isEditing ? 'Update Category' : 'Create Category'}
                                 </button>
                             </form>
                         </motion.div>
@@ -226,7 +263,8 @@ export default function CategoryManagement() {
                         <div key={category._id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-lg transition-all">
                             <div className="h-40 bg-gray-100 relative">
                                 <img src={category.image} alt={category.name} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                <div className="absolute inset-0 bg-black/40 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button onClick={() => handleEdit(category)} className="p-2 bg-white rounded-full text-blue-500 hover:bg-blue-50"><Edit2 className="w-4 h-4" /></button>
                                     <button onClick={() => handleDelete(category._id)} className="p-2 bg-white rounded-full text-red-500 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
                                 </div>
                             </div>

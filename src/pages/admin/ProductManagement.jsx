@@ -448,7 +448,8 @@ export default function ProductManagement() {
                 <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 text-[#385040] animate-spin" /></div>
             ) : (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <table className="w-full text-left border-collapse">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse min-w-[600px] md:min-w-full">
                         <thead>
                             <tr className="bg-gray-50 text-xs text-gray-500 uppercase border-b border-gray-100">
                                 <th className="px-6 py-4 font-bold">Product</th>
@@ -502,7 +503,8 @@ export default function ProductManagement() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                        </table>
+                    </div>
                     {filteredProducts.length === 0 && (
                         <div className="p-12 text-center text-gray-400">
                             <Search className="w-12 h-12 mx-auto mb-2 opacity-20" />

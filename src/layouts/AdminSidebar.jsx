@@ -33,7 +33,9 @@ function SidebarContent({ onNavClick }) {
                     <img src={chailogo} alt="Logo" className="w-12 h-12 object-contain" />
                     <span className="font-display font-bold text-xl text-[#1a1a1a]">Admin</span>
                 </div>
-                <NotificationPanel />
+                <div className="hidden lg:block">
+                    <NotificationPanel />
+                </div>
             </div>
 
             {/* Navigation */}
@@ -103,6 +105,9 @@ export default function AdminSidebar() {
                         <img src={chailogo} alt="Logo" className="w-10 h-10 object-contain" />
                         <span className="font-display font-bold text-lg text-[#1a1a1a]">Admin</span>
                     </div>
+                </div>
+                <div className="p-2">
+                    <NotificationPanel />
                 </div>
             </div>
 

@@ -170,7 +170,7 @@ export default function AdminAdmins() {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left min-w-[700px]">
                         <thead className="bg-gray-50 text-xs uppercase text-gray-500 font-bold">
                             <tr>
                                 <th className="px-6 py-4">Name</th>
