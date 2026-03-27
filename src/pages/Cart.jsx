@@ -147,7 +147,7 @@ export default function Cart() {
 
     return (
         <div className="min-h-screen bg-[#F9F9F9] pt-24 pb-32 lg:pb-20 font-sans text-[#1A1A1A]">
-            <SEOHelmet 
+            <SEOHelmet
                 title="Your Cart | Chai Adda"
                 description="Review items in your Chai Adda shopping cart."
                 url="https://www.chaiadda.co.in/cart"

@@ -29,7 +29,7 @@ const HomeChoose = () => {
                             <div className="w-48 h-48 sm:w-64 sm:h-64 mb-8 flex justify-center items-center">
                                 <img
                                     src={left}
-                                    alt="Chaiadda Tea"
+                                    alt="Chai Adda Tea"
                                     className="max-w-full max-h-full object-contain"
                                     width="336"
                                     height="285"
@@ -40,7 +40,7 @@ const HomeChoose = () => {
                             </div>
 
                             <h3 className="w-full text-2xl md:text-3xl font-sans font-bold text-[#385040] mb-8 uppercase text-center">
-                                Chaiadda Tea
+                                Chai Adda Tea
                             </h3>
 
                             <ul className="space-y-4 w-fit mx-auto text-left">

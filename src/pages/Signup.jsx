@@ -185,7 +185,7 @@ export default function Signup() {
                         <div className="flex items-start gap-3">
                             <input type="checkbox" id="terms" className="mt-1 w-4 h-4 rounded border-gray-300 text-[#385040] focus:ring-[#385040]" />
                             <label htmlFor="terms" className="text-sm text-gray-500 leading-snug">
-                                I agree to the <Link to="/terms" className="font-bold text-[#385040] hover:underline">Terms of Service</Link> and <Link to="/privacy" className="font-bold text-[#385040] hover:underline">Privacy Policy</Link>.
+                                I agree to the <Link to="/terms-of-service" className="font-bold text-[#385040] hover:underline">Terms of Service</Link> and <Link to="/privacy-policy" className="font-bold text-[#385040] hover:underline">Privacy Policy</Link>.
                             </label>
                         </div>
 

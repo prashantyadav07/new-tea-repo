@@ -173,8 +173,8 @@ export default function Navbar() {
           <div className="w-16 h-12 sm:w-28 sm:h-24 flex items-center justify-center">
             <img src={chailogo} alt="" className="w-full h-full object-contain" style={{ aspectRatio: '1/1', objectFit: 'contain' }} />
           </div>
-          <span className="font-sans font-black text-sm sm:text-xl tracking-tighter text-black uppercase">
-            Chai <span className="ml-1">Adda</span>
+          <span className="font-sans font-black text-sm sm:text-xl text-black uppercase">
+            Chai Adda
           </span>
         </Link>
 
@@ -295,7 +295,7 @@ export default function Navbar() {
                       <div className="w-16 h-12 flex items-center justify-center">
                         <img src={chailogo} alt="" className="w-full h-full object-contain" style={{ aspectRatio: '1/1', objectFit: 'contain' }} />
                       </div>
-                      <span className="font-sans font-black text-lg tracking-tighter text-black uppercase">
+                      <span className="font-sans font-black text-lg text-black uppercase">
                         Chai Adda
                       </span>
                     </Link>

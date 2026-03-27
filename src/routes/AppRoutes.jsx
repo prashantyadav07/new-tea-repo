@@ -113,8 +113,9 @@ export default function AppRoutes() {
           <Route path="chai-jaipur" element={<CityLandingPage citySlug="jaipur" />} />
           <Route path="chai-kolkata" element={<CityLandingPage citySlug="kolkata" />} />
 
-          {/* Alias for terms */}
+          {/* Alias for terms and privacy */}
           <Route path="terms" element={<Navigate to="/terms-of-service" replace />} />
+          <Route path="privacy" element={<Navigate to="/privacy-policy" replace />} />
         </Route>
 
         {/* Admin Routes - Isolated Layout */}

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Star, Heart, Loader2 } from 'lucide-react';
+import { ShoppingBag, Star, Loader2 } from 'lucide-react';
 import { cartAPI } from '@/services/cartAPI';
 import { guestCartService } from '@/services/guestCartService';
 import { useAuth } from '@/context/AuthContext';
@@ -20,7 +20,7 @@ export default function ProductCard({ product, index }) {
     const category = product.category?.name || product.category || 'Collection';
     const price = product.variants?.[0]?.price || product.price || 0;
     const imageBase = product.images?.[0]?.url || product.image || '/fallback-image.jpg';
-    
+
     // Optimize Cloudinary URL if present
     const image = getOptimizedCloudinaryUrl(imageBase, 327);
 
@@ -73,15 +73,7 @@ export default function ProductCard({ product, index }) {
                     </div>
                 )}
 
-                {/* Wishlist Button */}
-                <div className="absolute top-4 right-4 z-20">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); /* Add wishlist logic */ }}
-                        className="p-2.5 rounded-full bg-white/60 dark:bg-black/20 backdrop-blur-sm transition-all text-red-500"
-                    >
-                        <Heart className="w-4 h-4" />
-                    </button>
-                </div>
+
 
                 {/* Product Image */}
                 <div className="block w-full h-full relative z-10">
@@ -122,9 +114,7 @@ export default function ProductCard({ product, index }) {
                 <div className="mt-auto flex flex-col gap-3">
                     <div className="flex items-baseline gap-2">
                         <span className="text-xl font-bold text-foreground">₹{Number(price).toFixed(2)}</span>
-                        {originalPrice && (
-                            <span className="text-xs text-muted-foreground line-through decoration-red-400/50">₹{originalPrice.toFixed(2)}</span>
-                        )}
+
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">

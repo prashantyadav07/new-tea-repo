@@ -137,7 +137,11 @@ export default function Home() {
 
         <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto flex flex-col items-center justify-center px-4 overflow-hidden">
           <div className='h-16 -mt-40  md:hidden'>
-            <img className='h-28 mt-10 ' src={chailogo} width="112" height="112" alt="" />
+            <img
+              src={chailogo}
+              alt="Chai Adda Logo"
+              className="mt-10 max-w-[120px] w-full h-auto object-contain mx-auto"
+            />
           </div>
           {/* Main Typography */}
           <div className="flex flex-col mt-20 items-center text-center -mt-16 sm:-mt-20 px-2 w-full">
@@ -310,8 +314,8 @@ export default function Home() {
                   <Mountain className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-[#385040] text-sm leading-tight">High Altitude</p>
-                  <p className="text-[10px] text-gray-500 uppercase tracking-wider">Himalayan Grown</p>
+                  <p className="font-bold text-[#385040] text-sm leading-tight">Single estate sourced</p>
+                  <p className="text-[10px] text-gray-500 uppercase tracking-wider">Assam valley grown</p>
                 </div>
               </motion.div>
             </div>
@@ -369,7 +373,7 @@ export default function Home() {
                   <div>
                     <h3 className="text-xl font-bold text-[#385040] mb-2">Ethically Sourced</h3>
                     <p className="text-gray-600 leading-relaxed max-w-md">
-                      From the foothills of the Himalayas to your cup, we ensure fair wages and sustainable practices at every step.
+                      From the vibrant valleys of Assam to your cup, we ensure fair wages and sustainable practices at every step.
                     </p>
                   </div>
                 </ScrollReveal>

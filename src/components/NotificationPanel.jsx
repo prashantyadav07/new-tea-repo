@@ -13,7 +13,7 @@ const TYPE_CONFIG = {
     new_user: { icon: UserPlus, color: 'text-green-500', bg: 'bg-green-50' },
 };
 
-export default function NotificationPanel() {
+export default function NotificationPanel({ align = 'right' }) {
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
@@ -139,7 +139,7 @@ export default function NotificationPanel() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 15, scale: 0.95 }}
                         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                        className="absolute right-0 top-full mt-4 w-[calc(100vw-32px)] sm:w-[400px] bg-white/95 backdrop-blur-xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/50 overflow-hidden z-[10001]"
+                        className={`absolute ${align === 'left' ? 'left-0' : 'right-0'} top-full mt-4 w-[calc(100vw-32px)] sm:w-[400px] bg-white/95 backdrop-blur-xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/50 overflow-hidden z-[10001]`}
                     >
                         {/* Header */}
                         <div className="px-6 py-5 border-b border-gray-100/50 bg-gray-50/50 flex items-center justify-between">

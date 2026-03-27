@@ -34,7 +34,7 @@ function SidebarContent({ onNavClick }) {
                     <span className="font-display font-bold text-xl text-[#1a1a1a]">Admin</span>
                 </div>
                 <div className="hidden lg:block">
-                    <NotificationPanel />
+                    <NotificationPanel align="left" />
                 </div>
             </div>
 

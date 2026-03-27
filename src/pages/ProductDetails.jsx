@@ -199,12 +199,7 @@ export default function ProductDetails() {
                                         transition={{ duration: 0.2 }}
                                     />
                                 </AnimatePresence>
-                                {/* Floating Badge */}
-                                <div className="absolute top-6 right-6 z-20">
-                                    <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg text-[#385040] border border-white/50">
-                                        {product.badge || 'Premium'}
-                                    </span>
-                                </div>
+
 
                                 {/* Image Navigation Arrows */}
                                 {product.images?.length > 1 && (
@@ -275,14 +270,6 @@ export default function ProductDetails() {
                                             <span className="text-4xl font-bold text-[#385040]">
                                                 ₹{(selectedVariant?.price || product.price).toFixed(2)}
                                             </span>
-                                            {(selectedVariant?.originalPrice || product.originalPrice) && (
-                                                <span className="text-xl text-gray-400 line-through">
-                                                    ₹{Number(selectedVariant?.originalPrice || product.originalPrice).toFixed(2)}
-                                                </span>
-                                            )}
-                                            <span className="text-lg font-bold text-[#c18667] ml-1">
-                                                ({offers[0].title})
-                                            </span>
                                             <span className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-1 rounded ml-2">
                                                 {product.stock > 0 || (selectedVariant && selectedVariant.stock > 0) ? 'In Stock' : 'Out of Stock'}
                                             </span>
@@ -290,18 +277,12 @@ export default function ProductDetails() {
                                         <div className="text-gray-500 text-sm mb-3">
                                             MRP (incl. of all taxes)
                                         </div>
-                                        {offers[0].description && (
-                                            <div className="text-sm font-medium text-[#385040] mb-4 flex items-center gap-2">
-                                                <span className="text-[#c18667]">✦</span> {offers[0].description}
-                                            </div>
-                                        )}
+
                                     </div>
                                 ) : (
                                     <div className="flex items-baseline gap-3 mb-6">
                                         <span className="text-4xl font-bold text-[#385040]">₹{(selectedVariant?.price || product.price).toFixed(2)}</span>
-                                        {(selectedVariant?.originalPrice || product.originalPrice) && (
-                                            <span className="text-xl text-gray-400 line-through">₹{Number(selectedVariant?.originalPrice || product.originalPrice).toFixed(2)}</span>
-                                        )}
+
                                         <div className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-1 rounded inline-block">
                                             {product.stock > 0 || (selectedVariant && selectedVariant.stock > 0) ? 'In Stock' : 'Out of Stock'}
                                         </div>
@@ -376,7 +357,7 @@ export default function ProductDetails() {
                                     </button>
 
                                     {/* Subtitle text */}
-                                    <p className="text-center text-sm font-medium text-gray-800">Order <span className="text-green-600 font-bold">now</span> & it ships <span className="font-bold">today</span></p>
+                                    <p className="text-center text-sm font-medium text-gray-800">Order <span className="text-green-600 font-bold">now</span> & Get Fast <span className="font-bold">Shipping</span></p>
                                 </div>
 
                                 {/* Removed lower description block */}

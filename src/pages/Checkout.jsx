@@ -169,7 +169,7 @@ export default function Checkout() {
         if (!isAuthenticated) {
             if (!guestContact.mobile.trim()) errs.mobile = 'Mobile number is required';
             else if (!/^[6-9]\d{9}$/.test(guestContact.mobile.trim())) errs.mobile = 'Enter a valid 10-digit mobile number';
-            
+
             if (!guestContact.name.trim()) errs.name = 'Name is required';
             if (!guestContact.email.trim()) errs.email = 'Email is required';
             else if (!/\S+@\S+\.\S+/.test(guestContact.email)) errs.email = 'Enter a valid email address';
@@ -415,7 +415,7 @@ export default function Checkout() {
     }
 
     const totalPrice = cart?.totalPrice || 0;
-    const shipping = 40.00; 
+    const shipping = 40.00;
     const total = totalPrice + shipping;
 
     return (
