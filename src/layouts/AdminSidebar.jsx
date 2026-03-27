@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare, Gift, Package, BarChart3, ScrollText, Bell } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, FolderTree, FileText, LogOut, Settings, ExternalLink, Users, Menu, X, MessageSquare, Gift, Package, BarChart3, ScrollText, Bell, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import chailogo from '../assets/chailogo.webp';
@@ -15,6 +15,7 @@ const navItems = [
     { label: 'Users', path: '/admin/users', icon: Users },
     { label: 'Admins', path: '/admin/admins', icon: Settings },
     { label: 'Complaints', path: '/admin/complaints', icon: MessageSquare },
+    { label: 'Contact Messages', path: '/admin/contact-messages', icon: Mail },
     // ── New Feature Nav Items ──
     { label: 'Offers', path: '/admin/offers', icon: Gift },
     { label: 'Inventory', path: '/admin/inventory', icon: Package },

@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/adminAPI';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, MessageSquare, CheckCircle, Clock, XCircle, Trash2, Send } from 'lucide-react';
+import { Loader2, Mail, CheckCircle, Clock, XCircle, Trash2, Send, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 
-const ResponseModal = ({ isOpen, complaint, onClose, onSubmit }) => {
+const ResponseModal = ({ isOpen, message, onClose, onSubmit }) => {
     const [response, setResponse] = useState('');
     const [status, setStatus] = useState('resolved');
 
     useEffect(() => {
-        if (complaint) {
-            setResponse(complaint.adminResponse || '');
-            setStatus(complaint.status === 'open' ? 'resolved' : complaint.status);
+        if (message) {
+            setResponse(message.adminResponse || '');
+            setStatus(message.status === 'open' ? 'resolved' : message.status);
         }
-    }, [complaint, isOpen]);
+    }, [message, isOpen]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(complaint._id, { status, adminResponse: response });
+        onSubmit(message._id, { status, adminResponse: response });
     };
 
-    if (!isOpen || !complaint) return null;
+    if (!isOpen || !message) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -31,18 +31,18 @@ const ResponseModal = ({ isOpen, complaint, onClose, onSubmit }) => {
                 className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl"
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold font-display">Respond to Complaint</h2>
+                    <h2 className="text-xl font-bold font-display">Reply to Message</h2>
                     <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors"><XCircle className="w-5 h-5" /></button>
                 </div>
 
                 <div className="mb-6 bg-gray-50 p-4 rounded-lg space-y-2">
                     <div className="flex justify-between">
-                        <span className="font-bold text-[#1a1a1a]">{complaint.subject}</span>
-                        <span className="text-xs text-gray-400">{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                        <span className="font-bold text-[#1a1a1a]">{message.subject}</span>
+                        <span className="text-xs text-gray-400">{new Date(message.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <p className="text-sm text-gray-600 italic">"{complaint.message}"</p>
+                    <p className="text-sm text-gray-600 italic">"{message.message}"</p>
                     <div className="text-xs text-gray-400 mt-2">
-                        From: {complaint.name} ({complaint.email})
+                        From: {message.name} ({message.email})
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@ const ResponseModal = ({ isOpen, complaint, onClose, onSubmit }) => {
                     <div className="flex justify-end gap-3 mt-6">
                         <button type="button" onClick={onClose} className="px-4 py-2 text-gray-500 hover:bg-gray-50 rounded-lg font-medium">Cancel</button>
                         <button type="submit" className="px-4 py-2 bg-[#385040] text-white rounded-lg font-medium hover:bg-[#2c3e32] flex items-center gap-2">
-                            <Send className="w-4 h-4" /> Send Response
+                            <Send className="w-4 h-4" /> Send Reply
                         </button>
                     </div>
                 </form>
@@ -83,46 +83,46 @@ const ResponseModal = ({ isOpen, complaint, onClose, onSubmit }) => {
     );
 };
 
-export default function AdminComplaints() {
-    const [complaints, setComplaints] = useState([]);
+export default function AdminContactMessages() {
+    const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState('all');
-    const [selectedComplaint, setSelectedComplaint] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState(null);
 
-    const fetchComplaints = async () => {
+    const fetchMessages = async () => {
         try {
-            const data = await adminAPI.getAllComplaints(statusFilter === 'all' ? '' : statusFilter, 'complaint');
-            setComplaints(data.data || []);
+            const data = await adminAPI.getAllComplaints(statusFilter === 'all' ? '' : statusFilter, 'contact');
+            setMessages(data.data || []);
         } catch (error) {
-            toast.error('Failed to fetch complaints');
+            toast.error('Failed to fetch contact messages');
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchComplaints();
+        fetchMessages();
     }, [statusFilter]);
 
     const handleRespond = async (id, data) => {
         try {
             await adminAPI.respondToComplaint(id, data);
-            toast.success('Response sent successfully');
-            setSelectedComplaint(null);
-            fetchComplaints();
+            toast.success('Reply sent successfully');
+            setSelectedMessage(null);
+            fetchMessages();
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to send response');
+            toast.error(error.response?.data?.message || 'Failed to send reply');
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this complaint?')) return;
+        if (!window.confirm('Are you sure you want to delete this message?')) return;
         try {
             await adminAPI.deleteComplaint(id);
-            toast.success('Complaint deleted successfully');
-            fetchComplaints();
+            toast.success('Message deleted successfully');
+            fetchMessages();
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to delete complaint');
+            toast.error(error.response?.data?.message || 'Failed to delete message');
         }
     };
 
@@ -140,8 +140,8 @@ export default function AdminComplaints() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="font-display text-2xl font-bold text-[#1a1a1a]">Customer Complaints</h1>
-                    <p className="text-gray-500">Manage and respond to customer inquiries and issues.</p>
+                    <h1 className="font-display text-2xl font-bold text-[#1a1a1a]">Contact Messages</h1>
+                    <p className="text-gray-500">Messages received from the contact page.</p>
                 </div>
             </div>
 
@@ -159,7 +159,7 @@ export default function AdminComplaints() {
                         {tab.label}
                         {statusFilter === tab.id && (
                             <motion.div
-                                layoutId="activeTab"
+                                layoutId="contactActiveTab"
                                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#385040]"
                             />
                         )}
@@ -168,92 +168,92 @@ export default function AdminComplaints() {
             </div>
 
             <div className="grid gap-4">
-                {complaints.map((complaint) => (
+                {messages.map((msg) => (
                     <motion.div
-                        key={complaint._id}
+                        key={msg._id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
                     >
                         <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
                             <div className="flex items-start gap-4">
-                                <div className={`mt-1 p-2 rounded-full ${complaint.status === 'open' ? 'bg-red-100 text-red-600' :
-                                        complaint.status === 'resolved' ? 'bg-green-100 text-green-600' :
+                                <div className={`mt-1 p-2 rounded-full ${msg.status === 'open' ? 'bg-blue-100 text-blue-600' :
+                                        msg.status === 'resolved' ? 'bg-green-100 text-green-600' :
                                             'bg-yellow-100 text-yellow-600'
                                     }`}>
-                                    {complaint.status === 'open' ? <Clock className="w-5 h-5" /> :
-                                        complaint.status === 'resolved' ? <CheckCircle className="w-5 h-5" /> :
-                                            <MessageSquare className="w-5 h-5" />}
+                                    {msg.status === 'open' ? <Clock className="w-5 h-5" /> :
+                                        msg.status === 'resolved' ? <CheckCircle className="w-5 h-5" /> :
+                                            <Mail className="w-5 h-5" />}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-lg text-[#1a1a1a] mb-1">{complaint.subject}</h3>
+                                    <h3 className="font-bold text-lg text-[#1a1a1a] mb-1">{msg.subject}</h3>
                                     <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                                        <span>{complaint.name}</span>
+                                        <span>{msg.name}</span>
                                         <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                                        <span>{complaint.email}</span>
+                                        <span>{msg.email}</span>
                                         <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                                        <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                                        <span>{new Date(msg.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${complaint.status === 'open' ? 'bg-red-100 text-red-700' :
-                                        complaint.status === 'resolved' ? 'bg-green-100 text-green-700' :
-                                            complaint.status === 'closed' ? 'bg-gray-100 text-gray-700' :
+                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${msg.status === 'open' ? 'bg-blue-100 text-blue-700' :
+                                        msg.status === 'resolved' ? 'bg-green-100 text-green-700' :
+                                            msg.status === 'closed' ? 'bg-gray-100 text-gray-700' :
                                                 'bg-yellow-100 text-yellow-700'
                                     }`}>
-                                    {complaint.status}
+                                    {msg.status}
                                 </span>
                             </div>
                         </div>
 
                         <div className="bg-gray-50 rounded-lg p-4 mb-4 text-gray-700">
-                            {complaint.message}
+                            {msg.message}
                         </div>
 
-                        {complaint.adminResponse && (
+                        {msg.adminResponse && (
                             <div className="bg-[#385040]/5 rounded-lg p-4 mb-4 border border-[#385040]/10">
-                                <p className="text-xs font-bold text-[#385040] uppercase tracking-wider mb-2">Our Response</p>
-                                <p className="text-gray-700">{complaint.adminResponse}</p>
-                                {complaint.resolvedAt && (
-                                    <p className="text-xs text-gray-400 mt-2">Resolved on {new Date(complaint.resolvedAt).toLocaleDateString()}</p>
+                                <p className="text-xs font-bold text-[#385040] uppercase tracking-wider mb-2">Our Reply</p>
+                                <p className="text-gray-700">{msg.adminResponse}</p>
+                                {msg.resolvedAt && (
+                                    <p className="text-xs text-gray-400 mt-2">Resolved on {new Date(msg.resolvedAt).toLocaleDateString()}</p>
                                 )}
                             </div>
                         )}
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
                             <button
-                                onClick={() => handleDelete(complaint._id)}
+                                onClick={() => handleDelete(msg._id)}
                                 className="px-4 py-2 text-sm font-bold text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2"
                             >
                                 <Trash2 className="w-4 h-4" /> Delete
                             </button>
                             <button
-                                onClick={() => setSelectedComplaint(complaint)}
+                                onClick={() => setSelectedMessage(msg)}
                                 className="px-4 py-2 text-sm font-bold text-white bg-[#385040] hover:bg-[#2c3e32] rounded-lg transition-colors flex items-center gap-2"
                             >
                                 <MessageSquare className="w-4 h-4" />
-                                {complaint.adminResponse ? 'Update Response' : 'Respond'}
+                                {msg.adminResponse ? 'Update Reply' : 'Reply'}
                             </button>
                         </div>
                     </motion.div>
                 ))}
 
-                {complaints.length === 0 && (
+                {messages.length === 0 && (
                     <div className="text-center py-20 bg-white rounded-xl border border-gray-200 border-dashed">
-                        <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                        <h3 className="text-lg font-bold text-gray-900">No complaints found</h3>
-                        <p className="text-gray-500">There are no complaints with this status.</p>
+                        <Mail className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                        <h3 className="text-lg font-bold text-gray-900">No contact messages found</h3>
+                        <p className="text-gray-500">There are no messages with this status.</p>
                     </div>
                 )}
             </div>
 
             <AnimatePresence>
-                {selectedComplaint && (
+                {selectedMessage && (
                     <ResponseModal
-                        isOpen={!!selectedComplaint}
-                        complaint={selectedComplaint}
-                        onClose={() => setSelectedComplaint(null)}
+                        isOpen={!!selectedMessage}
+                        message={selectedMessage}
+                        onClose={() => setSelectedMessage(null)}
                         onSubmit={handleRespond}
                     />
                 )}

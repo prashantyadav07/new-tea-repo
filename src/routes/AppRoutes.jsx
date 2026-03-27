@@ -44,6 +44,7 @@ const OrdersPage = lazy(() => import('../pages/admin/OrdersPage'));
 const AdminAdmins = lazy(() => import('../pages/admin/AdminAdmins'));
 const AdminUsers = lazy(() => import('../pages/admin/AdminUsers'));
 const AdminComplaints = lazy(() => import('../pages/admin/AdminComplaints'));
+const AdminContactMessages = lazy(() => import('../pages/admin/AdminContactMessages'));
 const AdminOrderDetail = lazy(() => import('../pages/admin/AdminOrderDetail'));
 const AdminNotifications = lazy(() => import('../pages/admin/AdminNotifications'));
 
@@ -133,6 +134,7 @@ export default function AppRoutes() {
           <Route path="admins" element={<AdminAdmins />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="complaints" element={<AdminComplaints />} />
+          <Route path="contact-messages" element={<AdminContactMessages />} />
           {/* ── New Feature Routes ── */}
           <Route path="offers" element={<OfferManagement />} />
           <Route path="inventory" element={<InventoryPage />} />

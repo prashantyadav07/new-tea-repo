@@ -137,8 +137,11 @@ export const adminAPI = {
         const response = await api.post('/complaints', data);
         return response.data;
     },
-    getAllComplaints: async (status) => {
-        const query = status ? `?status=${status}` : '';
+    getAllComplaints: async (status, source) => {
+        const params = new URLSearchParams();
+        if (status) params.append('status', status);
+        if (source) params.append('source', source);
+        const query = params.toString() ? `?${params.toString()}` : '';
         const response = await api.get(`/admin/complaints${query}`);
         return response.data;
     },

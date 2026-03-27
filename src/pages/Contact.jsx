@@ -60,7 +60,8 @@ export default function Contact() {
         name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         subject: formData.subject,
-        message: formData.message
+        message: formData.message,
+        source: 'contact'
       });
       toast.success('Message sent successfully! We will get back to you soon.');
       setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '' });

@@ -26,32 +26,7 @@ export default function Footer() {
             {/* Decorative gradient */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-tea-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-            {/* Newsletter Section */}
-            <div className="border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div>
-                            <h3 className="font-display text-2xl sm:text-3xl font-bold mb-2">
-                                Stay in the <span className="text-tea-primary italic">Connection</span>
-                            </h3>
-                            <p className="text-gray-400 text-sm max-w-md">
-                                Subscribe to get special offers, free tea giveaways, and updates on new arrivals.
-                            </p>
-                        </div>
-                        <div className="flex flex-col sm:flex-row w-full md:w-auto gap-2 sm:gap-0">
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                className="flex-1 md:w-80 px-6 py-3.5 bg-white/10 border border-white/10 rounded-full sm:rounded-r-none text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-tea-primary transition-colors"
-                            />
-                            <button className="px-6 py-3.5 bg-tea-primary hover:bg-orange-500 text-white font-semibold rounded-full sm:rounded-l-none transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
-                                Subscribe
-                                <ArrowRight className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             {/* Main Footer */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">

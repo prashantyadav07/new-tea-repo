@@ -35,7 +35,8 @@ export default function SubmitComplaint() {
                 email: formData.email,
                 phone: formData.phone,
                 subject: formData.subject,
-                message: formData.message
+                message: formData.message,
+                source: 'complaint'
             });
             setSubmitted(response);
             toast.success('Complaint submitted successfully!');
