@@ -122,11 +122,13 @@ export default function AdminUsers() {
         }
     };
 
-    const filteredUsers = users.filter(user =>
-        user.name?.toLowerCase().includes(search.toLowerCase()) ||
-        user.email?.toLowerCase().includes(search.toLowerCase()) ||
-        user.mobile?.includes(search)
-    );
+    const filteredUsers = Array.isArray(users)
+        ? users.filter(user =>
+            user.name?.toLowerCase().includes(search.toLowerCase()) ||
+            user.email?.toLowerCase().includes(search.toLowerCase()) ||
+            user.mobile?.includes(search)
+        )
+        : [];
 
     if (loading) return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-[#385040]" /></div>;
 

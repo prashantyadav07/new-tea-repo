@@ -63,7 +63,7 @@ export default function ProductCard({ product, index }) {
             className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 cursor-pointer border border-transparent overflow-hidden"
         >
             {/* Image Container */}
-            <div className={`relative h-64 sm:h-72 w-full bg-gradient-to-br ${bgGradient} dark:from-white/5 dark:to-white/10 flex items-center justify-center overflow-hidden`}>
+            <div className={`relative h-full sm:h-72 w-full bg-gradient-to-br ${bgGradient} dark:from-white/5 dark:to-white/10 flex items-center justify-center overflow-hidden`}>
                 {/* Badge */}
                 {badge && (
                     <div className="absolute top-4 left-4 z-20">
@@ -80,7 +80,7 @@ export default function ProductCard({ product, index }) {
                     <img
                         src={image}
                         alt={name}
-                        className="w-full h-full object-cover drop-shadow-2xl"
+                        className="w-full h-full object-cover  drop-shadow-2xl"
                     />
                 </div>
             </div>

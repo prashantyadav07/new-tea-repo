@@ -30,10 +30,12 @@ export default function CategoryManagement() {
     const fetchCategories = async () => {
         try {
             const res = await categoryAPI.getAll();
-            setCategories(res.data);
+            const data = res?.data || res;
+            setCategories(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error(error);
             toast.error("Failed to load categories");
+            setCategories([]);
         } finally {
             setIsLoading(false);
         }

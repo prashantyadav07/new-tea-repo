@@ -14,7 +14,7 @@ export default function OfferBadge({ productId }) {
         const fetchOffers = async () => {
             try {
                 const res = await offerAPI.getOffersByProduct(productId);
-                if (res.success && res.data?.length > 0) setOffers(res.data);
+                if (res.success && Array.isArray(res.data) && res.data.length > 0) setOffers(res.data);
             } catch { /* silent */ }
         };
         fetchOffers();

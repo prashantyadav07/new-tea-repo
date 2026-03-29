@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Clock, Truck, CheckCircle, XCircle, Loader2, ShoppingBag, ArrowRight, AlertCircle, ChevronDown, ChevronUp, MapPin, Calendar, CreditCard } from 'lucide-react';
+import { Package, Clock, Truck, CheckCircle, XCircle, Loader2, ShoppingBag, ArrowRight, AlertCircle, ChevronDown, ChevronUp, MapPin, Calendar, CreditCard, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { orderAPI } from '@/services/orderAPI';
 import { toast } from 'sonner';
@@ -27,10 +27,12 @@ export default function MyOrders() {
         try {
             setError(null);
             const { data } = await orderAPI.getMyOrders();
-            setOrders(data.data || []);
+            const orderData = data?.data || data;
+            setOrders(Array.isArray(orderData) ? orderData : []);
         } catch (err) {
             console.error('Failed to fetch orders', err);
             setError('Failed to load your orders. Please try again.');
+            setOrders([]);
         } finally {
             setLoading(false);
         }
@@ -45,7 +47,7 @@ export default function MyOrders() {
         setCancellingId(orderId);
         try {
             const { data } = await orderAPI.cancelOrder(orderId);
-            setOrders(prev => prev.map(o => o._id === orderId ? data.data : o));
+            setOrders(prev => Array.isArray(prev) ? prev.map(o => o._id === orderId ? data.data : o) : [data.data]);
             toast.success('Order cancelled successfully');
         } catch (err) {
             toast.error(err.response?.data?.message || 'Failed to cancel order');
@@ -322,6 +324,34 @@ export default function MyOrders() {
                                                                 </span>
                                                             </div>
                                                         </div>
+
+                                                        {/* Shipment Details */}
+                                                        {(order.awbCode || order.courierName) && (
+                                                            <div>
+                                                                <h4 className="font-display font-bold text-[#1A1A1A] flex items-center gap-2 mb-3">
+                                                                    <Truck className="w-4 h-4 text-gray-400" /> Shipment Details
+                                                                </h4>
+                                                                <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm space-y-3">
+                                                                    {order.courierName && (
+                                                                        <div className="flex justify-between items-center">
+                                                                            <span className="text-sm text-gray-500">Courier</span>
+                                                                            <span className="text-sm font-bold text-[#1A1A1A]">{order.courierName}</span>
+                                                                        </div>
+                                                                    )}
+                                                                    {order.awbCode && (
+                                                                        <div className="flex justify-between items-center">
+                                                                            <span className="text-sm text-gray-500">AWB No.</span>
+                                                                            <span className="text-sm font-mono font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                                                                                {order.awbCode}
+                                                                                <button onClick={() => navigator.clipboard.writeText(order.awbCode)} className="text-gray-400 hover:text-gray-600">
+                                                                                    <Copy className="w-3 h-3" />
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
 
                                                 </div>

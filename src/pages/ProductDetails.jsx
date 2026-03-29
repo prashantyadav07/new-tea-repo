@@ -55,7 +55,7 @@ export default function ProductDetails() {
                 // Fetch offers using the resolved MongoDB ObjectId, NOT the URL slug
                 try {
                     const res = await offerAPI.getOffersByProduct(data._id);
-                    if (res.success && res.data?.length > 0) setOffers(res.data);
+                    if (res.success && Array.isArray(res.data) && res.data.length > 0) setOffers(res.data);
                 } catch { /* silent */ }
 
             } catch (error) {

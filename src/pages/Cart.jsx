@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, ArrowRight, ShieldCheck, Leaf, Loader2, AlertCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, ArrowRight, ShieldCheck, Leaf, Loader2, AlertCircle, Gift } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cartAPI } from '@/services/cartAPI';
 import { guestCartService } from '@/services/guestCartService';
@@ -157,7 +157,7 @@ export default function Cart() {
 
                 {/* Header */}
                 <div className="mb-8 flex items-baseline justify-between">
-                    <h1 className="font-display text-3xl font-bold">Shopping Cart</h1>
+                    <h1 className="font-display text-3xl font-bold mt-5">Shopping Cart</h1>
                     <span className="text-sm text-gray-500 font-medium">{cartItems.length} Items</span>
                 </div>
 
@@ -246,6 +246,32 @@ export default function Cart() {
                                     })}
                                 </AnimatePresence>
                             </div>
+
+                            {/* Complimentary Sugar — Free Offer */}
+                            <div className="p-4 sm:p-6 bg-green-50/60 border-t border-green-100">
+                                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                                    <div className="sm:col-span-6 flex gap-4 items-center">
+                                        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 bg-green-100 rounded-lg flex items-center justify-center border border-green-200">
+                                            <Gift className="w-8 h-8 text-green-600" />
+                                        </div>
+                                        <div className="flex flex-col justify-center">
+                                            <span className="font-display text-lg font-bold text-[#1A1A1A] mb-1">Sugar ( 1 Kg Packet)</span>
+                                            <span className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-1">Complimentary</span>
+                                            <span className="text-xs text-green-600 font-semibold">Free with your order 🎁</span>
+                                        </div>
+                                    </div>
+                                    <div className="sm:col-span-3 flex justify-start sm:justify-center">
+                                        <span className="text-sm font-bold text-gray-500">Qty: 1</span>
+                                    </div>
+                                    <div className="sm:col-span-3 flex justify-between sm:justify-end items-center sm:block">
+                                        <span className="text-sm font-bold text-gray-500 sm:hidden">Total:</span>
+                                        <div className="text-right">
+                                            <span className="block font-sans text-lg font-bold text-green-600">₹0.00</span>
+                                            <span className="text-[10px] font-bold text-green-500 uppercase">Free Offer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <Link to="/shop" className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-gray-500 hover:text-[#385040] transition-colors uppercase tracking-wide">
@@ -268,6 +294,10 @@ export default function Cart() {
                                     <span className="font-bold text-[#1A1A1A]">
                                         ₹{shipping.toFixed(2)}
                                     </span>
+                                </div>
+                                <div className="flex justify-between text-sm text-green-600">
+                                    <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
+                                    <span className="font-bold">₹0.00</span>
                                 </div>
                             </div>
 

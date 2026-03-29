@@ -50,7 +50,8 @@ export default function OrdersPage() {
         try {
             const response = await adminAPI.getAllOrders(filters);
             if (response.success) {
-                setOrders(response.data);
+                const data = response?.data || response;
+                setOrders(Array.isArray(data) ? data : []);
                 setLastRefreshed(new Date());
             }
         } catch (error) {
@@ -93,7 +94,7 @@ export default function OrdersPage() {
             loading: `Updating order status to ${newStatus}...`,
             success: (response) => {
                 if (response.success) {
-                    setOrders(orders.map(o => o._id === selectedOrder._id ? response.data : o));
+                    setOrders(Array.isArray(orders) ? orders.map(o => o._id === selectedOrder._id ? response.data : o) : [response.data]);
                     setIsStatusModalOpen(false);
                     setSelectedOrder(null);
                     return `Order status updated to ${newStatus}`;
@@ -110,7 +111,7 @@ export default function OrdersPage() {
             loading: 'Marking payment as received...',
             success: (response) => {
                 if (response.success) {
-                    setOrders(orders.map(o => o._id === orderId ? response.data : o));
+                    setOrders(Array.isArray(orders) ? orders.map(o => o._id === orderId ? response.data : o) : [response.data]);
                     setIsStatusModalOpen(false);
                     setSelectedOrder(null);
                     return 'Payment marked as received';
@@ -129,7 +130,7 @@ export default function OrdersPage() {
             loading: `Deleting order #${deleteConfirm.orderNumber}...`,
             success: (response) => {
                 if (response.success) {
-                    setOrders(orders.filter(o => o._id !== deleteConfirm._id));
+                    setOrders(Array.isArray(orders) ? orders.filter(o => o._id !== deleteConfirm._id) : []);
                     setDeleteConfirm(null);
                     return `Order #${deleteConfirm.orderNumber} deleted`;
                 }

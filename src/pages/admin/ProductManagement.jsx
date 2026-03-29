@@ -44,11 +44,15 @@ export default function ProductManagement() {
                 productAPI.getAll(),
                 categoryAPI.getAll()
             ]);
-            setProducts(prodRes.data);
-            setCategories(catRes.data);
+            const prodData = prodRes?.data || prodRes;
+            const catData = catRes?.data || catRes;
+            setProducts(Array.isArray(prodData) ? prodData : []);
+            setCategories(Array.isArray(catData) ? catData : []);
         } catch (error) {
             console.error(error);
             toast.error("Failed to load data");
+            setProducts([]);
+            setCategories([]);
         } finally {
             setIsLoading(false);
         }
@@ -194,15 +198,15 @@ export default function ProductManagement() {
         try {
             await productAPI.delete(id);
             toast.success("Product deleted");
-            setProducts(products.filter(p => p._id !== id));
+            setProducts(Array.isArray(products) ? products.filter(p => p._id !== id) : []);
         } catch (error) {
             toast.error("Failed to delete product");
         }
     };
 
-    const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProducts = Array.isArray(products) 
+        ? products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        : [];
 
     return (
         <div className="space-y-6">

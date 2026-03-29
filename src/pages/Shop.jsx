@@ -20,10 +20,14 @@ export default function Shop() {
                     productAPI.getAll(),
                     categoryAPI.getAll()
                 ]);
-                setProducts(prodRes.data);
-                setCategories(catRes.data);
+                const prodData = prodRes?.data || prodRes;
+                const catData = catRes?.data || catRes;
+                setProducts(Array.isArray(prodData) ? prodData : []);
+                setCategories(Array.isArray(catData) ? catData : []);
             } catch (error) {
                 console.error("Failed to fetch shop data", error);
+                setProducts([]);
+                setCategories([]);
             } finally {
                 setIsLoading(false);
             }

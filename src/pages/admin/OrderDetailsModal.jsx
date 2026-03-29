@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/adminAPI';
-import { X, Package, Calendar, DollarSign, ShoppingBag, MapPin, Phone, Mail, Clock, CheckCircle } from 'lucide-react';
+import { orderAPI } from '../../services/orderAPI';
+import { X, Package, Calendar, DollarSign, ShoppingBag, MapPin, Phone, Mail, Clock, CheckCircle, Truck, RefreshCw, ExternalLink, Copy } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function OrderDetailsModal({ isOpen, onClose, order }) {
     const [userHistory, setUserHistory] = useState([]);
     const [loadingHistory, setLoadingHistory] = useState(false);
+    const [trackingData, setTrackingData] = useState(null);
+    const [trackingLoading, setTrackingLoading] = useState(false);
 
     useEffect(() => {
         if (isOpen && order?.user?._id) {
@@ -21,13 +24,34 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
             if (response.success) {
                 // Filter out the current order from history list if desired, or keep it. 
                 // Let's keep all to show total history.
-                setUserHistory(response.data);
+                const data = response?.data || response;
+                setUserHistory(Array.isArray(data) ? data : []);
             }
         } catch (error) {
             console.error("Failed to fetch user history", error);
+            setUserHistory([]);
         } finally {
             setLoadingHistory(false);
         }
+    };
+
+    const refreshTracking = async () => {
+        if (!order?._id) return;
+        setTrackingLoading(true);
+        try {
+            const response = await orderAPI.getOrderTracking(order._id);
+            if (response.data) {
+                setTrackingData(response.data);
+            }
+        } catch (error) {
+            console.error('Failed to fetch tracking', error);
+        } finally {
+            setTrackingLoading(false);
+        }
+    };
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
     };
 
     if (!isOpen || !order) return null;
@@ -184,6 +208,107 @@ export default function OrderDetailsModal({ isOpen, onClose, order }) {
                                     </div>
                                 </section>
                             </div>
+
+                            {/* Shiprocket Shipping Information */}
+                            {(order.awbCode || order.shiprocketOrderId) && (
+                                <section className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                                            <Truck className="w-3.5 h-3.5" /> Shipment Details
+                                        </h3>
+                                        <button
+                                            onClick={refreshTracking}
+                                            disabled={trackingLoading}
+                                            className="flex items-center gap-1.5 text-xs font-medium text-[#385040] hover:text-[#2a3d30] transition-colors disabled:opacity-50"
+                                        >
+                                            <RefreshCw className={`w-3.5 h-3.5 ${trackingLoading ? 'animate-spin' : ''}`} />
+                                            Refresh Tracking
+                                        </button>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        {order.awbCode && (
+                                            <div>
+                                                <p className="text-xs text-gray-400 mb-1">AWB Code</p>
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-sm font-bold text-[#1A1A1A] font-mono">{order.awbCode}</span>
+                                                    <button onClick={() => copyToClipboard(order.awbCode)} className="text-gray-400 hover:text-gray-600">
+                                                        <Copy className="w-3 h-3" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {order.courierName && (
+                                            <div>
+                                                <p className="text-xs text-gray-400 mb-1">Courier</p>
+                                                <p className="text-sm font-medium text-[#1A1A1A]">{order.courierName}</p>
+                                            </div>
+                                        )}
+                                        {order.shiprocketOrderId && (
+                                            <div>
+                                                <p className="text-xs text-gray-400 mb-1">Shiprocket Order ID</p>
+                                                <p className="text-sm font-mono text-[#1A1A1A]">{order.shiprocketOrderId}</p>
+                                            </div>
+                                        )}
+                                        {order.actualShippingCost != null && (
+                                            <div>
+                                                <p className="text-xs text-gray-400 mb-1">Shipping Cost</p>
+                                                <p className="text-sm font-medium text-[#1A1A1A]">₹{order.actualShippingCost}</p>
+                                            </div>
+                                        )}
+                                        {order.pickupScheduledDate && (
+                                            <div>
+                                                <p className="text-xs text-gray-400 mb-1">Pickup Scheduled</p>
+                                                <p className="text-sm text-[#1A1A1A]">{formatDate(order.pickupScheduledDate)}</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* PDF Links */}
+                                    {(order.labelUrl || order.manifestUrl || order.invoiceUrl) && (
+                                        <div className="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-2">
+                                            {order.labelUrl && (
+                                                <a href={order.labelUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg">
+                                                    <ExternalLink className="w-3 h-3" /> Label
+                                                </a>
+                                            )}
+                                            {order.manifestUrl && (
+                                                <a href={order.manifestUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg">
+                                                    <ExternalLink className="w-3 h-3" /> Manifest
+                                                </a>
+                                            )}
+                                            {order.invoiceUrl && (
+                                                <a href={order.invoiceUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg">
+                                                    <ExternalLink className="w-3 h-3" /> Invoice
+                                                </a>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Tracking Timeline */}
+                                    {trackingData?.tracking && (
+                                        <div className="mt-4 pt-4 border-t border-gray-100">
+                                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Tracking Timeline</h4>
+                                            <div className="space-y-3 max-h-48 overflow-y-auto">
+                                                {(trackingData.tracking.shipment_track_activities || []).map((activity, idx) => (
+                                                    <div key={idx} className="flex gap-3">
+                                                        <div className="flex flex-col items-center">
+                                                            <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${idx === 0 ? 'bg-[#385040]' : 'bg-gray-300'}`} />
+                                                            {idx < (trackingData.tracking.shipment_track_activities.length - 1) && (
+                                                                <div className="w-px h-full bg-gray-200 mt-1" />
+                                                            )}
+                                                        </div>
+                                                        <div className="pb-3">
+                                                            <p className="text-sm font-medium text-[#1A1A1A]">{activity.activity}</p>
+                                                            <p className="text-xs text-gray-400">{activity.location} &middot; {formatDate(activity.date)}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </section>
+                            )}
                         </div>
 
                         {/* Right Column: Customer Profile & History (1/3 width) */}
