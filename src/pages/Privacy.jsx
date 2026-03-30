@@ -11,7 +11,7 @@ const sections = [
         content: [
             'Personal information such as name, email address, phone number, and shipping address when you place an order or create an account.',
             'Payment information processed securely through our third-party payment providers. We do not store your full credit card details.',
-            'Usage data including pages visited, time spent on site, and browsing patterns to improve your shopping experience.',
+            'Usage data including pages visited, timee spent on site, and browsing patterns to improve your shopping experience.',
         ],
     },
     {
