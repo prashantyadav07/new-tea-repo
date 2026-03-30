@@ -22,7 +22,8 @@ export default function AdminLogsPage() {
 
             const res = await adminAPI.getAdminLogs(params);
             if (res.success) {
-                setLogs(res.data);
+                const data = res?.data || res;
+                setLogs(Array.isArray(data) ? data : []);
                 setTotalPages(res.totalPages || 1);
             }
         } catch (err) {

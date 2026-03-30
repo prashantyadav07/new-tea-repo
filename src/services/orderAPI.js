@@ -1,7 +1,7 @@
 import { adminAxiosInstance as api } from './adminAPI';
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://mern-tea-backend.vercel.app/api';
 
 export const orderAPI = {
     // ── Authenticated User Routes ────────────────────────────
@@ -10,13 +10,18 @@ export const orderAPI = {
     getOrderById: (id) => api.get(`/orders/${id}`),
     cancelOrder: (id) => api.post(`/orders/${id}/cancel`),
 
+    // ── Shipping Calculation ─────────────────────────────────
+    calculateShipping: (deliveryPincode, items) => axios.post(`${BASE_URL}/orders/calculate-shipping`, { deliveryPincode, items }),
+
     // ── Razorpay Payment Routes ──────────────────────────────
-    createRazorpayOrder: (shippingAddress) => api.post('/orders/razorpay/create', { shippingAddress }),
+    createRazorpayOrder: (shippingAddress, actualShippingCost, selectedCourierId) =>
+        api.post('/orders/razorpay/create', { shippingAddress, actualShippingCost, selectedCourierId }),
     verifyRazorpayPayment: (data) => api.post('/orders/razorpay/verify', data),
 
     // ── Buy Now (direct purchase, no cart) ────────────────────
     buyNow: (items, shippingAddress, paymentMethod) => api.post('/orders/buy-now', { items, shippingAddress, paymentMethod }),
-    buyNowRazorpayCreate: (items, shippingAddress) => api.post('/orders/buy-now/razorpay/create', { items, shippingAddress }),
+    buyNowRazorpayCreate: (items, shippingAddress, actualShippingCost, selectedCourierId) =>
+        api.post('/orders/buy-now/razorpay/create', { items, shippingAddress, actualShippingCost, selectedCourierId }),
 
     // ── Guest Routes (no auth) ───────────────────────────────
     createGuestOrder: (data) => axios.post(`${BASE_URL}/orders/guest`, data),
@@ -32,4 +37,5 @@ export const orderAPI = {
         return api.get(`/admin/orders?${params.toString()}`);
     },
     updateOrderStatus: (id, status) => api.patch(`/admin/orders/${id}/status`, { status }),
+    getOrderTracking: (id) => api.get(`/admin/orders/${id}/tracking`),
 };

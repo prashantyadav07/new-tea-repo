@@ -12,7 +12,8 @@ export default function OfferBanner() {
             try {
                 const res = await offerAPI.getActiveOffers();
                 if (res.success) {
-                    const bannerOffers = res.data.filter(o => o.displayType?.includes('banner') && o.bannerImage?.url);
+                    const data = Array.isArray(res.data) ? res.data : [];
+                    const bannerOffers = data.filter(o => o.displayType?.includes('banner') && o.bannerImage?.url);
                     setOffers(bannerOffers);
                 }
             } catch { /* silent */ }

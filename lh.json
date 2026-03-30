@@ -940,7 +940,7 @@
             "entity": "Google Fonts"
           },
           {
-            "url": "http://localhost:5000/api/products",
+            "url": "https://mern-tea-backend.vercel.app/api/products",
             "sessionTargetType": "page",
             "protocol": "",
             "rendererStartTime": 703.8519999980927,
@@ -3556,7 +3556,7 @@
       "name": "localhost",
       "origins": [
         "http://localhost:4173",
-        "http://localhost:5000"
+        "https://mern-tea-backend.vercel.app"
       ],
       "isFirstParty": true,
       "isUnrecognized": true

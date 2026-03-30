@@ -23,10 +23,12 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await productAPI.getAll();
-        setProducts(data);
+        const response = await productAPI.getAll();
+        const data = response?.data || response;
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Failed to fetch products for home", error);
+        setProducts([]);
       }
     };
     fetchProducts();
@@ -254,7 +256,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-x-8 gap-y-5 sm:gap-y-16">
             {featuredTeas.map((product, i) => (
               <ScrollReveal key={product._id || product.id || i} delay={i * 0.1}>
                 <ProductCard product={product} />

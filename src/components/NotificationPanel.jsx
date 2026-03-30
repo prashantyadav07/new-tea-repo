@@ -64,7 +64,8 @@ export default function NotificationPanel({ align = 'right' }) {
             setLoading(true);
             const res = await adminAPI.getNotifications({ limit: 10 });
             if (res.success) {
-                setNotifications(res.data);
+                const data = res?.data || res;
+                setNotifications(Array.isArray(data) ? data : []);
                 lastFetchedAt.current = new Date().toISOString();
             }
         } catch { /* silent */ }
@@ -81,7 +82,7 @@ export default function NotificationPanel({ align = 'right' }) {
     const handleMarkAsRead = async (id) => {
         try {
             await adminAPI.markNotificationRead(id);
-            setNotifications(prev => prev.map(n => n._id === id ? { ...n, isRead: true } : n));
+            setNotifications(prev => Array.isArray(prev) ? prev.map(n => n._id === id ? { ...n, isRead: true } : n) : []);
             setUnreadCount(c => Math.max(0, c - 1));
         } catch { /* silent */ }
     };
@@ -89,7 +90,7 @@ export default function NotificationPanel({ align = 'right' }) {
     const handleMarkAllRead = async () => {
         try {
             await adminAPI.markAllNotificationsRead();
-            setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+            setNotifications(prev => Array.isArray(prev) ? prev.map(n => ({ ...n, isRead: true })) : []);
             setUnreadCount(0);
         } catch { /* silent */ }
     };
@@ -97,7 +98,7 @@ export default function NotificationPanel({ align = 'right' }) {
     const handleDelete = async (id) => {
         try {
             await adminAPI.deleteNotification(id);
-            setNotifications(prev => prev.filter(n => n._id !== id));
+            setNotifications(prev => Array.isArray(prev) ? prev.filter(n => n._id !== id) : []);
             fetchUnreadCount();
         } catch { /* silent */ }
     };
@@ -244,7 +245,7 @@ export default function NotificationPanel({ align = 'right' }) {
                 )}
             </AnimatePresence>
 
-            <style jsx>{`
+            <style>{`
                 .premium-scrollbar::-webkit-scrollbar { width: 4px; }
                 .premium-scrollbar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
                 .premium-scrollbar::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }

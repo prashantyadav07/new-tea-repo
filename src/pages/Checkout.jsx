@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Loader2, CreditCard, Banknote, ShieldCheck, Leaf, MapPin, AlertCircle, Phone, Mail, User } from 'lucide-react';
+import { ArrowLeft, Loader2, CreditCard, Banknote, ShieldCheck, Leaf, MapPin, AlertCircle, Phone, Mail, User, Truck, Clock, Gift } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cartAPI } from '@/services/cartAPI';
 import { guestCartService } from '@/services/guestCartService';
@@ -79,6 +79,13 @@ export default function Checkout() {
         email: '',
     });
 
+    // ── Shipping / Courier Selection State ───────────────────
+    const [shippingCouriers, setShippingCouriers] = useState([]);
+    const [selectedCourier, setSelectedCourier] = useState(null);
+    const [shippingLoading, setShippingLoading] = useState(false);
+    const [shippingError, setShippingError] = useState('');
+    const [lastCheckedPincode, setLastCheckedPincode] = useState('');
+
     // (Removed auto-load logic to ensure fields remain blank per user request)
 
     // Fetch cart or load from router state for express buy
@@ -131,6 +138,42 @@ export default function Checkout() {
         }
     }, [navigate, isAuthenticated, isExpress, location.state]);
 
+    // ── Fetch shipping rates when pincode is valid and cart is loaded ──
+    useEffect(() => {
+        const pincode = address.zipCode?.trim();
+        if (!/^\d{6}$/.test(pincode) || !cart?.items?.length || pincode === lastCheckedPincode) return;
+
+        const fetchShipping = async () => {
+            setShippingLoading(true);
+            setShippingError('');
+            setSelectedCourier(null);
+            setShippingCouriers([]);
+            try {
+                const items = cart.items.map(item => ({
+                    productId: item.product?._id || item.product,
+                    variantSize: item.variantSize || item.size,
+                    quantity: item.quantity,
+                }));
+                const { data } = await orderAPI.calculateShipping(pincode, items);
+                const couriers = data?.data?.couriers || [];
+                setShippingCouriers(couriers);
+                // Auto-select recommended (cheapest) courier
+                const recommended = couriers.find(c => c.recommended) || couriers[0];
+                if (recommended) setSelectedCourier(recommended);
+                setLastCheckedPincode(pincode);
+            } catch (err) {
+                const msg = err.response?.data?.message || 'Failed to calculate shipping';
+                setShippingError(msg);
+                setShippingCouriers([]);
+            } finally {
+                setShippingLoading(false);
+            }
+        };
+
+        const debounce = setTimeout(fetchShipping, 600);
+        return () => clearTimeout(debounce);
+    }, [address.zipCode, cart, lastCheckedPincode]);
+
     // Sanitize phone/mobile: strip spaces, dashes, +91 prefix, leading 0
     const sanitizePhone = (val) => {
         let cleaned = val.replace(/[\s\-().]/g, '');
@@ -145,6 +188,10 @@ export default function Checkout() {
         const finalValue = name === 'phone' ? sanitizePhone(value) : value;
         setAddress(prev => ({ ...prev, [name]: finalValue }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+        // Reset shipping when pincode changes
+        if (name === 'zipCode') {
+            setLastCheckedPincode('');
+        }
     };
 
     const handleGuestChange = (e) => {
@@ -164,6 +211,9 @@ export default function Checkout() {
         if (!address.state.trim()) errs.state = 'State is required';
         if (!address.zipCode.trim()) errs.zipCode = 'ZIP code is required';
         else if (!/^\d{6}$/.test(address.zipCode.trim())) errs.zipCode = 'Enter a valid 6-digit ZIP code';
+
+        // Courier selection validation
+        if (!selectedCourier) errs.courier = 'Please select a delivery option';
 
         // Guest-specific validation
         if (!isAuthenticated) {
@@ -210,9 +260,9 @@ export default function Checkout() {
                     variantSize: item.size,
                     quantity: item.quantity
                 }));
-                response = await orderAPI.buyNowRazorpayCreate(buyNowItems, shippingAddress);
+                response = await orderAPI.buyNowRazorpayCreate(buyNowItems, shippingAddress, selectedCourier.rate, selectedCourier.courier_company_id);
             } else {
-                response = await orderAPI.createRazorpayOrder(shippingAddress);
+                response = await orderAPI.createRazorpayOrder(shippingAddress, selectedCourier.rate, selectedCourier.courier_company_id);
             }
             orderData = response.data?.data || response.data;
         } catch (err) {
@@ -321,7 +371,9 @@ export default function Checkout() {
                     mobile: guestContact.mobile.trim(),
                     name: guestContact.name.trim(),
                     email: guestContact.email.trim()
-                }
+                },
+                actualShippingCost: selectedCourier.rate,
+                selectedCourierId: selectedCourier.courier_company_id,
             });
             orderData = response.data?.data || response.data;
         } catch (err) {
@@ -415,7 +467,7 @@ export default function Checkout() {
     }
 
     const totalPrice = cart?.totalPrice || 0;
-    const shipping = 40.00;
+    const shipping = selectedCourier ? selectedCourier.rate : 0;
     const total = totalPrice + shipping;
 
     return (
@@ -427,7 +479,7 @@ export default function Checkout() {
                     <Link to="/cart" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#385040] transition-colors uppercase tracking-wide mb-4">
                         <ArrowLeft className="w-4 h-4" /> Back to Cart
                     </Link>
-                    <h1 className="font-display text-3xl font-bold">Checkout</h1>
+                    <h1 className="font-display mt-10 text-3xl font-bold">Checkout</h1>
                 </div>
 
                 <div className="lg:grid lg:grid-cols-12 gap-8 items-start">
@@ -566,10 +618,81 @@ export default function Checkout() {
                             </div>
                         </motion.div>
 
+                        {/* Delivery Options */}
+                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-8 h-8 rounded-full bg-[#385040] text-white flex items-center justify-center text-sm font-bold">{isAuthenticated ? '2' : '3'}</div>
+                                <h2 className="font-display text-xl font-bold">Delivery Options</h2>
+                            </div>
+
+                            {!address.zipCode || address.zipCode.length < 6 ? (
+                                <div className="text-center py-6 text-gray-400 text-sm">
+                                    <Truck className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                    <p>Enter your ZIP code to see delivery options</p>
+                                </div>
+                            ) : shippingLoading ? (
+                                <div className="text-center py-6">
+                                    <div className="w-6 h-6 border-2 border-[#385040] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                                    <p className="text-sm text-gray-500">Checking delivery options...</p>
+                                </div>
+                            ) : shippingError ? (
+                                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                                    {shippingError}
+                                </div>
+                            ) : shippingCouriers.length > 0 ? (
+                                <div className="grid gap-3">
+                                    {shippingCouriers.map((courier) => {
+                                        const isSelected = selectedCourier?.courier_company_id === courier.courier_company_id;
+                                        return (
+                                            <button
+                                                type="button"
+                                                key={courier.courier_company_id}
+                                                onClick={() => setSelectedCourier(courier)}
+                                                className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${isSelected
+                                                    ? 'border-[#385040] bg-[#385040]/5 shadow-sm'
+                                                    : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
+                                            >
+                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isSelected ? 'bg-[#385040] text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                                    <Truck className="w-5 h-5" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="font-bold text-sm text-[#1A1A1A]">{courier.courier_name}</p>
+                                                        {courier.recommended && (
+                                                            <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Recommended</span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-center gap-3 mt-0.5">
+                                                        <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" />
+                                                            {courier.estimated_delivery_days} day{courier.estimated_delivery_days > 1 ? 's' : ''}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-sm text-[#1A1A1A]">₹{courier.rate.toFixed(2)}</p>
+                                                </div>
+                                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${isSelected ? 'border-[#385040]' : 'border-gray-300'}`}>
+                                                    {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#385040]" />}
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="text-center py-6 text-gray-400 text-sm">
+                                    <Truck className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                    <p>No delivery options available for this pincode</p>
+                                </div>
+                            )}
+                            {errors.courier && <p className="text-red-500 text-xs mt-2">{errors.courier}</p>}
+                        </motion.div>
+
                         {/* Payment Method */}
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-8 h-8 rounded-full bg-[#385040] text-white flex items-center justify-center text-sm font-bold">{isAuthenticated ? '2' : '3'}</div>
+                                <div className="w-8 h-8 rounded-full bg-[#385040] text-white flex items-center justify-center text-sm font-bold">{isAuthenticated ? '3' : '4'}</div>
                                 <h2 className="font-display text-xl font-bold">Payment Method</h2>
                             </div>
 
@@ -643,8 +766,12 @@ export default function Checkout() {
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <span>Delivery Charge</span>
                                     <span className={`font-bold`}>
-                                        ₹{shipping.toFixed(2)}
+                                        {selectedCourier ? `₹${shipping.toFixed(2)}` : <span className="text-gray-400">Select courier</span>}
                                     </span>
+                                </div>
+                                <div className="flex justify-between text-sm text-green-600">
+                                    <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
+                                    <span className="font-bold">₹0.00</span>
                                 </div>
                             </div>
 

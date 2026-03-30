@@ -34,10 +34,12 @@ export default function Profile() {
         setLoadingComplaints(true);
         try {
             const response = await adminAPI.getUserComplaints();
-            setComplaints(response.data);
+            const data = response?.data || response;
+            setComplaints(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error(error);
             toast.error('Failed to load complaints');
+            setComplaints([]);
         } finally {
             setLoadingComplaints(false);
         }

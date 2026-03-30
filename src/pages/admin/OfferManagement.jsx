@@ -25,7 +25,10 @@ export default function OfferManagement() {
         try {
             setLoading(true);
             const res = await adminAPI.getAllOffers();
-            if (res.success) setOffers(res.data);
+            if (res.success) {
+                const data = res?.data || res;
+                setOffers(Array.isArray(data) ? data : []);
+            }
         } catch (err) { toast.error('Failed to load offers'); }
         finally { setLoading(false); }
     };
@@ -133,9 +136,9 @@ export default function OfferManagement() {
     };
 
     const displayTypes = ['banner', 'popup', 'toast', 'product-badge'];
-    const filteredOffers = offers.filter(o =>
-        o.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredOffers = Array.isArray(offers)
+        ? offers.filter(o => o.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        : [];
 
     return (
         <div className="space-y-6">

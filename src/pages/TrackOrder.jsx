@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Package, Loader2, Phone, Clock, CheckCircle, Truck, XCircle } from 'lucide-react';
+import { Search, Package, Loader2, Phone, Clock, CheckCircle, Truck, XCircle, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { orderAPI } from '@/services/orderAPI';
 import { toast } from 'sonner';
@@ -52,11 +52,11 @@ export default function TrackOrder() {
             <div className="max-w-2xl mx-auto px-4 sm:px-6">
 
                 {/* Header */}
-                <div className="text-center mb-10">
+                <div className="text-center mt-10 mb-10">
                     <div className="w-16 h-16 bg-[#385040] rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <Package className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="font-display text-3xl font-bold mb-2">Track Your Order</h1>
+                    <h1 className="font-display text-3xl  font-bold mb-2">Track Your Order</h1>
                     <p className="text-gray-400 text-sm">Enter the mobile number you used during checkout</p>
                 </div>
 
@@ -133,6 +133,29 @@ export default function TrackOrder() {
                                                         </div>
                                                     ))}
                                                 </div>
+
+                                                {/* Shipment Info */}
+                                                {(order.awbCode || order.courierName) && (
+                                                    <div className="py-3 border-t border-gray-100 space-y-2">
+                                                        {order.courierName && (
+                                                            <div className="flex justify-between text-sm">
+                                                                <span className="text-gray-500 flex items-center gap-1.5"><Truck className="w-3.5 h-3.5" /> Courier</span>
+                                                                <span className="font-bold text-[#1A1A1A]">{order.courierName}</span>
+                                                            </div>
+                                                        )}
+                                                        {order.awbCode && (
+                                                            <div className="flex justify-between text-sm">
+                                                                <span className="text-gray-500">AWB No.</span>
+                                                                <span className="font-mono font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                                                                    {order.awbCode}
+                                                                    <button onClick={() => navigator.clipboard.writeText(order.awbCode)} className="text-gray-400 hover:text-gray-600">
+                                                                        <Copy className="w-3 h-3" />
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
 
                                                 <div className="pt-3 border-t border-gray-100 space-y-2">
                                                     <div className="flex justify-between items-center text-xs text-gray-500 font-medium">

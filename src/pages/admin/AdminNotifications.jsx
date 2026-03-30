@@ -40,7 +40,8 @@ export default function AdminNotifications() {
 
             const res = await adminAPI.getNotifications(params);
             if (res.success) {
-                setNotifications(res.data);
+                const data = res?.data || res;
+                setNotifications(Array.isArray(data) ? data : []);
                 if (res.pagination) {
                     setPagination(prev => ({
                         ...prev,
@@ -287,7 +288,7 @@ export default function AdminNotifications() {
                 )}
             </div>
             
-            <style jsx>{`
+            <style>{`
                 .scrollbar-none::-webkit-scrollbar { display: none; }
                 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>

@@ -133,10 +133,12 @@ export default function AdminAdmins() {
         }
     };
 
-    const filteredAdmins = admins.filter(admin =>
-        admin.name.toLowerCase().includes(search.toLowerCase()) ||
-        admin.email.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredAdmins = Array.isArray(admins) 
+        ? admins.filter(admin =>
+            admin.name.toLowerCase().includes(search.toLowerCase()) ||
+            admin.email.toLowerCase().includes(search.toLowerCase())
+        )
+        : [];
 
     if (loading) return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-[#385040]" /></div>;
 

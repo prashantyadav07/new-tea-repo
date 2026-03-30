@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Backend URL from environment variables
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = 'https://mern-tea-backend.vercel.app/api';
 const API_URL = `${BASE_URL}/auth`;
 
 const api = axios.create({
