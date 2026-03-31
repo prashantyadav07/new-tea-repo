@@ -66,7 +66,7 @@ export default function TeaCarousel() {
     }, []);
 
     return (
-        <div className="relative w-full h-[400px] sm:h-[600px] lg:h-[800px] overflow-hidden bg-tea-dark rounded-[1.5rem] sm:rounded-[3rem] my-8 sm:my-20">
+        <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[650px] overflow-hidden bg-tea-dark rounded-[1.5rem] sm:rounded-[3rem] my-4 sm:my-12">
             <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                     key={currentIndex}
@@ -80,16 +80,18 @@ export default function TeaCarousel() {
                         opacity: { duration: 0.4 },
                         scale: { duration: 0.4 }
                     }}
-                    className="absolute inset-0"
+                    className="absolute inset-0 will-change-transform"
                 >
-                    {/* Background Image */}
-                    <div className="absolute inset-0">
+                    {/* Background Image Layer */}
+                    <div className="absolute inset-0 bg-tea-dark/20 backdrop-blur-xl">
+                        {/* Main Product Image */}
                         <img
                             src={teaImages[currentIndex].url}
                             alt={teaImages[currentIndex].title}
-                            className="w-full h-full object-cover brightness-75 transition-transform duration-[10s] ease-linear transform scale-100 group-hover:scale-110"
+                            className="w-full h-full object-cover lg:object-contain brightness-95 lg:brightness-100 transition-all duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        {/* Vignette/Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
                     </div>
 
                     {/* Content Overlay */}
@@ -98,7 +100,7 @@ export default function TeaCarousel() {
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="font-display text-3xl sm:text-5xl lg:text-8xl text-white font-bold mb-4 sm:mb-6 uppercase tracking-tighter"
+                            className="font-display text-3xl sm:text-5xl lg:text-7xl text-white font-bold mb-4 sm:mb-6 uppercase tracking-tighter"
                         >
                             {teaImages[currentIndex].title}
                         </motion.h2>

@@ -42,7 +42,7 @@ export default function Shop() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
-            <SEOHelmet 
+            <SEOHelmet
                 title="Buy Organic Tea Online India | Best Chai Delivery Nationwide"
                 description="Explore Chai Adda's premium organic tea collection. Buy masala chai, green tea, and herbal blends online with fast nationwide shipping across India."
                 url="https://www.chaiadda.co.in/shop"
@@ -142,9 +142,9 @@ export default function Shop() {
                             transition={{ duration: 0.4 }}
                         >
                             {filteredProducts.length > 0 ? (
-                                <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
+                                <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-10 sm:gap-y-12">
                                     {filteredProducts.map((product, index) => (
-                                        <StaggerItem key={product._id}>
+                                        <StaggerItem key={product._id} className="h-full">
                                             <ProductCard product={product} index={index} />
                                         </StaggerItem>
                                     ))}
@@ -164,14 +164,7 @@ export default function Shop() {
                     </AnimatePresence>
                 )}
 
-                {/* Load More (Optional/Visual Only) */}
-                {!isLoading && filteredProducts.length > 0 && (
-                    <div className="flex justify-center mt-20">
-                        <button className="px-10 py-4 rounded-none bg-white text-[#385040] font-bold border border-[#385040]/20 hover:bg-[#385040] hover:text-white transition-all shadow-sm uppercase tracking-widest text-xs">
-                            Load More
-                        </button>
-                    </div>
-                )}
+
             </div>
         </div>
     );

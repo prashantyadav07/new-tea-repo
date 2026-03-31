@@ -135,7 +135,7 @@ export default function Navbar() {
       `}>
 
         {/* Left: Mobile menu toggle + Desktop nav links */}
-        <div className="flex items-center gap-2 lg:gap-10 min-w-0">
+        <div className="flex items-center gap-2 lg:gap-4 xl:gap-8 min-w-0">
           {/* Mobile Menu Toggle (visible < lg) */}
           <button
             onClick={() => setIsOpen(!isOpen)}

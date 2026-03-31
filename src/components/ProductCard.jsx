@@ -60,10 +60,10 @@ export default function ProductCard({ product, index }) {
     return (
         <motion.div
             onClick={() => navigate(`/product/${id}`)}
-            className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 cursor-pointer border border-transparent overflow-hidden"
+            className="group relative bg-gradient-to-br from-white to-[#f0fff4] dark:from-[#1A1A1A] dark:to-[#1F3324] rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 cursor-pointer border border-transparent overflow-hidden h-full flex flex-col"
         >
             {/* Image Container */}
-            <div className={`relative h-full sm:h-72 w-full bg-gradient-to-br ${bgGradient} dark:from-white/5 dark:to-white/10 flex items-center justify-center overflow-hidden`}>
+            <div className={`relative aspect-[4/5] w-full bg-gradient-to-br ${bgGradient} dark:from-white/5 dark:from-white/10 flex items-center justify-center overflow-hidden flex-shrink-0 rounded-t-2xl sm:rounded-t-3xl`}>
                 {/* Badge */}
                 {badge && (
                     <div className="absolute top-4 left-4 z-20">
@@ -80,23 +80,23 @@ export default function ProductCard({ product, index }) {
                     <img
                         src={image}
                         alt={name}
-                        className="w-full h-full object-cover  drop-shadow-2xl"
+                        className="w-full h-full object-cover object-center"
                     />
                 </div>
             </div>
 
             {/* Content */}
-            <div className="px-2 sm:px-4 pb-2 sm:pb-4 pt-2 sm:pt-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-3 sm:pt-4 flex flex-col flex-grow bg-[#F4FFF8] dark:bg-[#1A1A1A] rounded-b-2xl sm:rounded-b-3xl">
                 <div className="flex justify-between items-start mb-3">
-                    <div>
-                        <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${categoryColor}`}>
+                    <div className="flex-grow">
+                        <p className={`text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1 ${categoryColor} min-h-[1.25rem]`}>
                             {category}
                         </p>
-                        <h3 className="font-display font-bold text-sm sm:text-xl text-foreground transition-colors leading-tight">
+                        <h3 className="font-display font-bold text-base sm:text-xl text-foreground transition-colors leading-tight line-clamp-2 min-h-[2.5rem] sm:min-h-[3.5rem] mt-1 sm:mt-2">
                             {name}
                         </h3>
                     </div>
-                    <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg">
+                    <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg flex-shrink-0 ml-2">
                         <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                         <span className="text-xs font-bold text-foreground">{rating}</span>
                     </div>

@@ -10,10 +10,10 @@ import cright672 from '../assets/cright-672w.webp'
 
 const HomeChoose = () => {
     return (
-        <section className="bg-[#EBE9E0] py-16 sm:py-24 px-4 border-y border-[#385040]/10">
+        <section className="bg-[#EBE9E0] py-10 sm:py-16 px-4 border-y border-[#385040]/10">
             <div className="max-w-6xl mx-auto">
                 <ScrollReveal>
-                    <h2 className="text-center font-sans font-black text-4xl sm:text-5xl md:text-6xl text-[#385040] mb-12 sm:mb-20 uppercase tracking-widest">
+                    <h2 className="text-center font-sans font-black text-3xl sm:text-4xl md:text-5xl text-[#385040] mb-8 sm:mb-12 uppercase tracking-widest">
                         Why Choose Us ?
                     </h2>
                 </ScrollReveal>
@@ -24,9 +24,9 @@ const HomeChoose = () => {
                     <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-[#385040]/20 -translate-x-1/2"></div>
 
                     {/* Left Side: Chaiadda Tea */}
-                    <div className="w-full md:w-1/2 md:pr-12 lg:pr-20 flex flex-col items-center">
+                    <div className="w-full md:w-1/2 md:pr-10 lg:pr-16 flex flex-col items-center">
                         <ScrollReveal delay={0.1} className="w-full flex flex-col items-center">
-                            <div className="w-48 h-48 sm:w-64 sm:h-64 mb-8 flex justify-center items-center">
+                            <div className="w-32 h-32 sm:w-44 sm:h-44 mb-6 flex justify-center items-center">
                                 <img
                                     src={left}
                                     alt="Chai Adda Tea"
@@ -39,20 +39,20 @@ const HomeChoose = () => {
                                 />
                             </div>
 
-                            <h3 className="w-full text-2xl md:text-3xl font-sans font-bold text-[#385040] mb-8 uppercase text-center">
+                            <h3 className="w-full text-xl md:text-2xl font-sans font-bold text-[#385040] mb-4 uppercase text-center">
                                 Chai Adda Tea
                             </h3>
 
-                            <ul className="space-y-4 w-fit mx-auto text-left">
+                            <ul className="space-y-2.5 w-fit mx-auto text-left">
                                 {[
                                     "Whole ingredients",
                                     "Hand-blended with care",
                                     "Multiple quality checks",
                                     "Fresh, vibrant, and true to nature"
                                 ].map((item, index) => (
-                                    <li key={index} className="flex items-center gap-3 md:gap-4">
-                                        <Check className="w-6 h-6 text-green-500 flex-shrink-0" strokeWidth={4} />
-                                        <span className="text-[#385040] font-medium text-lg lg:text-xl">{item}</span>
+                                    <li key={index} className="flex items-center gap-3">
+                                        <Check className="w-5 h-5 text-green-500 flex-shrink-0" strokeWidth={3} />
+                                        <span className="text-[#385040] font-medium text-sm sm:text-base">{item}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -63,9 +63,9 @@ const HomeChoose = () => {
                     <div className="w-[80%] h-px bg-[#385040]/20 my-4 block md:hidden"></div>
 
                     {/* Right Side: Other Brands */}
-                    <div className="w-full md:w-1/2 md:pl-12 lg:pl-20 flex flex-col items-center">
+                    <div className="w-full md:w-1/2 md:pl-10 lg:pl-16 flex flex-col items-center">
                         <ScrollReveal delay={0.2} className="w-full flex flex-col items-center">
-                            <div className="w-48 h-48 sm:w-64 sm:h-64 mb-8 flex justify-center items-center">
+                            <div className="w-32 h-32 sm:w-44 sm:h-44 mb-6 flex justify-center items-center">
                                 <img
                                     src={right}
                                     alt="Other Tea Brands"
@@ -78,20 +78,20 @@ const HomeChoose = () => {
                                 />
                             </div>
 
-                            <h3 className="w-full text-2xl md:text-3xl font-sans font-bold text-[#385040] mb-8 uppercase text-center">
+                            <h3 className="w-full text-xl md:text-2xl font-sans font-bold text-[#385040] mb-4 uppercase text-center">
                                 Other Brands
                             </h3>
 
-                            <ul className="space-y-4 w-fit mx-auto text-left">
+                            <ul className="space-y-2.5 w-fit mx-auto text-left">
                                 {[
                                     "Dust and fannings",
                                     "Mechanically mixed",
                                     "Dull and often artificial",
                                     "Minimal or no quality checks"
                                 ].map((item, index) => (
-                                    <li key={index} className="flex items-center gap-3 md:gap-4">
-                                        <X className="w-6 h-6 text-red-600 flex-shrink-0" strokeWidth={4} />
-                                        <span className="text-[#385040]/80 font-medium text-lg lg:text-xl">{item}</span>
+                                    <li key={index} className="flex items-center gap-3">
+                                        <X className="w-5 h-5 text-red-600 flex-shrink-0" strokeWidth={3} />
+                                        <span className="text-[#385040]/80 font-medium text-sm sm:text-base">{item}</span>
                                     </li>
                                 ))}
                             </ul>

@@ -1,22 +1,22 @@
-import { Leaf, ShieldCheck, Truck, Coffee, Star } from 'lucide-react';
+import { Leaf, ShieldCheck, Coffee, Star } from 'lucide-react';
 
 export default function TopRibbon() {
     const announcements = [
-        { text: "100% ORGANIC & HERBAL BLENDS", icon: Leaf },
-        { text: "PURE QUALITY GUARANTEE", icon: ShieldCheck },
-        { text: "FLAT ₹40 DELIVERY ON ALL DOMESTIC ORDERS", icon: Truck },
-        { text: "HAND-PICKED FROM PREMIUM TEA ESTATES", icon: Coffee },
-        { text: "EXPERIENCE THE ART OF BREWING", icon: Star },
+        { text: "50 Years of Legacy", icon: Star },
+        { text: "From One Estate, One Promise", icon: Leaf },
+        { text: "Pure Assam Heritage", icon: Leaf },
+        { text: "Once you sip it, you never go back", icon: Coffee },
+        { text: "Trusted by Generations", icon: ShieldCheck },
     ];
 
     return (
-        <div className="bg-[#482F24] text-white py-2.5 overflow-hidden whitespace-nowrap border-b border-white/5 fixed top-0 left-0 right-0 z-[60]">
+        <div className="bg-[#B08848] text-white py-2.5 overflow-hidden whitespace-nowrap border-b border-white/5 fixed top-0 left-0 right-0 z-[60]">
             <div className="inline-flex gap-8 sm:gap-24 items-center px-4 animate-marquee">
                 {announcements.map((item, index) => {
                     const Icon = item.icon;
                     return (
                         <div key={index} className="flex items-center gap-3">
-                            <Icon className="w-3.5 h-3.5 text-tea-primary fill-tea-primary" strokeWidth={3} />
+                            <Icon className="w-3.5 h-3.5 text-white fill-white" strokeWidth={3} />
                             <span className="text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.2em]">
                                 {item.text}
                             </span>
@@ -29,7 +29,7 @@ export default function TopRibbon() {
                         const Icon = item.icon;
                         return (
                             <div key={`dup-${index}`} className="flex items-center gap-3">
-                                <Icon className="w-3.5 h-3.5 text-tea-primary fill-tea-primary" strokeWidth={3} />
+                                <Icon className="w-3.5 h-3.5 text-white fill-white" strokeWidth={3} />
                                 <span className="text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.2em]">
                                     {item.text}
                                 </span>
