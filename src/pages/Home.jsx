@@ -12,6 +12,9 @@ import SEOHelmet from '@/components/SEOHelmet';
 import { productAPI } from '@/services/productAPI';
 import OfferBanner from '@/components/OfferBanner';
 import OfferPopup from '@/components/OfferPopup';
+import { ShieldCheck, History, Leaf, Globe } from 'lucide-react';
+
+import videoStory from '@/assets/video-story.mp4';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -34,11 +37,8 @@ export default function Home() {
   const collectionsRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
     offset: ["start start", "end end"]
   });
-
-  const marqueeX = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
   const featuredTeas = products.slice(0, 4);
 
@@ -47,10 +47,9 @@ export default function Home() {
     target: collectionsRef,
     offset: ["start end", "end start"]
   });
-  const collectionsTitleY = useTransform(collectionsScroll, [0, 1], [100, -100]);
 
   return (
-    <div ref={containerRef} className="relative bg-[#385040] overflow-x-hidden" data-scroll-container>
+    <div ref={containerRef} className="relative bg-[#385040] overflow-x-clip">
       <SEOHelmet
         title="Best Chai in India | Order Premium Organic Tea Online"
         description="India's premium online chai brand. Order authentic masala chai, organic green tea, and herbal blends online. Pan-India delivery to all states and cities."
@@ -87,23 +86,58 @@ export default function Home() {
       <Hero />
 
 
-      {/* PRESS / FEATURED IN SECTION */}
-      <div className="py-6 sm:py-8 bg-[#385040] w-full flex justify-center border-t border-[#385040]/10">
-        <div className="max-w-[1440px] w-full px-4 sm:px-10 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-6 lg:gap-12">
-
-          {/* Quote */}
+      {/* BRAND TRUST BAR SECTION */}
+      <div className="py-6 sm:py-10 bg-[#385040] w-full flex justify-center border-t border-[#385040]/10 overflow-hidden">
+        <div className="max-w-7xl w-full px-6 sm:px-10 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-20">
+          
+          {/* Left: Quote */}
           <div className="w-full md:w-5/12 text-center md:text-left">
-            <p className="text-[#FAF9F6] text-base sm:text-lg lg:text-xl font-medium leading-relaxed font-sans">
-              “India's finest carbon-neutral company with an ethical, fair trade line of premium organic teas.”
+            <p className="text-[#FAF9F6] text-lg sm:text-xl font-serif italic leading-relaxed">
+              “Brewing moments of togetherness with India's finest tea—a legacy of purity handed down through generations.”
             </p>
           </div>
 
-          {/* Logos / India Related */}
-          <div className="w-full md:w-7/12 flex flex-wrap items-center justify-center md:justify-around gap-x-6 gap-y-4 sm:gap-x-10 opacity-90">
-            <span className="text-[#cbab63] font-serif font-bold text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-none" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>The Times of India</span>
-            <span className="text-[#FAF9F6] font-serif font-black text-xl sm:text-2xl lg:text-3xl tracking-tighter leading-none" style={{ textTransform: 'uppercase', fontFamily: '"Times New Roman", Times, serif' }}>THE HINDU</span>
-            <span className="text-[#FAF9F6] font-sans text-lg sm:text-xl lg:text-2xl font-bold tracking-tighter leading-none" style={{ fontFamily: 'sans-serif' }}>Hindustan Times</span>
-            <span className="text-[#FAF9F6] font-sans font-black text-2xl sm:text-3xl lg:text-4xl tracking-tighter leading-none">Chai Adda</span>
+          {/* Right: Trust items Grid */}
+          <div className="w-full md:w-7/12 grid grid-cols-2 gap-x-8 gap-y-4 sm:gap-x-12 sm:gap-y-6">
+            <div className="flex items-start gap-4 group">
+              <div className="w-10 h-10 rounded-full border border-[#cbab63]/30 flex items-center justify-center text-[#cbab63] group-hover:bg-[#cbab63] group-hover:text-[#385040] transition-all duration-500 shrink-0">
+                <ShieldCheck size={20} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h4 className="text-[#FAF9F6] font-bold text-xs tracking-widest uppercase mb-1">100% Organic</h4>
+                <p className="text-[#FAF9F6]/60 text-[10px] leading-relaxed">Purity in every leaf.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="w-10 h-10 rounded-full border border-[#cbab63]/30 flex items-center justify-center text-[#cbab63] group-hover:bg-[#cbab63] group-hover:text-[#385040] transition-all duration-500 shrink-0">
+                <History size={20} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h4 className="text-[#FAF9F6] font-bold text-xs tracking-widest uppercase mb-1">50yr Legacy</h4>
+                <p className="text-[#FAF9F6]/60 text-[10px] leading-relaxed">Trusted for decades.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="w-10 h-10 rounded-full border border-[#cbab63]/30 flex items-center justify-center text-[#cbab63] group-hover:bg-[#cbab63] group-hover:text-[#385040] transition-all duration-500 shrink-0">
+                <Leaf size={20} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h4 className="text-[#FAF9F6] font-bold text-xs tracking-widest uppercase mb-1">Estate Direct</h4>
+                <p className="text-[#FAF9F6]/60 text-[10px] leading-relaxed">Fresh from Assam.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="w-10 h-10 rounded-full border border-[#cbab63]/30 flex items-center justify-center text-[#cbab63] group-hover:bg-[#cbab63] group-hover:text-[#385040] transition-all duration-500 shrink-0">
+                <Globe size={20} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h4 className="text-[#FAF9F6] font-bold text-xs tracking-widest uppercase mb-1">Eco-Conscious</h4>
+                <p className="text-[#FAF9F6]/60 text-[10px] leading-relaxed">Carbon-neutral path.</p>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -150,16 +184,14 @@ export default function Home() {
             {/* Left Image Placeholder */}
             <ScrollReveal className="w-full md:w-5/12 flex flex-col items-center">
               <div className="bg-[#EAE1D6] w-full max-w-[320px] lg:max-w-[360px] aspect-[4/5] rounded-3xl flex flex-col relative overflow-hidden shadow-sm">
-                <div className="flex-1 flex flex-col items-center justify-center z-10 px-4">
-                  <div className="w-16 h-16 bg-[#B5A695] rounded-full flex flex-col xl:mb-4 mb-3 overflow-hidden items-center justify-end">
-                    <div className="w-6 h-6 bg-[#8C7A67] rounded-full mt-2"></div>
-                    <div className="w-12 h-6 bg-[#8C7A67] rounded-t-full mt-1"></div>
-                  </div>
-                  <p className="text-[#8C7A67] text-sm font-bold uppercase tracking-wider text-center leading-tight">
-                    Your Father's<br />Photo Here
-                  </p>
-                </div>
-                <div className="h-[35%] bg-[#C6B6A5] w-full absolute bottom-0 z-0"></div>
+                <video 
+                  src={videoStory} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover rounded-3xl"
+                />
               </div>
               <div className="bg-[#2C4A3B] text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base -mt-5 sm:-mt-6 z-20 shadow-lg">
                 50+ years of trust

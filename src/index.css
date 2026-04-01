@@ -124,13 +124,14 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  position: relative;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 @layer base {

@@ -5,11 +5,13 @@ import section1Png from '@/assets/section-1.png';
 
 const Hero = memo(() => {
   return (
-    <section className="relative min-h-[100dvh] w-full flex items-center justify-center overflow-hidden pt-24 lg:pt-32 pb-12">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-[#FAF9F6]" />
+    <section
+      className="relative min-h-[100dvh] w-full flex items-center justify-center pt-24 lg:pt-32 pb-12"
+    >
+      {/* Background — purely decorative, must not block scroll */}
+      <div className="absolute inset-0 bg-[#FAF9F6] pointer-events-none" aria-hidden="true" />
 
-      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between px-4 sm:px-10 lg:px-20 overflow-hidden gap-8 lg:gap-0 mt-8 sm:mt-12 lg:mt-16">
+      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between px-4 sm:px-10 lg:px-20 gap-8 lg:gap-0 mt-8 sm:mt-12 lg:mt-16">
 
         <div className='md:hidden w-full flex justify-center mb-2'>
           <img
@@ -22,11 +24,11 @@ const Hero = memo(() => {
         </div>
 
         {/* Main Typography (Left) */}
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 z-30">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4.5rem] leading-[1.1] text-[#385040] select-none opacity-0 animate-fade-in-up [animation-fill-mode:forwards] [animation-delay:0.1s]">
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4.5rem] leading-[1.1] text-[#385040] opacity-0 animate-fade-in-up [animation-fill-mode:forwards] [animation-delay:0.1s]">
             Elevate Your
           </h1>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4.5rem] leading-[1.1] text-[#385040] select-none relative z-0 mt-1 lg:mt-2 opacity-0 animate-fade-in-up [animation-fill-mode:forwards] [animation-delay:0.2s]">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4.5rem] leading-[1.1] text-[#385040] mt-1 lg:mt-2 opacity-0 animate-fade-in-up [animation-fill-mode:forwards] [animation-delay:0.2s]">
             Everyday Sip
           </h1>
 
@@ -57,7 +59,7 @@ const Hero = memo(() => {
         </div>
 
         {/* Key Product Image (Right) */}
-        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative z-20 pointer-events-none mt-6 sm:mt-10 lg:mt-0 opacity-0 animate-scale-in [animation-fill-mode:forwards] [animation-delay:0.1s]">
+        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative mt-6 sm:mt-10 lg:mt-0 opacity-0 animate-scale-in [animation-fill-mode:forwards] [animation-delay:0.1s]">
           <img
             src={section1Png}
             fetchPriority="high"
