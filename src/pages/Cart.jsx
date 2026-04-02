@@ -127,6 +127,28 @@ export default function Cart() {
     const shipping = 40.00;
     const total = totalPrice + shipping;
 
+    // ── Sugar offer: requires ≥ 1 KG of tea (4 × 250 g packets) ──
+    const parseWeightGrams = (variantSize, productName) => {
+        // Try variantSize first (e.g. "250g", "500g", "1kg")
+        const sources = [variantSize, productName].filter(Boolean);
+        for (const src of sources) {
+            const s = src.toLowerCase();
+            const kgMatch = s.match(/(\d+\.?\d*)\s*kg/);
+            if (kgMatch) return parseFloat(kgMatch[1]) * 1000;
+            const gMatch = s.match(/(\d+\.?\d*)\s*g(?:ram)?/);
+            if (gMatch) return parseFloat(gMatch[1]);
+        }
+        return 0;
+    };
+    const totalWeightGrams = cartItems.reduce(
+        (sum, item) => sum + parseWeightGrams(item.variantSize, item.product?.name) * item.quantity,
+        0
+    );
+    const SUGAR_THRESHOLD_G = 1000;
+    const qualifiesForSugar = totalWeightGrams >= SUGAR_THRESHOLD_G;
+    const progressPct = Math.min((totalWeightGrams / SUGAR_THRESHOLD_G) * 100, 100);
+    const remainingG = Math.max(SUGAR_THRESHOLD_G - totalWeightGrams, 0);
+
     // Empty cart
     if (cartItems.length === 0) {
         return (
@@ -156,7 +178,7 @@ export default function Cart() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
-                <div className="mb-8 flex items-baseline justify-between">
+                <div className="mb-8 mt-12 flex items-baseline justify-between">
                     <h1 className="font-display text-3xl font-bold mt-5">Shopping Cart</h1>
                     <span className="text-sm text-gray-500 font-medium">{cartItems.length} Items</span>
                 </div>
@@ -247,31 +269,68 @@ export default function Cart() {
                                 </AnimatePresence>
                             </div>
 
-                            {/* Complimentary Sugar — Free Offer */}
-                            <div className="p-4 sm:p-6 bg-green-50/60 border-t border-green-100">
-                                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-                                    <div className="sm:col-span-6 flex gap-4 items-center">
-                                        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 bg-green-100 rounded-lg flex items-center justify-center border border-green-200">
-                                            <Gift className="w-8 h-8 text-green-600" />
+                            {/* Sugar offer — progress or unlocked */}
+                            <AnimatePresence mode="wait">
+                                {qualifiesForSugar ? (
+                                    <motion.div
+                                        key="sugar-unlocked"
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        className="p-4 sm:p-6 bg-green-50/60 border-t border-green-100"
+                                    >
+                                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                                            <div className="sm:col-span-6 flex gap-4 items-center">
+                                                <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 bg-green-100 rounded-lg flex items-center justify-center border border-green-200">
+                                                    <Gift className="w-8 h-8 text-green-600" />
+                                                </div>
+                                                <div className="flex flex-col justify-center">
+                                                    <span className="font-display text-lg font-bold text-[#1A1A1A] mb-1">Sugar (1 Kg Packet)</span>
+                                                    <span className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-1">Complimentary — Unlocked 🎉</span>
+                                                    <span className="text-xs text-green-600 font-semibold">Free with your order</span>
+                                                </div>
+                                            </div>
+                                            <div className="sm:col-span-3 flex justify-start sm:justify-center">
+                                                <span className="text-sm font-bold text-gray-500">Qty: 1</span>
+                                            </div>
+                                            <div className="sm:col-span-3 flex justify-between sm:justify-end items-center sm:block">
+                                                <span className="text-sm font-bold text-gray-500 sm:hidden">Total:</span>
+                                                <div className="text-right">
+                                                    <span className="block font-sans text-lg font-bold text-green-600">₹0.00</span>
+                                                    <span className="text-[10px] font-bold text-green-500 uppercase">Free Offer</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col justify-center">
-                                            <span className="font-display text-lg font-bold text-[#1A1A1A] mb-1">Sugar ( 1 Kg Packet)</span>
-                                            <span className="text-[10px] font-bold text-green-600 uppercase tracking-widest mb-1">Complimentary</span>
-                                            <span className="text-xs text-green-600 font-semibold">Free with your order 🎁</span>
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="sugar-progress"
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        className="p-4 sm:p-6 border-t border-amber-100 bg-amber-50/50"
+                                    >
+                                        <div className="flex items-start gap-3 mb-3">
+                                            <Gift className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                                            <div className="flex-1">
+                                                <p className="text-sm font-bold text-[#1A1A1A]">
+                                                    Add <span className="text-amber-600">{remainingG >= 1000 ? `${(remainingG / 1000).toFixed(2)} kg` : `${remainingG} g`}</span> more tea to unlock <span className="text-green-600">FREE 1 Kg Sugar!</span>
+                                                </p>
+                                                <p className="text-[10px] text-gray-400 mt-0.5">Offer applies when cart reaches 1 KG (e.g. 4 × 250 g packets)</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="sm:col-span-3 flex justify-start sm:justify-center">
-                                        <span className="text-sm font-bold text-gray-500">Qty: 1</span>
-                                    </div>
-                                    <div className="sm:col-span-3 flex justify-between sm:justify-end items-center sm:block">
-                                        <span className="text-sm font-bold text-gray-500 sm:hidden">Total:</span>
-                                        <div className="text-right">
-                                            <span className="block font-sans text-lg font-bold text-green-600">₹0.00</span>
-                                            <span className="text-[10px] font-bold text-green-500 uppercase">Free Offer</span>
+                                        <div className="w-full bg-amber-100 rounded-full h-2 overflow-hidden">
+                                            <motion.div
+                                                className="h-2 rounded-full bg-amber-400"
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${progressPct}%` }}
+                                                transition={{ duration: 0.5 }}
+                                            />
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        <p className="text-[10px] text-amber-600 font-semibold mt-1 text-right">{totalWeightGrams} g / 1000 g</p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
 
                         <Link to="/shop" className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-gray-500 hover:text-[#385040] transition-colors uppercase tracking-wide">
@@ -295,10 +354,12 @@ export default function Cart() {
                                         ₹{shipping.toFixed(2)}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-sm text-green-600">
-                                    <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
-                                    <span className="font-bold">₹0.00</span>
-                                </div>
+                                {qualifiesForSugar && (
+                                    <div className="flex justify-between text-sm text-green-600">
+                                        <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
+                                        <span className="font-bold">₹0.00</span>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="pt-4 border-t border-gray-100 mb-8">

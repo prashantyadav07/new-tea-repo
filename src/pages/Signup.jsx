@@ -79,7 +79,7 @@ export default function Signup() {
     };
 
     return (
-        <div className="min-h-screen pt-20 bg-[#FAF9F6] flex items-stretch overflow-hidden">
+        <div className="min-h-screen  bg-[#FAF9F6] flex items-stretch overflow-hidden">
             <SEOHelmet 
                 title="Sign Up | Chai Adda"
                 description="Create an account to join the Chai Adda community."
@@ -96,7 +96,7 @@ export default function Signup() {
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&q=80&w=1200')] bg-cover bg-center opacity-60 mix-blend-overlay" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#385040] via-transparent to-transparent" />
 
-                <div className="relative z-10 w-full flex flex-col justify-between p-16 text-white">
+                <div className="relative z-10 w-full flex flex-col justify-between p-16 mt-20 text-white">
                     <div>
                         <h2 className="font-display font-black text-6xl uppercase leading-none mb-6">
                             Join The <br /> Community
@@ -138,7 +138,7 @@ export default function Signup() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-center lg:text-left"
                     >
-                        <h1 className="font-display text-4xl sm:text-5xl font-black text-[#385040] mb-3">Create Account</h1>
+                        <h1 className="font-display mt-14 text-4xl sm:text-5xl font-black text-[#385040] mb-3">Create Account</h1>
                         <p className="text-gray-500">Sign up to start your tea journey with us.</p>
                     </motion.div>
 

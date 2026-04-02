@@ -6,6 +6,7 @@ import { guestCartService } from '@/services/guestCartService';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import confetti from 'canvas-confetti';
 import { getOptimizedCloudinaryUrl } from '@/lib/utils';
 import OfferBadge from '@/components/OfferBadge';
 
@@ -33,6 +34,20 @@ export default function ProductCard({ product, index }) {
     const bgGradient = product.bgGradient || 'from-white to-[#f0fff4]';
     const categoryColor = product.categoryColor || 'text-tea-primary';
 
+    const triggerCartConfetti = (e) => {
+        const origin = e?.currentTarget
+            ? (() => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                return {
+                    x: (rect.left + rect.width / 2) / window.innerWidth,
+                    y: (rect.top + rect.height / 2) / window.innerHeight,
+                };
+            })()
+            : { x: 0.5, y: 0.6 };
+
+        confetti({ particleCount: 60, spread: 80, origin, colors: ['#385040', '#4CAF50', '#D4F57B', '#C8A96E', '#fff'], scalar: 1.1, gravity: 1.2, ticks: 180 });
+    };
+
     const handleAddToCart = async (e) => {
         if (e) e.stopPropagation();
         if (!defaultVariantSize) {
@@ -46,6 +61,7 @@ export default function ProductCard({ product, index }) {
             } else {
                 guestCartService.addToCart(product, defaultVariantSize, 1);
             }
+            triggerCartConfetti(e);
             window.dispatchEvent(new Event('cartUpdated'));
             toast.success('Added to cart!');
             navigate('/cart');
