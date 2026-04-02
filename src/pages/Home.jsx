@@ -87,7 +87,7 @@ export default function Home() {
 
 
       {/* BRAND TRUST BAR SECTION */}
-      <div className="py-6 sm:py-10 bg-[#385040] w-full flex justify-center border-t border-[#385040]/10 overflow-hidden">
+      <div className="hidden md:flex py-6 sm:py-10 bg-[#385040] w-full justify-center border-t border-[#385040]/10 overflow-hidden">
         <div className="max-w-7xl w-full px-6 sm:px-10 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-20">
           
           {/* Left: Quote */}

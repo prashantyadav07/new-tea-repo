@@ -1,12 +1,26 @@
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, Package, ArrowRight, ShoppingBag, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 
 export default function OrderSuccess() {
     const location = useLocation();
     const { orderNumber, orderId, amount, paymentId } = location.state || {};
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        if (!orderNumber) return;
+        // Initial burst from left & right
+        const fire = (opts) => confetti({ ...opts, colors: ['#385040', '#4CAF50', '#D4F57B', '#C8A96E', '#ffffff', '#f97316'] });
+        fire({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0, y: 0.65 }, scalar: 1.3, gravity: 1.1, ticks: 250 });
+        fire({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1, y: 0.65 }, scalar: 1.3, gravity: 1.1, ticks: 250 });
+        // Delayed center burst
+        const t = setTimeout(() => {
+            fire({ particleCount: 80, spread: 100, origin: { y: 0.4 }, scalar: 1.5, gravity: 0.9, ticks: 300 });
+        }, 350);
+        return () => clearTimeout(t);
+    }, [orderNumber]);
 
     // If no state, redirect to home
     if (!orderNumber) {

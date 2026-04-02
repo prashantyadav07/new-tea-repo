@@ -1,7 +1,31 @@
 import { Link } from 'react-router-dom';
-import { Leaf, Instagram, Facebook, ArrowRight } from 'lucide-react';
+import { Leaf, Instagram, Facebook, ArrowRight, Gift } from 'lucide-react';
 import { motion } from 'framer-motion';
 import chailogo from '../assets/chailogo.webp'
+
+const OFFER_ITEMS = [
+    { icon: '🎁', text: 'Buy 1 KG of tea & get FREE 1 KG Sugar!' },
+    { icon: '🍵', text: 'Mix & match 4 × 250 g packets to qualify' },
+    { icon: '🚚', text: 'Free offer auto-applied in your cart' },
+    { icon: '✨', text: 'Limited time — shop now and enjoy the sweetness' },
+];
+
+function OfferRibbon() {
+    const repeated = [...OFFER_ITEMS, ...OFFER_ITEMS, ...OFFER_ITEMS];
+    return (
+        <div className="bg-[#385040] text-white py-2.5 overflow-hidden relative">
+            <div className="flex whitespace-nowrap animate-[ticker_28s_linear_infinite]">
+                {repeated.map((item, i) => (
+                    <span key={i} className="inline-flex items-center gap-2 mx-8 text-xs font-semibold tracking-wide">
+                        <span>{item.icon}</span>
+                        <span>{item.text}</span>
+                        <span className="text-white/40 mx-2">|</span>
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+}
 
 export default function Footer() {
     const shopLinks = [
@@ -23,6 +47,9 @@ export default function Footer() {
 
     return (
         <footer className="bg-[#1A1A1A] text-white relative overflow-hidden">
+            {/* Offer ticker ribbon */}
+            <OfferRibbon />
+
             {/* Decorative gradient */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-tea-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 

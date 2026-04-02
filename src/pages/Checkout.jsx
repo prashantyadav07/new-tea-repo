@@ -470,16 +470,34 @@ export default function Checkout() {
     const shipping = selectedCourier ? selectedCourier.rate : 0;
     const total = totalPrice + shipping;
 
+    // ── Sugar offer: requires ≥ 1 KG of tea (4 × 250 g packets) ──
+    const parseWeightGrams = (variantSize, productName) => {
+        const sources = [variantSize, productName].filter(Boolean);
+        for (const src of sources) {
+            const s = src.toLowerCase();
+            const kgMatch = s.match(/(\d+\.?\d*)\s*kg/);
+            if (kgMatch) return parseFloat(kgMatch[1]) * 1000;
+            const gMatch = s.match(/(\d+\.?\d*)\s*g(?:ram)?/);
+            if (gMatch) return parseFloat(gMatch[1]);
+        }
+        return 0;
+    };
+    const totalWeightGrams = (cart?.items || []).reduce(
+        (sum, item) => sum + parseWeightGrams(item.variantSize || item.size, item.product?.name) * item.quantity,
+        0
+    );
+    const qualifiesForSugar = totalWeightGrams >= 1000;
+
     return (
         <div className="min-h-screen bg-[#F9F9F9] pt-24 pb-16 font-sans text-[#1A1A1A]">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
                 <div className="mb-8">
-                    <Link to="/cart" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#385040] transition-colors uppercase tracking-wide mb-4">
+                    <Link to="/cart" className="inline-flex mt-4 items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#385040] transition-colors uppercase tracking-wide mb-4">
                         <ArrowLeft className="w-4 h-4" /> Back to Cart
                     </Link>
-                    <h1 className="font-display mt-10 text-3xl font-bold">Checkout</h1>
+                    <h1 className="font-display md:mt-10 text-3xl font-bold">Checkout</h1>
                 </div>
 
                 <div className="lg:grid lg:grid-cols-12 gap-8 items-start">
@@ -769,10 +787,18 @@ export default function Checkout() {
                                         {selectedCourier ? `₹${shipping.toFixed(2)}` : <span className="text-gray-400">Select courier</span>}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-sm text-green-600">
-                                    <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
-                                    <span className="font-bold">₹0.00</span>
-                                </div>
+                                {qualifiesForSugar && (
+                                    <div className="flex justify-between text-sm text-green-600">
+                                        <span className="flex items-center gap-1"><Gift className="w-3 h-3" /> Sugar (Free)</span>
+                                        <span className="font-bold">₹0.00</span>
+                                    </div>
+                                )}
+                                {!qualifiesForSugar && (
+                                    <div className="flex items-center gap-2 text-xs text-amber-600 bg-amber-50 border border-amber-100 rounded-lg p-2 mt-1">
+                                        <Gift className="w-3.5 h-3.5 shrink-0" />
+                                        <span>Add {Math.max(1000 - totalWeightGrams, 0)} g more tea to get <strong>FREE 1 Kg Sugar!</strong></span>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="border-t border-gray-100 pt-4 mb-6">

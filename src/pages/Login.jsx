@@ -80,7 +80,7 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen pt-20 bg-[#FAF9F6] flex items-stretch overflow-hidden">
+        <div className="min-h-screen  bg-[#FAF9F6] flex items-stretch overflow-hidden">
             <SEOHelmet 
                 title="Login | Chai Adda"
                 description="Login to your Chai Adda account."
@@ -99,7 +99,7 @@ export default function Login() {
 
                 <div className="relative z-10 w-full flex flex-col justify-between p-16 text-white">
                     <div>
-                        <h2 className="font-display font-black text-6xl uppercase leading-none mb-6">
+                        <h2 className="font-display pt-20 font-black text-6xl uppercase leading-none mb-6">
                             Welcome <br /> Back
                         </h2>
                         <p className="text-xl text-white/80 max-w-md font-serif italic">
