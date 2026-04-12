@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PUBLIC_URL = import.meta.env.VITE_API_URL || 'https://mern-tea-backend.vercel.app/api';
+const PUBLIC_URL = import.meta.env.VITE_API_URL || 'https://mern-tea-backend.onrender.com/api';
 
 export const offerAPI = {
     // ── Public endpoints ─────────────────────────────────────
