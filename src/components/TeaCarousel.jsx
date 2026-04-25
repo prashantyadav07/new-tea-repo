@@ -3,25 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import local assets
-import brandImg from '../assets/brand.webp';
-import blogBgImg from '../assets/blogbg.webp';
-import circleImg from '../assets/circleimage.webp';
+import video1 from '../assets/video1.mp4';
+import video2 from '../assets/video2.mp4';
 
 const teaImages = [
     {
-        url: brandImg,
-        title: "Pure Heritage",
-        desc: "Experience the authentic taste of hand-picked tea leaves from our premium gardens."
-    },
-    {
-        url: blogBgImg,
-        title: "Tea Traditions",
-        desc: "Discover the rich history and culture behind every cup of our artisanal blends."
-    },
-    {
-        url: circleImg,
+        url: video2,
         title: "Modern Brewing",
         desc: "Blending traditional techniques with modern perfection for the ultimate tea experience."
+    },
+    {
+        url: video1,
+        title: "Tea Traditions",
+        desc: "Discover the rich history and culture behind every cup of our artisanal blends."
     }
 ];
 
@@ -84,34 +78,17 @@ export default function TeaCarousel() {
                 >
                     {/* Background Image Layer */}
                     <div className="absolute inset-0 bg-tea-dark/20 backdrop-blur-xl">
-                        {/* Main Product Image */}
-                        <img
+                        {/* Main Product Video */}
+                        <video
                             src={teaImages[currentIndex].url}
-                            alt={teaImages[currentIndex].title}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
                             className="w-full h-full object-cover lg:object-contain brightness-95 lg:brightness-100 transition-all duration-700"
                         />
                         {/* Vignette/Gradient Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-                    </div>
-
-                    {/* Content Overlay */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                        <motion.h2
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="font-display text-3xl sm:text-5xl lg:text-7xl text-white font-bold mb-4 sm:mb-6 uppercase tracking-tighter"
-                        >
-                            {teaImages[currentIndex].title}
-                        </motion.h2>
-                        <motion.p
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            className="text-white/80 text-lg lg:text-xl max-w-xl font-medium"
-                        >
-                            {teaImages[currentIndex].desc}
-                        </motion.p>
                     </div>
                 </motion.div>
             </AnimatePresence>

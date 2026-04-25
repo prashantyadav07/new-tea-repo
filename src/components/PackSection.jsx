@@ -116,9 +116,24 @@ export default function PackSection() {
                   <div className="absolute top-12 left-1/2 w-px h-full bg-[#385040]/10 -translate-x-1/2" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#385040] mb-2">Forest Nurtured</h3>
+                  <h3 className="text-xl font-bold text-[#385040] mb-2">Garden-Fresh from Assam</h3>
                   <p className="text-gray-600 leading-relaxed max-w-md">
-                    Grown in harmony with nature, our tea bushes are shaded by native trees, preserving the delicate ecosystem and enhancing flavor depth.
+                    Our teas are sourced directly from carefully tended Assam garden &ndash; &quot;Borsillah&quot;, where every plant is nurtured individually to draw out its purest, most aromatic character.
+                  </p>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.15} className="flex group">
+                <div className="mr-6 relative">
+                  <div className="w-12 h-12 rounded-full border-2 border-[#385040]/10 flex items-center justify-center group-hover:bg-[#385040] group-hover:text-white transition-colors duration-300">
+                    <Flower2 className="w-5 h-5" />
+                  </div>
+                  <div className="absolute top-12 left-1/2 w-px h-full bg-[#385040]/10 -translate-x-1/2" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-[#385040] mb-2">7-Day Pluck Cycle</h3>
+                  <p className="text-gray-600 leading-relaxed max-w-md">
+                    Strict 7-day leaf plucking cycle being followed, ensuring only the softest, juiciest young leaves make it into your cup &mdash; nothing rushed, nothing wasted.
                   </p>
                 </div>
               </ScrollReveal>
@@ -153,11 +168,7 @@ export default function PackSection() {
               </ScrollReveal>
             </div>
 
-            <ScrollReveal delay={0.4} className="mt-12">
-              <Link to="/about" className="inline-flex items-center gap-2 text-[#385040] font-bold uppercase tracking-widest text-sm hover:gap-4 transition-all group">
-                Read our full story <span className="w-8 h-px bg-[#385040] group-hover:w-12 transition-all" />
-              </Link>
-            </ScrollReveal>
+
           </div>
 
         </div>

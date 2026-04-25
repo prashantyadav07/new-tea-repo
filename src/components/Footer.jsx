@@ -69,7 +69,7 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                            Bringing tranquility to your daily ritual, one cup at a time. Premium hand-picked tea leaves from the finest places in india.
+                            Bringing tranquility to your daily ritual, one cup at a time. Premium hand-picked tea leaves from the Assam finest garden.
                         </p>
                         <div className="flex gap-3">
                             {[

@@ -46,6 +46,7 @@ export default function Contact() {
     firstName: '',
     lastName: '',
     email: '',
+    phone: '',
     subject: '',
     message: ''
   });
@@ -59,12 +60,13 @@ export default function Contact() {
       await adminAPI.submitComplaint({
         name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
+        phone: formData.phone,
         subject: formData.subject,
         message: formData.message,
         source: 'contact'
       });
       toast.success('Message sent successfully! We will get back to you soon.');
-      setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || 'Failed to send message. Please try again.');
@@ -213,10 +215,16 @@ export default function Contact() {
                   />
                 </div>
 
-                <FloatingInput
-                  label="Email Address" id="email" type="email" placeholder="john@example.com"
-                  value={formData.email} onChange={handleChange}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <FloatingInput
+                    label="Email Address" id="email" type="email" placeholder="john@example.com"
+                    value={formData.email} onChange={handleChange}
+                  />
+                  <FloatingInput
+                    label="Phone Number" id="phone" type="tel" placeholder="+91 98765 43210"
+                    value={formData.phone} onChange={handleChange}
+                  />
+                </div>
 
                 <FloatingInput
                   label="Subject" id="subject" placeholder="Wholesale Inquiry"

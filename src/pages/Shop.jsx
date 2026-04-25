@@ -142,9 +142,9 @@ export default function Shop() {
                             transition={{ duration: 0.4 }}
                         >
                             {filteredProducts.length > 0 ? (
-                                <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-10 sm:gap-y-12">
+                                <StaggerContainer className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 gap-y-10 sm:gap-y-12">
                                     {filteredProducts.map((product, index) => (
-                                        <StaggerItem key={product._id} className="h-full">
+                                        <StaggerItem key={product._id} className="h-full w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] xl:w-[320px]">
                                             <ProductCard product={product} index={index} />
                                         </StaggerItem>
                                     ))}

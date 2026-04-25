@@ -162,7 +162,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-wrap justify-start gap-4 sm:gap-6 lg:gap-8">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8">
             {featuredTeas.map((product, i) => (
               <ScrollReveal
                 key={product._id || product.id || i}
